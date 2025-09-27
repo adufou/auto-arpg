@@ -56,17 +56,21 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 ## Statistiques et Progression
 
-### 1. [Godot Gameplay Attributes](https://github.com/OctoD/godot_gameplay_attributes) - ADOPTÉ ✓
-- **Description** : Système d'attributs pour la gestion des statistiques
-- **Fonctionnalités** : Attributs primaires, attributs dérivés, buffs/debuffs
-- **Avantages** : Découplé du système d'abilités, flexible, conçu pour les jeux type RPG
-- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Solution choisie pour le projet)
-
-### 2. [Godot Gameplay Abilities](https://github.com/OctoD/godot-gameplay-abilities) - ADOPTÉ ✓
-- **Description** : Système de compétences inspiré de Unreal Engine GAS
-- **Fonctionnalités** : Création, gestion et activation d'abilités
-- **Avantages** : Complet, conçu pour fonctionner avec Gameplay Attributes
-- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Solution choisie pour le système de compétences)
+### 1. [Godot Gameplay Systems](https://github.com/OctoD/godot-gameplay-systems) - ADOPTÉ ✓
+- **Description** : Suite complète de systèmes de gameplay pour Godot 4
+- **Fonctionnalités** : 
+  - Système d'attributs et de statistiques
+  - Système d'abilités et de compétences
+  - Inventaire et équipement
+  - Interactions avec objets
+  - Effets de caméra et slideshow
+  - Système de combat au tour par tour
+- **Avantages** : 
+  - Solution intégrée et cohérente
+  - En GDScript natif (pas de compilation nécessaire)
+  - Facile à étendre et personnaliser
+  - Conçu spécifiquement pour les RPG
+- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Solution choisie pour les mécaniques centrales du jeu)
 
 ## Effets Visuels
 
@@ -107,22 +111,21 @@ Après évaluation, nous avons choisi les addons suivants pour le développement
 - **Fonctionnalités** : Inventaires flexibles, gestion d'objets, génération de loot, tables de butin
 - **Utilisation dans notre projet** : Système complet pour inventaire, objets et génération procédurale d'équipements
 
-### 2. [Godot Gameplay Abilities](https://github.com/OctoD/godot-gameplay-abilities) - ADOPTÉ ✓
-- **Description** : Système de compétences inspiré de Unreal Engine GAS
-- **Fonctionnalités** : Création, gestion et activation d'abilités
-- **Utilisation dans notre projet** : Automatisation des compétences et des actions du personnage
+### 2. [Godot Gameplay Systems](https://github.com/OctoD/godot-gameplay-systems) - ADOPTÉ ✓
+- **Description** : Suite complète de systèmes de gameplay pour Godot 4
+- **Fonctionnalités** : Système d'attributs, d'abilités, d'inventaire et d'interactions
+- **Utilisation dans notre projet** : 
+  - Gestion des statistiques (STR, DEX, INT, HP, Mana)
+  - Automatisation des compétences et des actions du personnage
+  - Gestion des effets d'équipement et buffs/debuffs
+  - Système d'interaction pour le ramassage d'objets
 
-### 3. [Godot Gameplay Attributes](https://github.com/OctoD/godot_gameplay_attributes) - ADOPTÉ ✓
-- **Description** : Système d'attributs pour la gestion des statistiques
-- **Fonctionnalités** : Attributs, attributs dérivés, buffs/debuffs, système de modification d'attributs
-- **Utilisation dans notre projet** : Gestion des statistiques (STR, DEX, INT, HP, Mana) et des effets d'équipement
-
-### 4. [Gaea](https://github.com/gaea-godot/gaea) - ADOPTÉ ✓
+### 3. [Gaea](https://github.com/gaea-godot/gaea) - ADOPTÉ ✓
 - **Description** : Addon de génération procédurale pour Godot 4
 - **Fonctionnalités** : Système visuel de nœuds, générateurs multiples
 - **Utilisation dans notre projet** : Génération procédurale des maps
 
-### 5. [LimboAI](https://github.com/limbonaut/limboai) - ADOPTÉ ✓
+### 4. [LimboAI](https://github.com/limbonaut/limboai) - ADOPTÉ ✓
 - **Description** : Plugin C++ pour Godot 4 combinant arbres de comportement et machines à états hiérarchiques
 - **Fonctionnalités** : Éditeur d'arbre intégré, débogueur visuel, système de blackboard avancé, machines à états hiérarchiques, compatibilité Godot 4.4
 - **Utilisation dans notre projet** : 
@@ -131,12 +134,12 @@ Après évaluation, nous avons choisi les addons suivants pour le développement
   - Gestion des états du personnage (combat, exploration, évitement, récupération)
   - Partage d'informations entre agents via le système de blackboard
 
-### 6. [GodotProfiler](https://github.com/deepnight/godotprofiler) - ADOPTÉ ✓
+### 5. [GodotProfiler](https://github.com/deepnight/godotprofiler) - ADOPTÉ ✓
 - **Description** : Outil de profilage pour optimiser les performances
 - **Fonctionnalités** : Suivi des performances, détection des goulets d'étranglement
 - **Utilisation dans notre projet** : Optimisation des performances pour les sessions de jeu automatiques prolongées
 
-### 7. [Système de sauvegarde intégré à Godot](https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html) - ADOPTÉ ✓
+### 6. [Système de sauvegarde intégré à Godot](https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html) - ADOPTÉ ✓
 - **Description** : Système natif de sérialisation et sauvegarde de Godot
 - **Fonctionnalités** : Conversion en dictionnaires, sauvegarde JSON ou binaire
 - **Utilisation dans notre projet** : Sauvegarde de la progression du joueur, des statistiques et configurations
