@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://bftqx2ftpjdiy"]
+[gd_scene load_steps=17 format=3 uid="uid://bftqx2ftpjdiy"]
 
 [ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/shared/character_base.tscn" id="1_167sc"]
 [ext_resource type="Script" uid="uid://cacixg2e6fl6u" path="res://modules/player/player.gd" id="2_pnc3n"]
 [ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_m7q0d"]
 [ext_resource type="Script" uid="uid://cl2udnbyvytci" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="4_ue0ku"]
 [ext_resource type="Resource" path="res://modules/shared/abilities/instances/player_attack.tres" id="5_hd5yx"]
+[ext_resource type="Texture2D" uid="uid://dynqn7swernt0" path="res://assets/player.png" id="6_hd5yx"]
 
 [sub_resource type="Resource" id="Resource_55gox"]
 script = ExtResource("3_m7q0d")
@@ -95,3 +96,6 @@ debug_use_custom = true
 debug_path_custom_color = Color(0, 0.758, 0.882, 1)
 
 [node name="Camera2D" type="Camera2D" parent="." index="4"]
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="5"]
+texture = ExtResource("6_hd5yx")

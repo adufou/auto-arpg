@@ -27,17 +27,27 @@ func _ready() -> void:
 
 # Main physics process - manages the core gameplay loop
 func _physics_process(_delta: float) -> void:
+	# Ne rien faire si nous sommes morts
+	if ability_container and ability_container.has_tag("dead"):
+		return
+	
+	# Vérifier si nous avons une cible valide
 	ensure_target_exists()
 	
+	# Si aucune cible n'est trouvée, rester immobile
 	if target_mob == null:
+		# On pourrait ajouter ici un comportement d'exploration ou d'attente
 		return
 		
+	# Définir la position cible pour la navigation
 	set_navigation_target()
 	
+	# Si nous sommes assez près pour attaquer
 	if is_within_attack_range():
 		handle_attack_range_behavior()
 		return
 	
+	# Sinon, se déplacer vers la cible
 	move_toward_target()
 
 # Setup the gameplay systems with initial values
@@ -79,15 +89,30 @@ func initialize_navigation_agent() -> void:
 
 # Make sure we have a valid target
 func ensure_target_exists() -> void:
-	if target_mob == null:
+	# Vérifier si la cible n'existe plus ou est morte
+	if target_mob == null or !is_instance_valid(target_mob) or (target_mob.has_node("AbilityContainer") and target_mob.get_node("AbilityContainer").has_tag("dead")):
+		# Réinitialiser la référence
+		target_mob = null
+		# Chercher une nouvelle cible
 		find_closest_mob()
+		
+		# Si aucune cible n'est trouvée, arrêter le mouvement
+		if target_mob == null:
+			stop_movement()
+			print_debug("Aucune cible trouvée, le joueur s'arrête")
 
 # Update navigation agent with target position
 func set_navigation_target() -> void:
-	navigation_agent_2d.target_position = target_mob.global_position
+	# Vérifier si la cible existe avant de définir la position
+	if target_mob and is_instance_valid(target_mob):
+		navigation_agent_2d.target_position = target_mob.global_position
 
 # Check if player is within attack range of the target
 func is_within_attack_range() -> bool:
+	# S'assurer que la cible existe
+	if not target_mob or not is_instance_valid(target_mob):
+		return false
+		
 	var distance_to_target = global_position.distance_to(target_mob.global_position)
 	return distance_to_target <= attack_range
 
@@ -141,7 +166,13 @@ func find_closest_mob() -> void:
 
 # Check if a node is a valid mob target
 func is_valid_mob_target(node: Node) -> bool:
-	return node.name.contains("Mob") and node != self
+	# Vérifier si c'est un mob et pas nous-même
+	if node.name.contains("Mob") and node != self:
+		# Vérifier si le mob n'est pas mort
+		if node.has_node("AbilityContainer"):
+			var mob_ability_container = node.get_node("AbilityContainer")
+			return not mob_ability_container.has_tag("dead")
+	return false
 
 # Helper function to update an attribute value
 func update_attribute(attribute_name: String, value: float) -> void:
