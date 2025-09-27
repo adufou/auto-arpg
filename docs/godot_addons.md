@@ -4,24 +4,31 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 ## Génération procédurale
 
-### 1. [Godot Procedural Generation](https://github.com/hiulit/Godot-3-2D-Procedural-Generation)
+### 1. [Gaea](https://github.com/gaea-godot/gaea)
+- **Description** : Addon de génération procédurale pour Godot 4 utilisant un système de graphes.
+- **Fonctionnalités** : Système visuel de nœuds, générateurs multiples (Cellular Automata, Heightmap, Walker).
+- **Avantages** : Interface visuelle intuitive, support 2D et 3D, extensible avec des nœuds personnalisés.
+- **Compatibilité** : Compatible avec Godot 4.4 (version principale) et 4.3 (versions antérieures).
+- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Adopté comme solution principale pour la génération de maps)
+
+### 2. [Godot Procedural Generation](https://github.com/hiulit/Godot-3-2D-Procedural-Generation)
 - **Description** : Une bibliothèque de fonctions pour la génération procédurale 2D.
 - **Fonctionnalités** : Génération de donjons, cavernes, et différents types de cartes.
 - **Avantages** : Facilite la création de maps variées et aléatoires.
 - **Compatibilité** : À vérifier pour Godot 4.x (initialement pour Godot 3.x).
-- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Essentiel pour la génération de maps)
+- **Utilité pour notre projet** : ⭐⭐⭐ (Alternative si besoin)
 
-### 2. [Cellular Automata](https://github.com/Danniyar/GodotCellularAutomaton)
+### 3. [Cellular Automata](https://github.com/Danniyar/GodotCellularAutomaton)
 - **Description** : Implémentation d'automates cellulaires pour la génération de terrains.
 - **Fonctionnalités** : Création de grottes, îles, et autres structures organiques.
 - **Avantages** : Génération rapide de terrains naturels.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Utile pour la variété des environnements)
+- **Utilité pour notre projet** : ⭐⭐⭐ (Alternative spécifique aux automates cellulaires)
 
-### 3. [Dungeon Generator](https://github.com/MatejSloboda/Godot_dungeon_generator)
+### 4. [Dungeon Generator](https://github.com/MatejSloboda/Godot_dungeon_generator)
 - **Description** : Générateur de donjons basé sur des salles et des couloirs.
 - **Fonctionnalités** : Création de donjons avec différentes tailles et configurations.
 - **Avantages** : Bon point de départ pour les maps intérieures.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Pertinent pour certains types de maps)
+- **Utilité pour notre projet** : ⭐⭐⭐ (Alternative pour certains types de maps)
 
 ## Inventaire et Équipement
 
@@ -131,7 +138,7 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 Pour le prototype initial, nous recommandons de nous concentrer sur les addons suivants :
 
-1. **Godot Procedural Generation** ou une alternative compatible avec Godot 4.x pour la génération de maps
+1. **Gaea** pour la génération procédurale des maps
 2. **Godot Behavior Tree** pour l'automatisation du personnage et des ennemis
 3. **RPG Inventory** pour la gestion des objets et de l'équipement
 4. **Godot RPG Stats** pour le système de statistiques et de progression

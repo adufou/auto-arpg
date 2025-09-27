@@ -19,10 +19,11 @@ Ce document définit les spécifications et l'architecture de base pour la premi
   - Classe `MapData` pour encapsuler les données de la map
 
 #### Génération Procédurale
-- Algorithme de base : Cellular Automata pour un terrain organique
+- Outil : Addon Gaea pour Godot 4
+- Algorithme de base : Cellular Automata via l'interface de Gaea
 - Points clés :
-  1. Génération de la forme de base du terrain
-  2. Placement des obstacles
+  1. Génération de la forme de base du terrain via graphe Gaea
+  2. Placement des obstacles avec paramètres ajustables
   3. Placement des spawners de mobs (avec densité configurable)
   4. Définition du point de spawn du boss
 
@@ -137,9 +138,10 @@ Pour ce prototype, nous recommandons les addons suivants :
 - **Justification** : Base pour le futur système d'inventaire (non implémenté dans le prototype)
 - **Utilisation** : Préparation pour les versions futures
 
-### 3.3 Cellular Automata (ou équivalent)
-- **Justification** : Génération procédurale de la map
-- **Utilisation** : Créer des terrains variés et organiques
+### 3.3 Gaea
+- **Justification** : Addon de génération procédurale pour Godot 4
+- **Utilisation** : Création de maps procédurales via système de graphes
+- **Source** : https://github.com/gaea-godot/gaea
 
 ### 3.4 Godot RPG Stats (ou équivalent)
 - **Justification** : Gestion des statistiques du joueur et des mobs
@@ -171,15 +173,16 @@ Logique de comportement du joueur :
 
 ### 4.3 Génération Procédurale de Map
 
-**Génération Procédurale de Map :**
+**Génération Procédurale de Map avec Gaea :**
 
-Principe de l'algorithme Cellular Automata pour la génération de map :
-- Initialisation avec du bruit aléatoire (murs et sols)
-- Application itérative des règles de l'automate cellulaire pour lisser le terrain
-- Identification des zones ouvertes pour le placement des spawners de mobs
-- Détection des zones suffisamment spacieuses pour les spawns
+Utilisation de Gaea pour la génération procédurale :
+- Création d'un graphe de génération dans l'interface de Gaea
+- Utilisation du générateur Cellular Automata de Gaea pour un terrain organique
+- Configuration des paramètres de génération via l'interface visuelle
+- Post-traitement pour l'identification des zones ouvertes et le placement des spawners
 - Map de taille fixe (par ex. 100x100 tuiles)
-- Paramètres ajustables pour la densité des obstacles et le lissage
+- Intégration du résultat dans un TileMap pour la représentation visuelle
+- Scripts personnalisés pour ajouter la logique spécifique au jeu (spawners, boss, etc.)
 
 ## 5. Points à Développer par la Suite
 
