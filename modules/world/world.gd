@@ -1,7 +1,8 @@
 extends Node2D
 
 @export var navigation_region_2d: NavigationRegion2D
-@export var gaea_generator: GaeaGenerator	
+@export var gaea_generator: GaeaGenerator
+@export var mob_spawner_scene: PackedScene
 
 func _ready() -> void:
 	# Attendre que la scène soit complètement chargée et que Gaea termine la génération
@@ -36,10 +37,47 @@ func _ready() -> void:
 	print_debug("Maillage de navigation généré avec succès !")
 	print_debug("Taille de la map : ", world_size)
 	
+	# Spawner les mobs sur la carte
+	spawn_mobs()
 	# Afficher les positions des entités pour débogage
-	var player = $"../PlayerRigidBody2D"
-	var mob = $"../MobRigidBody2D"
-	if player and mob:
+	var player = $"../Player"
+	if player:
 		print_debug("Position du joueur: ", player.global_position)
-		print_debug("Position du mob: ", mob.global_position)
-		print_debug("Distance: ", player.global_position.distance_to(mob.global_position))
+
+# Retourne la taille du monde en unités de monde
+func get_world_size() -> Vector2:
+	# Conversion de Vector3i à Vector2
+	var size_3d = gaea_generator.world_size
+	return Vector2(size_3d.x, size_3d.y)
+
+# Retourne la taille d'une tuile en pixels
+func get_tile_size() -> float:
+	# Récupérer la taille des tuiles depuis le TileMapLayer
+	var tile_map_layer = find_child("TileMapLayer")
+	if tile_map_layer and tile_map_layer.tile_set:
+		return tile_map_layer.tile_set.tile_size.x  # Généralement carré, donc x == y
+	
+	# Fallback à la valeur par défaut si on ne trouve pas
+	push_error("Taille des tuiles non trouvée!")
+	return 16.0
+
+# Fonction pour spawner les mobs sur la carte
+func spawn_mobs() -> void:
+	# Instancier le mob spawner
+	if not mob_spawner_scene:
+		push_error("Mob spawner scene n'est pas défini!")
+		return
+	
+	var mob_spawner = mob_spawner_scene.instantiate()
+	if not mob_spawner:
+		push_error("Échec de l'instanciation du mob spawner!")
+		return
+	
+	# Ajouter le spawner à l'arbre de scène
+	add_child(mob_spawner)
+	
+	# Configurer le spawner
+	mob_spawner.setup(self, navigation_region_2d)
+	
+	# Lancer le spawning des mobs
+	mob_spawner.spawn_mobs()
