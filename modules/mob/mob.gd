@@ -25,6 +25,9 @@ var attribute_map: GameplayAttributeMap
 var ability_container: AbilityContainer
 
 func _ready() -> void:
+	# Ajouter ce mob au groupe "mob" pour faciliter la détection
+	add_to_group("mob")
+	
 	setup_gameplay_systems()
 	initialize_navigation_agent()
 	

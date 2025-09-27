@@ -126,9 +126,17 @@ func handle_attack_range_behavior() -> void:
 	
 	# Try to perform attack
 	if ability_container and not ability_container.has_tag("dead"):
-		if ability_container.has_tag("attack_ready") and ability_container.has_tag("can_attack"):
-			print_debug("Player trying to attack!")
+		# Vérifier les tags avant d'attaquer
+		var has_attack_ready = ability_container.has_tag("attack_ready")
+		var has_can_attack = ability_container.has_tag("can_attack")
+		
+		print_debug("Vérification des tags d'attaque - attack_ready: %s, can_attack: %s" % [has_attack_ready, has_can_attack])
+		
+		if has_attack_ready and has_can_attack:
+			print_debug("Player trying to attack mob: %s!" % target_mob.name)
 			ability_container.activate_many()
+		else:
+			print_debug("Player ne peut pas attaquer: tags manquants")
 
 # Stop the player's movement
 func stop_movement() -> void:
@@ -158,20 +166,29 @@ func find_closest_mob() -> void:
 	var main_node = get_parent()
 	var closest_distance = target_detection_range
 	
+	print_debug("Recherche d'une cible mob...")
+	var found_nodes = 0
+	
 	for node in main_node.get_children():
 		if is_valid_mob_target(node):
+			found_nodes += 1
+			print_debug("Mob valide trouvé: %s" % node.name)
 			var distance = global_position.distance_to(node.global_position)
+			print_debug("Distance au mob: %.1f (max: %.1f)" % [distance, closest_distance])
 			if distance < closest_distance:
 				closest_distance = distance
 				target_mob = node
 	
 	if target_mob:
+		print_debug("Cible trouvée: %s à distance %.1f" % [target_mob.name, closest_distance])
 		navigation_agent_2d.target_position = target_mob.global_position
+	else:
+		print_debug("Aucune cible mob trouvée après avoir vérifié %d nœuds" % found_nodes)
 
 # Check if a node is a valid mob target
 func is_valid_mob_target(node: Node) -> bool:
-	# Vérifier si c'est un mob et pas nous-même
-	if node.name.contains("Mob") and node != self:
+	# Vérifier si c'est un mob (appartenant au groupe "mob") et pas nous-même
+	if node.is_in_group("mob") and node != self:
 		# Vérifier si le mob n'est pas mort
 		if node.has_node("AbilityContainer"):
 			var mob_ability_container = node.get_node("AbilityContainer")

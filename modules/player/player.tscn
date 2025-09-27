@@ -55,7 +55,7 @@ script = ExtResource("3_m7q0d")
 attribute_name = "attack"
 minimum_value = 0.0
 maximum_value = 100.0
-current_value = 15.0
+current_value = 50.0
 
 [sub_resource type="Resource" id="Resource_5opsm"]
 script = ExtResource("3_m7q0d")
