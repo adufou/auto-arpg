@@ -166,6 +166,10 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 			modulate = Color(0.0, 0.0, 0.5, 0.5)
 			freeze = true
 			
+			# Disable collision so player can pass through
+			set_collision_layer(0)
+			set_collision_mask(0)
+			
 			var death_timer = Timer.new()
 			death_timer.wait_time = 1.5
 			death_timer.one_shot = true
