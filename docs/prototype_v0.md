@@ -155,6 +155,16 @@ Pour ce prototype, nous utiliserons les addons suivants :
 - **Utilisation** : Création de maps procédurales via système de graphes
 - **Source** : https://github.com/gaea-godot/gaea
 
+### 3.6 GodotProfiler
+- **Justification** : Outil de profilage essentiel pour optimiser les performances du jeu automatique
+- **Utilisation** : Suivi des performances et identification des goulets d'étranglement
+- **Source** : https://github.com/deepnight/godotprofiler
+
+### 3.7 Système de sauvegarde intégré à Godot
+- **Justification** : Solution native de sauvegarde intégrée au moteur
+- **Utilisation** : Sauvegarde de la progression du joueur, des statistiques et des configurations
+- **Source** : https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html
+
 ## 4. Implémentation Technique
 
 ### 4.1 Système de Statistiques avec Gameplay Attributes

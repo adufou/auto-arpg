@@ -47,17 +47,12 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 ## Sauvegarde et Gestion de Données
 
-### 1. [Godot SQLite](https://github.com/2shady4u/godot-sqlite) - EN CONSIDÉRATION
-- **Description** : Intégration de SQLite dans Godot.
-- **Fonctionnalités** : Base de données relationnelle pour stocker les données du jeu.
-- **Avantages** : Robuste, performant pour les données structurées.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Excellent pour la gestion des données complexes)
-
-### 2. [Simple Serial Saver](https://github.com/dbp8890/godot-simple-serial-saver) - EN CONSIDÉRATION
-- **Description** : Système de sauvegarde par sérialisation.
-- **Fonctionnalités** : Sauvegarde et chargement faciles des données de jeu.
-- **Avantages** : Simple à utiliser, polyvalent.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Bonne solution de sauvegarde)
+### 1. [Système de sauvegarde intégré à Godot](https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html) - ADOPTÉ ✓
+- **Description** : Système natif de sérialisation et sauvegarde de Godot.
+- **Fonctionnalités** : Conversion en dictionnaires, sauvegarde JSON ou binaire, chargement facilité.
+- **Avantages** : Intégré au moteur, pas besoin d'addon externe, simplicité d'utilisation.
+- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Solution native parfaitement adaptée au prototype)
+- **Utilisation dans notre projet** : Sauvegarde de la progression du joueur, des statistiques et configurations
 
 ## Statistiques et Progression
 
@@ -89,17 +84,19 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 ## Addons de Performance
 
-### 1. [GodotProfiler](https://github.com/deepnight/godotprofiler) - EN CONSIDÉRATION
+### 1. [GodotProfiler](https://github.com/deepnight/godotprofiler) - ADOPTÉ ✓
 - **Description** : Outil de profilage pour optimiser les performances.
 - **Fonctionnalités** : Suivi des performances, détection des goulets d'étranglement.
 - **Avantages** : Aide à optimiser le jeu pour des sessions longues.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Important pour un jeu idle/automatique)
+- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Essentiel pour un jeu idle/automatique)
+- **Utilisation dans notre projet** : Optimisation des performances, identification des goulets d'étranglement
 
-### 2. [Object Pooling](https://github.com/godotengine/godot-demo-projects/tree/master/misc/object_pool) - EN CONSIDÉRATION
+### 2. [Object Pooling](https://github.com/godotengine/godot-demo-projects/tree/master/misc/object_pool) - REPORTÉ
 - **Description** : Système de pooling d'objets pour optimiser les performances.
 - **Fonctionnalités** : Réutilisation d'objets au lieu de création/destruction.
 - **Avantages** : Réduit la charge du ramasse-miettes, améliore les performances.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Utile pour la gestion des ennemis et projectiles)
+- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Potentiellement utile pour les versions futures)
+- **Note** : Mis de côté pour la version prototype, à reconsidérer pour les versions ultérieures
 
 ## Addons Sélectionnés
 
@@ -133,6 +130,16 @@ Après évaluation, nous avons choisi les addons suivants pour le développement
   - Création d'arbres de décision modulaires et réutilisables
   - Gestion des états du personnage (combat, exploration, évitement, récupération)
   - Partage d'informations entre agents via le système de blackboard
+
+### 6. [GodotProfiler](https://github.com/deepnight/godotprofiler) - ADOPTÉ ✓
+- **Description** : Outil de profilage pour optimiser les performances
+- **Fonctionnalités** : Suivi des performances, détection des goulets d'étranglement
+- **Utilisation dans notre projet** : Optimisation des performances pour les sessions de jeu automatiques prolongées
+
+### 7. [Système de sauvegarde intégré à Godot](https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html) - ADOPTÉ ✓
+- **Description** : Système natif de sérialisation et sauvegarde de Godot
+- **Fonctionnalités** : Conversion en dictionnaires, sauvegarde JSON ou binaire
+- **Utilisation dans notre projet** : Sauvegarde de la progression du joueur, des statistiques et configurations
 
 Ces addons couvrent les fonctionnalités essentielles pour notre prototype et permettront un développement efficace des mécaniques d'un ARPG automatisé.
 
