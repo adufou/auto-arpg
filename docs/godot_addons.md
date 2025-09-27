@@ -45,20 +45,6 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 - **Avantages** : Performant et déjà inclus dans Godot.
 - **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Essentiel pour le déplacement automatique)
 
-## Interface Utilisateur
-
-### 1. [Advanced UI Controls](https://github.com/godotengine/godot-demo-projects/tree/master/gui) - EN CONSIDÉRATION
-- **Description** : Collection de contrôles UI avancés.
-- **Fonctionnalités** : Tableaux, listes déroulantes, onglets avancés.
-- **Avantages** : Améliore les possibilités d'interface.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Utile pour l'interface de configuration)
-
-### 2. [Godot UI Design Tool](https://github.com/imjp94/gd-plug) - EN CONSIDÉRATION
-- **Description** : Outils pour simplifier la création d'interfaces.
-- **Fonctionnalités** : Modèles, thèmes, composants réutilisables.
-- **Avantages** : Accélère le développement UI.
-- **Utilité pour notre projet** : ⭐⭐⭐ (Aide pour la création d'interfaces)
-
 ## Sauvegarde et Gestion de Données
 
 ### 1. [Godot SQLite](https://github.com/2shady4u/godot-sqlite) - EN CONSIDÉRATION
