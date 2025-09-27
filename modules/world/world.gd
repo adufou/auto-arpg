@@ -13,6 +13,11 @@ func _ready() -> void:
 	
 	# Obtenir la référence à la région de navigation
 	var nav_region = navigation_region_2d
+	if not nav_region:
+		push_error("Aucune région de navigation trouvée!")
+		return
+	
+	print_debug("Initialisation du système de navigation...")
 	
 	# Créer un nouveau polygon de navigation
 	var nav_poly = NavigationPolygon.new()
@@ -34,11 +39,22 @@ func _ready() -> void:
 	# Appliquer le polygon à la région de navigation
 	nav_region.navigation_polygon = nav_poly
 	
+	# S'assurer que la navigation map est mise à jour
+	var nav_map = nav_region.get_navigation_map()
+	if nav_map:
+		# Forcer une mise à jour immédiate de la carte de navigation
+		NavigationServer2D.map_force_update(nav_map)
+	
+	# Attendre quelques frames supplémentaires pour s'assurer que la carte de navigation est prête
+	for i in range(3):
+		await get_tree().process_frame
+	
 	print_debug("Maillage de navigation généré avec succès !")
 	print_debug("Taille de la map : ", world_size)
 	
 	# Spawner les mobs sur la carte
 	spawn_mobs()
+	
 	# Afficher les positions des entités pour débogage
 	var player = $"../Player"
 	if player:
@@ -57,12 +73,28 @@ func get_tile_size() -> float:
 	if tile_map_layer and tile_map_layer.tile_set:
 		return tile_map_layer.tile_set.tile_size.x  # Généralement carré, donc x == y
 	
-	# Fallback à la valeur par défaut si on ne trouve pas
 	push_error("Taille des tuiles non trouvée!")
 	return 16.0
 
 # Fonction pour spawner les mobs sur la carte
 func spawn_mobs() -> void:
+	# Vérifier que la région de navigation est prête
+	if not navigation_region_2d:
+		push_error("Aucune région de navigation disponible pour le spawning des mobs!")
+		return
+	
+	var nav_map = navigation_region_2d.get_navigation_map()
+	if not nav_map:
+		push_error("La carte de navigation n'est pas disponible pour le spawning des mobs!")
+		return
+	
+	# Vérifier l'ID d'itération de la carte
+	var iteration_id = NavigationServer2D.map_get_iteration_id(nav_map)
+	print_debug("Préparation au spawning des mobs avec iteration_id: ", iteration_id)
+	
+	# Attendre que la carte de navigation est prête
+	await get_tree().create_timer(0.1).timeout
+	
 	# Instancier le mob spawner
 	if not mob_spawner_scene:
 		push_error("Mob spawner scene n'est pas défini!")
@@ -70,7 +102,7 @@ func spawn_mobs() -> void:
 	
 	var mob_spawner = mob_spawner_scene.instantiate()
 	if not mob_spawner:
-		push_error("Échec de l'instanciation du mob spawner!")
+		push_error("\u00c9chec de l'instanciation du mob spawner!")
 		return
 	
 	# Ajouter le spawner à l'arbre de scène

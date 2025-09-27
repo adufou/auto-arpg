@@ -222,9 +222,22 @@ func is_position_navigable(pos: Vector2) -> bool:
 	
 	# Obtenir la carte de navigation
 	var nav_map = navigation_region.get_navigation_map()
+	if not nav_map:
+		push_error("Impossible d'obtenir la carte de navigation!")
+		return false
 	
+	# Vérifier que la carte de navigation est prête
+	var iteration_id = NavigationServer2D.map_get_iteration_id(nav_map)
+	if iteration_id <= 0:
+		push_warning("La carte de navigation n'est pas encore initialisée (iteration_id = ", iteration_id, ")")
+		return false
+		
 	# Utiliser NavigationServer2D pour trouver le point le plus proche sur la navigation mesh
-	var closest_point = NavigationServer2D.map_get_closest_point(nav_map, pos)
+	var closest_point = Vector2.ZERO
+	
+	# GDScript ne supporte pas try/except, donc nous allons simplement utiliser la méthode
+	# sans bloc d'exception et gérer les erreurs avec push_error si nécessaire
+	closest_point = NavigationServer2D.map_get_closest_point(nav_map, pos)
 	
 	# Si le point le plus proche est suffisamment proche de notre point original,
 	# c'est probablement un point navigable
@@ -324,32 +337,66 @@ func setup(world: Node2D, nav_region: NavigationRegion2D) -> void:
 func wait_for_navigation_map_ready() -> void:
 	print_debug("Attente de la synchronisation de la carte de navigation...")
 	
-	# Nous allons attendre plusieurs frames pour s'assurer que 
-	# la carte de navigation est entièrement synchronisée
+	# Vérifier que nous avons une région de navigation valide
+	if not navigation_region:
+		push_error("Navigation region n'est pas définie!")
+		return
+		
+	# Obtenir la carte de navigation
+	var nav_map = navigation_region.get_navigation_map()
+	if not nav_map:
+		push_error("Impossible d'obtenir la carte de navigation!")
+		return
+		
+	# Pour mémoriser l'ID d'itération initial
+	var start_iteration_id = NavigationServer2D.map_get_iteration_id(nav_map)
+	print_debug("ID d'itération initial: ", start_iteration_id)
 	
-	# On se connecte au signal map_changed qui est émis quand la navigation map est mise à jour
-	var connection_done = false
-	var signal_name = "map_changed"
+	# Créer une fonction qui vérifie si la map est prête
+	var is_map_ready = func() -> bool:
+		var current_iteration_id = NavigationServer2D.map_get_iteration_id(nav_map)
+		# Si l'ID d'itération a changé, c'est que la map a été mise à jour
+		return current_iteration_id > start_iteration_id
 	
-	# Vérifions d'abord si le NavigationServer2D a ce signal
-	if NavigationServer2D.has_signal(signal_name):
-		var callable = Callable(self, "_on_navigation_map_changed")
-		if not NavigationServer2D.is_connected(signal_name, callable):
-			NavigationServer2D.connect(signal_name, callable)
-			connection_done = true
+	# Se connecter au signal map_changed
+	var map_changed_signal = "map_changed"
+	var callable = Callable(self, "_on_navigation_map_changed")
+	var connected = false
 	
-	# En attendant, donnons du temps à la navigation map pour se synchroniser
-	# Attendre plusieurs frames est une approche simple mais efficace
-	for i in range(5):
+	if NavigationServer2D.has_signal(map_changed_signal):
+		if not NavigationServer2D.is_connected(map_changed_signal, callable):
+			NavigationServer2D.connect(map_changed_signal, callable)
+			connected = true
+			print_debug("Connecté au signal map_changed")
+	
+	# Attendre que la carte soit prête (max 20 frames pour éviter une attente infinie)
+	var frames_waited = 0
+	var max_frames = 20
+	
+	while frames_waited < max_frames:
+		# Forcer une mise à jour de la navigation
+		NavigationServer2D.map_force_update(nav_map)
+		
+		# Attendre la prochaine frame
 		await get_tree().process_frame
+		frames_waited += 1
+		
+		# Vérifier si la map est prête
+		if is_map_ready.call():
+			print_debug("Carte de navigation prête après ", frames_waited, " frames")
+			break
 	
-	# Déconnecter le signal si nous l'avons connecté
-	if connection_done:
-		var callable = Callable(self, "_on_navigation_map_changed")
-		if NavigationServer2D.is_connected(signal_name, callable):
-			NavigationServer2D.disconnect(signal_name, callable)
+	# Si on a atteint le max de frames, on affiche un avertissement
+	if frames_waited >= max_frames:
+		push_warning("La carte de navigation n'est peut-être pas complètement synchronisée après ", frames_waited, " frames")
+	
+	# Déconnecter le signal si on l'a connecté
+	if connected:
+		if NavigationServer2D.is_connected(map_changed_signal, callable):
+			NavigationServer2D.disconnect(map_changed_signal, callable)
+			print_debug("Déconnecté du signal map_changed")
 			
-	print_debug("Carte de navigation synchronisée!")
+	print_debug("Carte de navigation synchronisée! ID d'itération final: ", NavigationServer2D.map_get_iteration_id(nav_map))
 
 # Fonction appelée quand la carte de navigation change
 # Le signal map_changed transmet le RID de la carte qui a changé
