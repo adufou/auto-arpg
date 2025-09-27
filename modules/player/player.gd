@@ -104,7 +104,6 @@ func ensure_target_exists() -> void:
 		# Si aucune cible n'est trouvée, arrêter le mouvement
 		if target_mob == null:
 			stop_movement()
-			print_debug("Aucune cible trouvée, le joueur s'arrête")
 
 # Update navigation agent with target position
 func set_navigation_target() -> void:
