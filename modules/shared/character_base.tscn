@@ -1,0 +1,80 @@
+[gd_scene load_steps=14 format=3 uid="uid://brpchscvx718h"]
+
+[ext_resource type="Script" uid="uid://vbhqxfae40xq" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/gameplay_attribute_map.gd" id="1_uj5r6"]
+[ext_resource type="Script" uid="uid://b4ffyyla852rm" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/ability_container.gd" id="2_cbnem"]
+[ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="2_ggl11"]
+[ext_resource type="Resource" path="res://modules/shared/resources/character_attributes.tres" id="3_5tl5s"]
+
+[sub_resource type="Resource" id="Resource_kxsje"]
+script = ExtResource("2_ggl11")
+attribute_name = "strength"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_8k6m2"]
+script = ExtResource("2_ggl11")
+attribute_name = "dexterity"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_rydr8"]
+script = ExtResource("2_ggl11")
+attribute_name = "intelligence"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_pb6tw"]
+script = ExtResource("2_ggl11")
+attribute_name = "health"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_pdxlr"]
+script = ExtResource("2_ggl11")
+attribute_name = "mana"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_1ofww"]
+script = ExtResource("2_ggl11")
+attribute_name = "movement_speed"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_cabvr"]
+script = ExtResource("2_ggl11")
+attribute_name = "attack"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_7bvkv"]
+script = ExtResource("2_ggl11")
+attribute_name = "crit_chance"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_1pi0t"]
+script = ExtResource("2_ggl11")
+attribute_name = "defense"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[node name="CharacterBase" type="RigidBody2D"]
+
+[node name="GameplayAttributeMap" type="Node" parent="."]
+script = ExtResource("1_uj5r6")
+owning_character = NodePath("..")
+attributes = Array[ExtResource("2_ggl11")]([SubResource("Resource_kxsje"), SubResource("Resource_8k6m2"), SubResource("Resource_rydr8"), SubResource("Resource_pb6tw"), SubResource("Resource_pdxlr"), SubResource("Resource_1ofww"), SubResource("Resource_cabvr"), SubResource("Resource_7bvkv"), SubResource("Resource_1pi0t")])
+table = ExtResource("3_5tl5s")
+
+[node name="AbilityContainer" type="Node" parent="."]
+script = ExtResource("2_cbnem")

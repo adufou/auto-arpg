@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BasicAttack" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://modules/shared/abilities/basic_attack.gd" id="1_ujfyf"]
+
+[resource]
+script = ExtResource("1_ujfyf")
+attack_cooldown = 1.5
+attack_damage_multiplier = 0.8
+attack_crit_multiplier = 1.5
+attack_range = 40.0
+target_group = "player"
+cooldown_duration = 1.5
+name = "Mob Attack"
+can_be_granted = true
+can_be_revoked = true
+description = "A basic mob attack"
+icon = null

@@ -1,0 +1,97 @@
+[gd_scene load_steps=16 format=3 uid="uid://bftqx2ftpjdiy"]
+
+[ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/shared/character_base.tscn" id="1_167sc"]
+[ext_resource type="Script" uid="uid://cacixg2e6fl6u" path="res://modules/player/player.gd" id="2_pnc3n"]
+[ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_m7q0d"]
+[ext_resource type="Script" uid="uid://cl2udnbyvytci" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="4_ue0ku"]
+[ext_resource type="Resource" path="res://modules/shared/abilities/instances/player_attack.tres" id="5_hd5yx"]
+
+[sub_resource type="Resource" id="Resource_55gox"]
+script = ExtResource("3_m7q0d")
+attribute_name = "strength"
+minimum_value = 0.0
+maximum_value = 100.0
+current_value = 10.0
+
+[sub_resource type="Resource" id="Resource_ue0ku"]
+script = ExtResource("3_m7q0d")
+attribute_name = "dexterity"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_hd5yx"]
+script = ExtResource("3_m7q0d")
+attribute_name = "intelligence"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_5rkg0"]
+script = ExtResource("3_m7q0d")
+attribute_name = "health"
+minimum_value = 0.0
+maximum_value = 100.0
+current_value = 100.0
+
+[sub_resource type="Resource" id="Resource_ej5i3"]
+script = ExtResource("3_m7q0d")
+attribute_name = "mana"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_dhhsu"]
+script = ExtResource("3_m7q0d")
+attribute_name = "movement_speed"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_0rblh"]
+script = ExtResource("3_m7q0d")
+attribute_name = "attack"
+minimum_value = 0.0
+maximum_value = 100.0
+current_value = 15.0
+
+[sub_resource type="Resource" id="Resource_5opsm"]
+script = ExtResource("3_m7q0d")
+attribute_name = "crit_chance"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_hwro8"]
+script = ExtResource("3_m7q0d")
+attribute_name = "defense"
+minimum_value = 0.0
+maximum_value = 100.0
+current_value = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gvkwe"]
+
+[node name="Player" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_167sc")]
+script = ExtResource("2_pnc3n")
+navigation_agent_2d = NodePath("NavigationAgent2D")
+
+[node name="GameplayAttributeMap" parent="." index="0"]
+attributes = Array[ExtResource("3_m7q0d")]([SubResource("Resource_55gox"), SubResource("Resource_ue0ku"), SubResource("Resource_hd5yx"), SubResource("Resource_5rkg0"), SubResource("Resource_ej5i3"), SubResource("Resource_dhhsu"), SubResource("Resource_0rblh"), SubResource("Resource_5opsm"), SubResource("Resource_hwro8")])
+
+[node name="AbilityContainer" parent="." index="1"]
+gameplay_attribute_map_path = NodePath("../GameplayAttributeMap")
+abilities = Array[ExtResource("4_ue0ku")]([ExtResource("5_hd5yx")])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
+shape = SubResource("CircleShape2D_gvkwe")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="3"]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+path_postprocessing = 1
+avoidance_enabled = true
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(0, 0.758, 0.882, 1)
+
+[node name="Camera2D" type="Camera2D" parent="." index="4"]

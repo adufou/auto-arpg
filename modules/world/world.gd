@@ -33,13 +33,13 @@ func _ready() -> void:
 	# Appliquer le polygon à la région de navigation
 	nav_region.navigation_polygon = nav_poly
 	
-	print("Maillage de navigation généré avec succès !")
-	print("Taille de la map : ", world_size)
+	print_debug("Maillage de navigation généré avec succès !")
+	print_debug("Taille de la map : ", world_size)
 	
 	# Afficher les positions des entités pour débogage
 	var player = $"../PlayerRigidBody2D"
 	var mob = $"../MobRigidBody2D"
 	if player and mob:
-		print("Position du joueur: ", player.global_position)
-		print("Position du mob: ", mob.global_position)
-		print("Distance: ", player.global_position.distance_to(mob.global_position))
+		print_debug("Position du joueur: ", player.global_position)
+		print_debug("Position du mob: ", mob.global_position)
+		print_debug("Distance: ", player.global_position.distance_to(mob.global_position))
