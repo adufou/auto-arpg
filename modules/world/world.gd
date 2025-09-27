@@ -35,6 +35,8 @@ func _ready() -> void:
 	if nav_map:
 		NavigationServer2D.map_force_update(nav_map)
 	
+	create_map_boundaries(Vector2(world_size.x, world_size.y))
+	
 	for i in range(3):
 		await get_tree().process_frame
 	
@@ -52,6 +54,25 @@ func get_tile_size() -> float:
 	push_error("Taille des tuiles non trouvée!")
 	return 16.0
 
+func create_map_boundaries(world_size: Vector2) -> void:
+	var border_thickness: float = 32.0
+	
+	create_boundary(Vector2(world_size.x/2, -border_thickness/2), Vector2(world_size.x, border_thickness))
+	create_boundary(Vector2(world_size.x/2, world_size.y + border_thickness/2), Vector2(world_size.x, border_thickness))
+	create_boundary(Vector2(-border_thickness/2, world_size.y/2), Vector2(border_thickness, world_size.y))
+	create_boundary(Vector2(world_size.x + border_thickness/2, world_size.y/2), Vector2(border_thickness, world_size.y))
+
+func create_boundary(pos: Vector2, size: Vector2) -> void:
+	var static_body = StaticBody2D.new()
+	static_body.position = pos
+	
+	var collision_shape = CollisionShape2D.new()
+	var rectangle_shape = RectangleShape2D.new()
+	rectangle_shape.size = size
+	collision_shape.shape = rectangle_shape
+	
+	static_body.add_child(collision_shape)
+	add_child(static_body)
 func spawn_mobs() -> void:
 	if not navigation_region_2d:
 		push_error("Aucune région de navigation disponible pour le spawning des mobs!")
@@ -70,11 +91,10 @@ func spawn_mobs() -> void:
 	
 	var mob_spawner = mob_spawner_scene.instantiate()
 	if not mob_spawner:
-		push_error("\u00c9chec de l'instanciation du mob spawner!")
+		push_error("Échec de l'instanciation du mob spawner!")
 		return
 	
 	add_child(mob_spawner)
 	
 	mob_spawner.setup(self, navigation_region_2d)
-	
 	mob_spawner.spawn_mobs()

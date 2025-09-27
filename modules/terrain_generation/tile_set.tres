@@ -1,6 +1,9 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://dd5ycdeimb7y8"]
+[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://dd5ycdeimb7y8"]
 
 [ext_resource type="Texture2D" uid="uid://c0gaphp537t3f" path="res://modules/terrain_generation/tileset_atlas_texture.tres" id="1_kfwk1"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m36ex"]
+friction = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_gncae"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -21,7 +24,10 @@ texture = ExtResource("1_kfwk1")
 1:0/0 = 0
 1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_wl675")
 2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [resource]
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_m36ex")
 navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_nq4aq")

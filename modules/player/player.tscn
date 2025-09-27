@@ -74,6 +74,15 @@ current_value = 5.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_gvkwe"]
 
 [node name="Player" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_167sc")]
+collision_layer = 1
+collision_mask = 1
+mass = 1.0
+physics_material_override = null
+gravity_scale = 1.0
+lock_rotation = false
+contact_monitor = false
+max_contacts_reported = 0
+linear_damp = 0.0
 script = ExtResource("2_pnc3n")
 navigation_agent_2d = NodePath("NavigationAgent2D")
 player_attack = ExtResource("5_hd5yx")

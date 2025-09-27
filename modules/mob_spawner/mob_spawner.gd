@@ -8,8 +8,8 @@ class_name MobSpawner
 @export var max_mob_packs: int = 7
 @export var min_mobs_per_pack: int = 2
 @export var max_mobs_per_pack: int = 5
-@export var pack_radius: float = 10.0  # Rayon maximal pour placer les mobs autour du centre du pack
-@export var min_pack_distance: float = 25.0  # Distance minimale entre les centres de packs
+@export var pack_radius: float = 10.0
+@export var min_pack_distance: float = 25.0
 
 var world_node: Node2D
 var navigation_region: NavigationRegion2D
@@ -47,7 +47,7 @@ func spawn_mobs() -> void:
 	var packs_created = 0
 	
 	while packs_created < num_packs and global_attempts < max_global_attempts:
-		if create_mob_pack():
+		if await create_mob_pack():
 			packs_created += 1
 		else:
 			global_attempts += 1
@@ -61,7 +61,7 @@ func create_mob_pack() -> bool:
 	
 	mob_packs.append(pack_position)
 	
-	spawn_mobs_in_pack(pack_position, mobs_count)
+	await spawn_mobs_in_pack(pack_position, mobs_count)
 	
 	return true
 
@@ -155,20 +155,33 @@ func is_position_navigable(pos: Vector2) -> bool:
 	if iteration_id <= 0:
 		push_warning("La carte de navigation n'est pas encore initialisée (iteration_id = ", iteration_id, ")")
 		return false
-		
-	var closest_point = Vector2.ZERO
-	closest_point = NavigationServer2D.map_get_closest_point(nav_map, pos)
+
+	var tile_size = 16.0
+	if world_node and world_node.has_method("get_tile_size"):
+		tile_size = world_node.get_tile_size()
 	
+	var world_pos = pos * tile_size
+	
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = world_pos
+	query.collision_mask = 1
+	
+	var result = space_state.intersect_point(query)
+	if not result.is_empty():
+		return false
+	
+	var closest_point = NavigationServer2D.map_get_closest_point(nav_map, pos)
 	var distance = pos.distance_to(closest_point)
 	
-	return distance < 5.0
+	return distance < 1.0
 
 func spawn_mobs_in_pack(center_position: Vector2, count: int) -> void:
 	var pack_area = 0.5 * PI * count
 	var optimal_radius = sqrt(pack_area / PI)
 	optimal_radius = clamp(optimal_radius, 20.0, pack_radius)
 	
-	var leader_mob = spawn_single_mob(center_position)
+	var leader_mob = await spawn_single_mob(center_position)
 	if not leader_mob:
 		return
 	
@@ -194,13 +207,17 @@ func spawn_mobs_in_pack(center_position: Vector2, count: int) -> void:
 			position_attempts += 1
 		
 		if position_attempts < max_position_attempts:
-			spawn_single_mob(potential_position)
+			await spawn_single_mob(potential_position)
 		else:
 			push_warning("Impossible de placer un mob dans le pack après ", max_position_attempts, " tentatives")
 
 func spawn_single_mob(spawn_position: Vector2) -> Node:
 	if not mob_scene:
 		push_error("Mob scene non définie!")
+		return null
+	
+	if not is_position_navigable(spawn_position):
+		push_warning("Tentative de spawn sur une position non navigable! Position: ", spawn_position)
 		return null
 	
 	var mob_instance = mob_scene.instantiate()
@@ -216,8 +233,22 @@ func spawn_single_mob(spawn_position: Vector2) -> Node:
 		
 	mob_instance.global_position = spawn_position * tile_size
 	
-	mobs_spawned.append(mob_instance)
+	await get_tree().process_frame
+	if not is_instance_valid(mob_instance):
+		return null
 	
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = mob_instance.global_position
+	query.collision_mask = 1
+	var result = space_state.intersect_point(query)
+	
+	if not result.is_empty():
+		push_warning("Mob placé dans un obstacle - suppression!")
+		mob_instance.queue_free()
+		return null
+	
+	mobs_spawned.append(mob_instance)
 	return mob_instance
 
 func setup(world: Node2D, nav_region: NavigationRegion2D) -> void:
