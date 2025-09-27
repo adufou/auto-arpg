@@ -52,10 +52,22 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 ## Intelligence Artificielle et Comportement
 
-### 1. [Godot Behavior Tree](https://github.com/godot-addons/godot-behavior-tree-plugin)
-- **Description** : Implémentation d'arbres de comportement pour IA.
-- **Fonctionnalités** : Création de comportements complexes et adaptatifs.
-- **Avantages** : Flexible, visuel, facile à déboguer.
+### 1. [LimboAI](https://github.com/limbonaut/limboai)
+- **Description** : Plugin C++ pour Godot 4 combinant arbres de comportement et machines à états hiérarchiques.
+- **Fonctionnalités** : 
+  - Éditeur d'arbre de comportement visuel intégré
+  - Débogueur visuel pour analyser l'exécution des arbres
+  - Système de blackboard avancé avec portages multiples
+  - Machines à états hiérarchiques (HSM) intégrées
+  - Suivi des performances et optimisations C++
+  - Documentation intégrée au moteur
+- **Avantages** : 
+  - Moderne et spécifiquement optimisé pour Godot 4.4
+  - Combinaison puissante d'arbres de comportement et machines à états
+  - Code C++ pour les performances avec interface complète en GDScript
+  - Soutien actif et mises à jour régulières
+  - Excellente documentation et exemples
+  - Possibilité de réutiliser des sous-arbres pour une modularité maximale
 - **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Crucial pour l'automatisation du personnage)
 
 ### 2. [AStar Pathfinding](https://docs.godotengine.org/en/stable/classes/class_astar.html)
@@ -170,10 +182,14 @@ Après évaluation, nous avons choisi les addons suivants pour le développement
 - **Fonctionnalités** : Système visuel de nœuds, générateurs multiples
 - **Utilisation dans notre projet** : Génération procédurale des maps
 
-### 5. [Godot Behavior Tree](https://github.com/godot-addons/godot-behavior-tree-plugin)
-- **Description** : Implémentation d'arbres de comportement pour IA
-- **Fonctionnalités** : Création de comportements complexes et adaptatifs
-- **Utilisation dans notre projet** : Automatisation du personnage et des ennemis
+### 5. [LimboAI](https://github.com/limbonaut/limboai)
+- **Description** : Plugin C++ pour Godot 4 combinant arbres de comportement et machines à états hiérarchiques
+- **Fonctionnalités** : Éditeur d'arbre intégré, débogueur visuel, système de blackboard avancé, machines à états hiérarchiques, compatibilité Godot 4.4
+- **Utilisation dans notre projet** : 
+  - Implémentation des comportements automatiques du joueur et des ennemis
+  - Création d'arbres de décision modulaires et réutilisables
+  - Gestion des états du personnage (combat, exploration, évitement, récupération)
+  - Partage d'informations entre agents via le système de blackboard
 
 Ces addons couvrent les fonctionnalités essentielles pour notre prototype et permettront un développement efficace des mécaniques d'un ARPG automatisé.
 
@@ -183,4 +199,4 @@ Certains systèmes spécifiques à notre jeu, comme la file d'attente des maps e
 
 ## Note sur la Compatibilité
 
-Il est important de vérifier la compatibilité de ces addons avec Godot 4.4, car certains peuvent avoir été développés pour des versions antérieures. Dans le cas où un addon n'est pas compatible, il pourrait être nécessaire de l'adapter ou de trouver une alternative.
+Parmi les addons sélectionnés, LimboAI est explicitement compatible avec Godot 4.4, ce qui en fait un excellent choix pour notre projet. Il est important de vérifier la compatibilité des autres addons avec Godot 4.4, car certains peuvent avoir été développés pour des versions antérieures. Dans le cas où un addon n'est pas compatible, il pourrait être nécessaire de l'adapter ou de trouver une alternative.

@@ -145,10 +145,10 @@ Pour ce prototype, nous utiliserons les addons suivants :
 - **Utilisation** : Définition des comportements automatiques d'attaque et de compétences
 - **Source** : https://github.com/OctoD/godot-gameplay-abilities
 
-### 3.4 Godot Behavior Tree
-- **Justification** : Essentiel pour implémenter l'IA du joueur et des mobs
-- **Utilisation** : Définir les comportements automatiques (déplacement, sélection de cibles)
-- **Source** : https://github.com/godot-addons/godot-behavior-tree-plugin
+### 3.4 LimboAI
+- **Justification** : Solution moderne et puissante pour implémenter l'IA du joueur et des mobs
+- **Utilisation** : Définir les comportements automatiques (déplacement, sélection de cibles) avec arbres de comportement et machines à états hiérarchiques
+- **Source** : https://github.com/limbonaut/limboai
 
 ### 3.5 Gaea
 - **Justification** : Addon de génération procédurale pour Godot 4
@@ -169,22 +169,54 @@ Implémentation des statistiques avec Godot Gameplay Attributes :
 - 3 points d'attributs à distribuer par niveau gagné
 - Système d'expérience intégré avec événements sur niveau supérieur
 
-### 4.2 Comportement Automatique avec Gameplay Abilities et Behavior Tree
+### 4.2 Comportement Automatique avec Gameplay Abilities et LimboAI
 
 **Comportement Automatique du Joueur :**
 
-Combiner Godot Gameplay Abilities et Behavior Tree :
-- Arbre de comportement pour la logique de haut niveau (déplacement, choix de cibles)
-  - Identification de la cible la plus proche
-  - Maintien d'une distance de sécurité optimale
-  - Rapprochement si trop loin, éloignement si trop proche
-  - Vérification de la ligne de mire
-- Abilities pour les actions spécifiques :
+Tirer parti des capacités avancées de LimboAI et les combiner avec Godot Gameplay Abilities :
+
+#### LimboAI pour la prise de décision
+
+- **Arbres de comportement (BT)** pour la logique de haut niveau :
+  - Identification de la cible la plus proche via le système de Blackboard
+  - Maintien d'une distance de sécurité optimale avec décorateurs de distance
+  - Rapprochement si trop loin, éloignement si trop proche via actions spécifiques
+  - Vérification de la ligne de mire avec conditions intégrées
+  - Utilisation de BTPlayer pour exécuter les arbres de comportement
+
+- **Machines à états hiérarchiques (HSM)** pour la gestion des états :
+  - État d'exploration (recherche d'ennemis)
+  - État de combat (engagement avec un ou plusieurs ennemis)
+  - État d'évitement (esquive des attaques ou zones dangereuses)
+  - État de récupération (régénération, consommation d'objets)
+  - Utilisation du noeud LimboHSM pour gérer les transitions entre états
+
+- **Système de Blackboard** pour le partage de données :
+  - Stockage des cibles actuelles et potentielles
+  - Partage d'informations entre plusieurs agents (joueur, alliés)
+  - Variables de configuration pour ajuster le comportement en temps réel
+
+#### Gameplay Abilities pour les actions spécifiques
+
+- **Abilities** pour les actions concrètes :
   - Ability d'attaque à distance avec cooldown
   - Abilities défensives déclenchées automatiquement selon conditions
-- Intégration entre les deux systèmes :
-  - Le Behavior Tree décide quand octroyer/révoquer les abilities
+  - Abilities de déplacement et d'évitement
+  - Abilities de support et consommation d'objets
+
+#### Intégration entre les deux systèmes
+
+- LimboAI pour la **décision** et Gameplay Abilities pour **l'exécution** :
+  - Les arbres de comportement et machines à états de LimboAI décident quand octroyer/révoquer les abilities
   - Les abilities utilisent les attributs pour les calculs de dégâts
+  - Communication bidirectionnelle : LimboAI peut réagir aux résultats des abilities
+
+#### Avantages de l'architecture LimboAI
+
+- **Modularité** : Création et réutilisation faciles de sous-comportements
+- **Débogage visuel** : Inspection des arbres de comportement en temps réel
+- **Performances optimisées** grâce à l'implémentation C++ avec interface GDScript
+- **Compatibilité Godot 4.x** garantie pour le développement futur
 
 ### 4.3 Génération Procédurale de Map
 
