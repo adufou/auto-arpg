@@ -5,7 +5,7 @@ class_name BasicAttack extends Ability
 @export var attack_cooldown: float = 1.0
 @export var attack_damage_multiplier: float = 1.0
 @export var attack_crit_multiplier: float = 2.0
-@export var attack_range: float = 60.0
+@export var attack_range: float = 48.0  # Adjusted to approximately 3 tiles (16px per tile)
 @export var target_group: String = ""  # Group to attack ("player" or "enemy")
 
 func _init() -> void:
@@ -40,30 +40,61 @@ func activate(event: ActivationEvent) -> void:
 func can_activate(event: ActivationEvent) -> bool:
 	# Checks if we have a valid target in range
 	if not event.character:
+		print_debug("No character provided to can_activate")
 		return false
-		
+	
+	# Use the player's existing target and distance check if available
+	if event.character.has_method("is_within_attack_range") and "target_mob" in event.character:
+		var player_target = event.character.target_mob
+		if player_target != null and is_instance_valid(player_target):
+			if event.character.is_within_attack_range():
+				print_debug("Using player's attack range check - target in range!")
+				return super.can_activate(event)
+			else:
+				print_debug("Player's attack range check says target out of range")
+				return false
+	
+	# Fall back to our own target finding if needed
 	var target = find_attack_target(event.character)
 	if not target:
+		print_debug("No valid target found by ability")
 		return false
 	
 	# Continue with parent checks (cooldown, tags, etc)
+	print_debug("Target found, checking parent conditions")
 	return super.can_activate(event)
 
 # Find a valid attack target
 func find_attack_target(character: Node) -> Node:
 	# Get nodes in the target group
 	print_debug("Looking for target in group: %s" % target_group)
+	
+	# Special case: if character has a target_mob property, use it directly
+	if character.has_method("is_within_attack_range") and "target_mob" in character:
+		# If the character uses its own targeting system (like Player), reuse that target
+		var target = character.target_mob
+		if target != null and is_instance_valid(target):
+			# Verify the target is valid and within range
+			if character.is_within_attack_range():
+				# Use the player's already-calculated distance here
+				var distance = character.global_position.distance_to(target.global_position)
+				print_debug("Using player's target: %s at distance %.1f" % [target.name, distance])
+				return target
+	
+	# If we get here, either character doesn't have a target_mob, or it's invalid,
+	# or it's out of range, so we need to find a target
 	var potential_targets = []
+	
+	# Find all possible targets first, sorting by distance
+	var all_targets = []
 	for node in character.get_parent().get_children():
 		var is_target = false
 		
 		# Check if this is a valid target based on group
 		if target_group == "player" and node.name.contains("Player"):
 			is_target = true
-			print_debug("Found player target: %s" % node.name)
 		elif target_group == "mob" and node.name.contains("Mob"):
 			is_target = true
-			print_debug("Found mob target: %s" % node.name)
 		
 		# Vérifier si la cible n'est pas morte et est différente du personnage actuel
 		if is_target and node != character:
@@ -72,16 +103,27 @@ func find_attack_target(character: Node) -> Node:
 			if node.has_node("AbilityContainer"):
 				var target_ability_container = node.get_node("AbilityContainer")
 				if target_ability_container.has_tag("dead"):
-					print_debug("%s is dead, ignoring as target" % node.name)
 					is_dead = true
 			
 			# Ne poursuivre que si la cible n'est pas morte
 			if not is_dead:
 				var distance = character.global_position.distance_to(node.global_position)
-				print_debug("Distance to %s: %.1f (max: %.1f)" % [node.name, distance, attack_range])
-				if distance <= attack_range:
-					print_debug("Target %s is in range!" % node.name)
-					potential_targets.append(node)
+				all_targets.append({"node": node, "distance": distance})
+
+	# Sort targets by distance (closest first)
+	all_targets.sort_custom(func(a, b): return a["distance"] < b["distance"])
+	
+	# Find in-range targets
+	for target_data in all_targets:
+		var node = target_data["node"]
+		var distance = target_data["distance"]
+		
+		# Only print debug info for the closest target
+		if target_data == all_targets[0]:
+			print_debug("Closest target %s at distance: %.1f (max: %.1f)" % [node.name, distance, attack_range])
+		
+		if distance <= attack_range:
+			potential_targets.append(node)
 	
 	# Return closest target if any
 	if potential_targets.size() > 0:

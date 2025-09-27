@@ -5,7 +5,7 @@ extends RigidBody2D
 @export var floating_damage_scene: PackedScene
 @export var movement_speed: float = 100.0
 @export var target_detection_range: float = 500.0
-@export var attack_range: float = 50.0  # Distance when we're "close enough"
+@export var attack_range: float = 48.0  # Adjusted to approximately 3 tiles (16px per tile)
 @export var force_multiplier: float = 20.0  # For movement responsiveness
 @export var mob_detection_interval: float = 0.5  # How often to search for mobs (in seconds)
 
@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 	# Find mobs within attack range first (this is cheap, so we do it every frame)
 	find_mobs_in_attack_range()
 	
-	# If we have mobs in attack range, target the closest one
+	# If we have mobs in attack range, target the closest one and attack
 	if not mobs_in_attack_range.is_empty():
 		target_closest_mob_in_range()
 		handle_attack_range_behavior()
@@ -68,6 +68,13 @@ func _physics_process(delta: float) -> void:
 	if target_mob == null:
 		return
 		
+	# Check if the current target is valid
+	if !is_valid_mob_target(target_mob):
+		# Find a new target if the current one is invalid
+		find_closest_mob()
+		if target_mob == null:
+			return
+	
 	# Set navigation target and move toward it
 	set_navigation_target()
 	move_toward_target()
@@ -154,13 +161,11 @@ func handle_attack_range_behavior() -> void:
 		var has_attack_ready = ability_container.has_tag("attack_ready")
 		var has_can_attack = ability_container.has_tag("can_attack")
 		
-		print_debug("Vérification des tags d'attaque - attack_ready: %s, can_attack: %s" % [has_attack_ready, has_can_attack])
-		
 		if has_attack_ready and has_can_attack:
-			print_debug("Player trying to attack mob: %s!" % target_mob.name)
 			ability_container.activate_many()
-		else:
-			print_debug("Player ne peut pas attaquer: tags manquants")
+		# Only log if debugging tags is needed
+		# else:
+		#	print_debug("Player ne peut pas attaquer: tags manquants")
 
 # Stop the player's movement
 func stop_movement() -> void:
@@ -226,7 +231,7 @@ func find_closest_mob() -> void:
 		target_mob = null
 		return
 	
-	var closest_distance = target_detection_range
+	var closest_distance = INF  # Use infinity instead of detection range to find absolute closest
 	target_mob = null
 	
 	for mob in detected_mobs:
@@ -237,6 +242,8 @@ func find_closest_mob() -> void:
 	
 	if target_mob:
 		# Set the navigation target immediately
+		# Only log the selected target (reduced verbosity)
+		print_debug("Selected target: %s at distance: %.2f" % [target_mob.name, closest_distance])
 		navigation_agent_2d.target_position = target_mob.global_position
 
 # Target the closest mob in attack range
@@ -244,7 +251,7 @@ func target_closest_mob_in_range() -> void:
 	if mobs_in_attack_range.is_empty():
 		return
 	
-	var closest_distance = attack_range
+	var closest_distance = INF  # Use infinity to find absolute closest
 	var closest_mob = null
 	
 	for mob in mobs_in_attack_range:
@@ -254,6 +261,7 @@ func target_closest_mob_in_range() -> void:
 			closest_mob = mob
 	
 	if closest_mob:
+		print_debug("Attacking mob: %s at distance %.2f" % [closest_mob.name, closest_distance])
 		target_mob = closest_mob
 
 # Check if a mob is a valid target (not dead)
