@@ -193,9 +193,18 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 			# Mob is dead
 			ability_container.add_tag("dead")
 			print_debug("Mob died!")
+			
 			# Traitement visuel pour la mort
 			modulate = Color(0.0, 0.0, 0.5, 0.5) # Bleu semi-transparent
 			freeze = true # Arrêter la physique
+			
+			# Supprimer le mob après un court délai (pour montrer l'effet visuel)
+			var death_timer = Timer.new()
+			death_timer.wait_time = 1.5
+			death_timer.one_shot = true
+			death_timer.timeout.connect(func(): queue_free())
+			add_child(death_timer)
+			death_timer.start()
 
 # Load and grant mob abilities
 func load_mob_abilities() -> void:

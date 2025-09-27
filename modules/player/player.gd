@@ -180,9 +180,18 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 			# Player is dead
 			ability_container.add_tag("dead")
 			print_debug("Player died!")
+			
 			# Traitement visuel pour la mort
 			modulate = Color(0.5, 0.0, 0.0, 0.5) # Rouge semi-transparent
 			freeze = true # Arrêter la physique
+			
+			# Supprimer le joueur après un court délai (pour montrer l'effet visuel)
+			var death_timer = Timer.new()
+			death_timer.wait_time = 1.5
+			death_timer.one_shot = true
+			death_timer.timeout.connect(func(): queue_free())
+			add_child(death_timer)
+			death_timer.start()
 
 # Load and grant player abilities
 func load_player_abilities() -> void:
