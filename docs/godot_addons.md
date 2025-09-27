@@ -32,17 +32,23 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 ## Inventaire et Équipement
 
-### 1. [Simple Inventory System](https://github.com/AdrianWR/godot-simple-inventory)
-- **Description** : Système d'inventaire flexible et adaptable.
-- **Fonctionnalités** : Gestion des objets, tri, équipement.
-- **Avantages** : Facile à intégrer et à personnaliser.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Base solide pour le système d'inventaire)
+### 1. [Wyvernbox](https://github.com/don-tnowe/godot-wyvernbox-inventory)
+- **Description** : Système d'inventaire focalisé ARPG pour Godot 3 et 4
+- **Fonctionnalités** : Inventaires flexibles, gestion d'objets, génération de loot, tables de butin
+- **Avantages** : Solution complète combinant inventaire et génération d'objets spécialement pour ARPG
+- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Solution choisie pour le projet)
 
-### 2. [RPG Inventory](https://github.com/jhlothamer/godot_rpg_inventory)
-- **Description** : Système d'inventaire spécifique aux RPG.
-- **Fonctionnalités** : Équipement, statistiques, effets d'objets.
-- **Avantages** : Fonctionnalités avancées pour RPG.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Parfaitement adapté à nos besoins)
+### 2. [GLoot](https://github.com/peter-kish/gloot)
+- **Description** : Système d'inventaire universel avec prototypes d'objets
+- **Fonctionnalités** : Inventaires avec contraintes, objets basés sur prototypes JSON
+- **Avantages** : Architecture simple et flexible
+- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Alternative solide mais moins orientée ARPG)
+
+### 3. [Lootie](https://github.com/ninetailsrabbit/Lootie)
+- **Description** : Système de table de butin pour Godot
+- **Fonctionnalités** : Génération aléatoire basée sur différents modèles de probabilité
+- **Avantages** : Spécialisé dans la création de butin avec contrôle précis sur les probabilités
+- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Complémentaire à un système d'inventaire)
 
 ## Intelligence Artificielle et Comportement
 
@@ -94,17 +100,23 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 
 ## Statistiques et Progression
 
-### 1. [Godot RPG Stats](https://github.com/timothybrentwood/godot-rpg-stats)
-- **Description** : Système de gestion de statistiques pour RPG.
-- **Fonctionnalités** : Attributs, modifieurs, formules de calcul.
-- **Avantages** : Flexible et adapté aux jeux de rôle.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Parfait pour notre système de progression)
+### 1. [Godot Gameplay Attributes](https://github.com/OctoD/godot_gameplay_attributes)
+- **Description** : Système d'attributs pour la gestion des statistiques
+- **Fonctionnalités** : Attributs primaires, attributs dérivés, buffs/debuffs
+- **Avantages** : Découplé du système d'abilités, flexible, conçu pour les jeux type RPG
+- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Solution choisie pour le projet)
 
-### 2. [Experience and Leveling System](https://github.com/GDQuest/godot-demos/tree/master/2018/04-24-character-stats)
-- **Description** : Système d'expérience et de montée de niveau.
-- **Fonctionnalités** : XP, niveaux, déblocage de compétences.
-- **Avantages** : Base solide pour la progression du personnage.
-- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Très utile pour la progression)
+### 2. [Godot RPG Stats](https://github.com/timothybrentwood/godot-rpg-stats)
+- **Description** : Système de gestion de statistiques pour RPG
+- **Fonctionnalités** : Attributs, modifieurs, formules de calcul
+- **Avantages** : Flexible et adapté aux jeux de rôle
+- **Utilité pour notre projet** : ⭐⭐⭐⭐ (Alternative solide)
+
+### 3. [Godot Gameplay Abilities](https://github.com/OctoD/godot-gameplay-abilities)
+- **Description** : Système de compétences inspiré de Unreal Engine GAS
+- **Fonctionnalités** : Création, gestion et activation d'abilités
+- **Avantages** : Complet, conçu pour fonctionner avec Gameplay Attributes
+- **Utilité pour notre projet** : ⭐⭐⭐⭐⭐ (Solution choisie pour le système de compétences)
 
 ## Effets Visuels
 
@@ -134,17 +146,36 @@ Ce document présente une sélection d'addons Godot qui pourraient être utiles 
 - **Avantages** : Réduit la charge du ramasse-miettes, améliore les performances.
 - **Utilité pour notre projet** : ⭐⭐⭐⭐ (Utile pour la gestion des ennemis et projectiles)
 
-## Recommandations Prioritaires
+## Addons Sélectionnés
 
-Pour le prototype initial, nous recommandons de nous concentrer sur les addons suivants :
+Après évaluation, nous avons choisi les addons suivants pour le développement du prototype:
 
-1. **Gaea** pour la génération procédurale des maps
-2. **Godot Behavior Tree** pour l'automatisation du personnage et des ennemis
-3. **RPG Inventory** pour la gestion des objets et de l'équipement
-4. **Godot RPG Stats** pour le système de statistiques et de progression
-5. **Simple Serial Saver** pour la sauvegarde des données de jeu
+### 1. [Wyvernbox](https://github.com/don-tnowe/godot-wyvernbox-inventory)
+- **Description** : Système d'inventaire focalisé ARPG pour Godot 3 et 4
+- **Fonctionnalités** : Inventaires flexibles, gestion d'objets, génération de loot, tables de butin
+- **Utilisation dans notre projet** : Système complet pour inventaire, objets et génération procédurale d'équipements
 
-Ces addons couvrent les fonctionnalités essentielles pour notre prototype et permettront un développement plus rapide des mécaniques de base.
+### 2. [Godot Gameplay Abilities](https://github.com/OctoD/godot-gameplay-abilities)
+- **Description** : Système de compétences inspiré de Unreal Engine GAS
+- **Fonctionnalités** : Création, gestion et activation d'abilités
+- **Utilisation dans notre projet** : Automatisation des compétences et des actions du personnage
+
+### 3. [Godot Gameplay Attributes](https://github.com/OctoD/godot_gameplay_attributes)
+- **Description** : Système d'attributs pour la gestion des statistiques
+- **Fonctionnalités** : Attributs, attributs dérivés, buffs/debuffs, système de modification d'attributs
+- **Utilisation dans notre projet** : Gestion des statistiques (STR, DEX, INT, HP, Mana) et des effets d'équipement
+
+### 4. [Gaea](https://github.com/gaea-godot/gaea)
+- **Description** : Addon de génération procédurale pour Godot 4
+- **Fonctionnalités** : Système visuel de nœuds, générateurs multiples
+- **Utilisation dans notre projet** : Génération procédurale des maps
+
+### 5. [Godot Behavior Tree](https://github.com/godot-addons/godot-behavior-tree-plugin)
+- **Description** : Implémentation d'arbres de comportement pour IA
+- **Fonctionnalités** : Création de comportements complexes et adaptatifs
+- **Utilisation dans notre projet** : Automatisation du personnage et des ennemis
+
+Ces addons couvrent les fonctionnalités essentielles pour notre prototype et permettront un développement efficace des mécaniques d'un ARPG automatisé.
 
 ## Développement Personnel
 

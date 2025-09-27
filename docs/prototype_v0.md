@@ -126,50 +126,65 @@ Structure de dossiers :
 7. Si le joueur meurt : retour au hideout
 8. Si le boss est vaincu : retour au hideout avec récompenses
 
-## 3. Addons Essentiels
+## 3. Addons Sélectionnés
 
-Pour ce prototype, nous recommandons les addons suivants :
+Pour ce prototype, nous utiliserons les addons suivants :
 
-### 3.1 Godot Behavior Tree
+### 3.1 Wyvernbox
+- **Justification** : Système d'inventaire spécifique aux ARPG avec génération de loot intégrée
+- **Utilisation** : Gestion des objets, inventaire et génération procédurale d'équipements
+- **Source** : https://github.com/don-tnowe/godot-wyvernbox-inventory
+
+### 3.2 Godot Gameplay Attributes
+- **Justification** : Système flexible de gestion d'attributs pour les statistiques
+- **Utilisation** : Implémentation des attributs (Force, Dextérité, Intelligence) et stats dérivées
+- **Source** : https://github.com/OctoD/godot_gameplay_attributes
+
+### 3.3 Godot Gameplay Abilities
+- **Justification** : Système pour créer et gérer les compétences et actions automatiques
+- **Utilisation** : Définition des comportements automatiques d'attaque et de compétences
+- **Source** : https://github.com/OctoD/godot-gameplay-abilities
+
+### 3.4 Godot Behavior Tree
 - **Justification** : Essentiel pour implémenter l'IA du joueur et des mobs
-- **Utilisation** : Définir les comportements automatiques (déplacement, combat)
+- **Utilisation** : Définir les comportements automatiques (déplacement, sélection de cibles)
+- **Source** : https://github.com/godot-addons/godot-behavior-tree-plugin
 
-### 3.2 Simple Inventory System
-- **Justification** : Base pour le futur système d'inventaire (non implémenté dans le prototype)
-- **Utilisation** : Préparation pour les versions futures
-
-### 3.3 Gaea
+### 3.5 Gaea
 - **Justification** : Addon de génération procédurale pour Godot 4
 - **Utilisation** : Création de maps procédurales via système de graphes
 - **Source** : https://github.com/gaea-godot/gaea
 
-### 3.4 Godot RPG Stats (ou équivalent)
-- **Justification** : Gestion des statistiques du joueur et des mobs
-- **Utilisation** : Implémentation du système de statistiques et de progression
-
 ## 4. Implémentation Technique
 
-### 4.1 Système de Statistiques
+### 4.1 Système de Statistiques avec Gameplay Attributes
 
 **Système de Statistiques :**
 
-Conceptions des statistiques du joueur :
-- Stats de base : Force (HP), Dextérité (Attaque), Intelligence (Mana)
-- Stats dérivées calculées à partir des stats de base
-- Système d'expérience avec niveau et points de stat à dépenser
-- 3 points de stat par niveau gagné
-- Calcul automatique des stats dérivées après changement de stats
+Implémentation des statistiques avec Godot Gameplay Attributes :
+- Conteneur d'attributs (`AttributeContainer`) attaché au joueur et aux mobs
+- Stats primaires : Force (HP), Dextérité (Attaque), Intelligence (Mana)
+- Stats dérivées calculées automatiquement à partir des stats de base
+- Système de buffs pour les modifications temporaires (équipements, potions)
+- 3 points d'attributs à distribuer par niveau gagné
+- Système d'expérience intégré avec événements sur niveau supérieur
 
-### 4.2 Comportement Automatique du Joueur
+### 4.2 Comportement Automatique avec Gameplay Abilities et Behavior Tree
 
 **Comportement Automatique du Joueur :**
 
-Logique de comportement du joueur :
-- Identification de la cible la plus proche
-- Maintien d'une distance de sécurité optimale avec la cible
-- Rapprochement si trop loin, éloignement si trop proche
-- Vérification de la ligne de mire avant d'attaquer
-- Attaque automatique quand la cible est en vue et le cooldown terminé
+Combiner Godot Gameplay Abilities et Behavior Tree :
+- Arbre de comportement pour la logique de haut niveau (déplacement, choix de cibles)
+  - Identification de la cible la plus proche
+  - Maintien d'une distance de sécurité optimale
+  - Rapprochement si trop loin, éloignement si trop proche
+  - Vérification de la ligne de mire
+- Abilities pour les actions spécifiques :
+  - Ability d'attaque à distance avec cooldown
+  - Abilities défensives déclenchées automatiquement selon conditions
+- Intégration entre les deux systèmes :
+  - Le Behavior Tree décide quand octroyer/révoquer les abilities
+  - Les abilities utilisent les attributs pour les calculs de dégâts
 
 ### 4.3 Génération Procédurale de Map
 
@@ -186,11 +201,12 @@ Utilisation de Gaea pour la génération procédurale :
 
 ## 5. Points à Développer par la Suite
 
-- **Système d'objets et d'équipement**
-- **Types de maps variés**
-- **Compétences et sorts multiples**
-- **Interface utilisateur complète pour le hideout**
-- **Système de file d'attente de maps**
+- **Objets et équipement avancés** : Étendre Wyvernbox avec plus de types d'objets, d'affixes et de statistiques
+- **Types de maps variés** : Différents biomes, structures et modèles de génération
+- **Compétences et sorts multiples** : Étoffer les Gameplay Abilities avec plus d'options et d'effets
+- **Interface utilisateur complète pour le hideout** : Gestion d'équipe, statistiques détaillées
+- **Système de file d'attente de maps** : Automatisation de séquences de maps
+- **Target farming** : Spécialisation dans certains types de ressources/équipements
 - **Sauvegarde de progression**
 
 ## 6. Estimation de Développement
