@@ -24,6 +24,9 @@ var ability_container: AbilityContainer
 func _ready() -> void:
 	setup_gameplay_systems()
 	initialize_navigation_agent()
+	
+	# Initialize the health bar
+	update_health_bar()
 
 # Main physics process - manages the core gameplay loop
 func _physics_process(_delta: float) -> void:
@@ -207,6 +210,9 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 	
 	# Handle special cases
 	if attribute.attribute_name == "health":
+		# Update health bar
+		update_health_bar()
+		
 		if attribute.current_buffed_value <= 0 and not ability_container.has_tag("dead"):
 			# Player is dead
 			ability_container.add_tag("dead")
@@ -233,6 +239,9 @@ func load_player_abilities() -> void:
 # Called when an attribute effect is applied to this character
 func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: AttributeSpec) -> void:
 	if attribute.attribute_name == "health":
+		# Update health bar
+		update_health_bar()
+		
 		if attribute_effect.minimum_value < 0:
 			# Player took damage
 			print_debug("Player took %.1f damage!" % -attribute_effect.minimum_value)
@@ -252,3 +261,22 @@ func _on_attribute_effect_removed(_attribute_effect: AttributeEffect, _attribute
 func _on_effect_applied(effect: GameplayEffect) -> void:
 	# You can check the whole effect here
 	print_debug("Effect applied to player with %d attributes affected" % effect.attributes_affected.size())
+
+# Updates the health progress bar with current health value
+func update_health_bar() -> void:
+	var health_bar = %ProgressBar
+	if health_bar and attribute_map:
+		var health_attribute = attribute_map.get_attribute_by_name("health")
+		if health_attribute:
+			# Set the max value
+			health_bar.max_value = health_attribute.maximum_value
+			# Set the current value
+			health_bar.value = health_attribute.current_buffed_value
+			# Change color based on health percentage
+			var health_percent = health_attribute.current_buffed_value / health_attribute.maximum_value
+			if health_percent > 0.7:
+				health_bar.modulate = Color(0, 1, 0) # Green
+			elif health_percent > 0.3:
+				health_bar.modulate = Color(1, 1, 0) # Yellow
+			else:
+				health_bar.modulate = Color(1, 0, 0) # Red
