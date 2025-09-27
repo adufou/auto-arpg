@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://bftqx2ftpjdiy"]
+[gd_scene load_steps=18 format=3 uid="uid://bftqx2ftpjdiy"]
 
 [ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/shared/character_base.tscn" id="1_167sc"]
 [ext_resource type="Script" uid="uid://cacixg2e6fl6u" path="res://modules/player/player.gd" id="2_pnc3n"]
 [ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_m7q0d"]
+[ext_resource type="PackedScene" uid="uid://ckqe4q0hrebnr" path="res://modules/floating_damages/floating_damage.tscn" id="4_5rkg0"]
 [ext_resource type="Script" uid="uid://cl2udnbyvytci" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="4_ue0ku"]
 [ext_resource type="Resource" path="res://modules/shared/abilities/instances/player_attack.tres" id="5_hd5yx"]
 [ext_resource type="Texture2D" uid="uid://dynqn7swernt0" path="res://assets/player.png" id="6_hd5yx"]
@@ -75,6 +76,8 @@ current_value = 5.0
 [node name="Player" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_167sc")]
 script = ExtResource("2_pnc3n")
 navigation_agent_2d = NodePath("NavigationAgent2D")
+player_attack = ExtResource("5_hd5yx")
+floating_damage_scene = ExtResource("4_5rkg0")
 
 [node name="GameplayAttributeMap" parent="." index="0"]
 attributes = Array[ExtResource("3_m7q0d")]([SubResource("Resource_55gox"), SubResource("Resource_ue0ku"), SubResource("Resource_hd5yx"), SubResource("Resource_5rkg0"), SubResource("Resource_ej5i3"), SubResource("Resource_dhhsu"), SubResource("Resource_0rblh"), SubResource("Resource_5opsm"), SubResource("Resource_hwro8")])

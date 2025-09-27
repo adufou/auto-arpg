@@ -1,4 +1,5 @@
 extends Node2D
+class_name FloatingDamage
 
 # Propriétés pour personnaliser l'apparence et le comportement
 @export var duration: float = 1.0  # Durée totale d'affichage

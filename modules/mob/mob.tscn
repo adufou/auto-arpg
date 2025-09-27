@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://dk01yiwrmwwjg"]
+[gd_scene load_steps=18 format=3 uid="uid://dk01yiwrmwwjg"]
 
 [ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/shared/character_base.tscn" id="1_3wbnx"]
 [ext_resource type="Script" uid="uid://twjt3jnhxitr" path="res://modules/mob/mob.gd" id="2_js4yu"]
 [ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_xtckm"]
+[ext_resource type="PackedScene" uid="uid://ckqe4q0hrebnr" path="res://modules/floating_damages/floating_damage.tscn" id="4_hcl3v"]
 [ext_resource type="Script" uid="uid://cl2udnbyvytci" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="4_six5j"]
 [ext_resource type="Resource" path="res://modules/shared/abilities/instances/mob_attack.tres" id="5_cb145"]
 [ext_resource type="Texture2D" uid="uid://dxm7h8o5jex0t" path="res://assets/mob.png" id="6_cb145"]
@@ -75,6 +76,8 @@ current_value = 3.0
 [node name="Mob" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_3wbnx")]
 script = ExtResource("2_js4yu")
 navigation_agent_2d = NodePath("NavigationAgent2D")
+mob_attack = ExtResource("5_cb145")
+floating_damage_scene = ExtResource("4_hcl3v")
 
 [node name="GameplayAttributeMap" parent="." index="0"]
 attributes = Array[ExtResource("3_xtckm")]([SubResource("Resource_3oqht"), SubResource("Resource_six5j"), SubResource("Resource_cb145"), SubResource("Resource_hcl3v"), SubResource("Resource_axqf7"), SubResource("Resource_gqti3"), SubResource("Resource_586h4"), SubResource("Resource_sr2hc"), SubResource("Resource_npg76")])

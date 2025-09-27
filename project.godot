@@ -14,10 +14,6 @@ config/name="Auto ARPG"
 run/main_scene="uid://c1inawncqy7uf"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
-[autoload]
-
-TurnManager="*res://addons/godot_gameplay_systems/turn_based/./autoloads/turn_manager.gd"
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gaea/plugin.cfg", "res://addons/godot_gameplay_systems/plugin.cfg")

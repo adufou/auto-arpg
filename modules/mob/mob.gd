@@ -1,6 +1,8 @@
 extends RigidBody2D
 
 @export var navigation_agent_2d: NavigationAgent2D
+@export var mob_attack: Ability
+@export var floating_damage_scene: PackedScene
 @export var movement_speed: float = 80.0
 @export var target_detection_range: float = 300.0
 @export var attack_range: float = 30.0  # Distance when we're "close enough"
@@ -214,9 +216,7 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 
 # Load and grant mob abilities
 func load_mob_abilities() -> void:
-	var mob_attack = load("res://modules/shared/abilities/instances/mob_attack.tres")
-	if mob_attack:
-		ability_container.grant(mob_attack)
+	ability_container.grant(mob_attack)
 
 # Called when an attribute effect is applied to this character
 func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: AttributeSpec) -> void:
@@ -353,18 +353,15 @@ func update_health_bar() -> void:
 
 # Shows floating damage numbers above the character
 func show_floating_damage(damage_value: float, is_critical: bool = false, damage_color: Color = Color.WHITE) -> void:
-	# Load the floating damage scene
-	var FloatingDamageScene = load("res://modules/shared/floating_damage.tscn")
-	if FloatingDamageScene:
-		# Instance the scene
-		var floating_damage = FloatingDamageScene.instantiate()
-		
-		# Add it to the scene tree at a position above the character
-		get_tree().current_scene.add_child(floating_damage)
-		floating_damage.global_position = global_position + Vector2(0, -30)
-		
-		# Apply random horizontal offset for better visibility with multiple hits
-		floating_damage.global_position.x += randf_range(-15, 15)
-		
-		# Configure the floating damage
-		floating_damage.setup(damage_value, is_critical, damage_color)
+	# Instance the scene
+	var floating_damage: FloatingDamage = floating_damage_scene.instantiate()
+	
+	# Add it to the scene tree at a position above the character
+	get_tree().current_scene.add_child(floating_damage)
+	floating_damage.global_position = global_position + Vector2(0, -30)
+	
+	# Apply random horizontal offset for better visibility with multiple hits
+	floating_damage.global_position.x += randf_range(-15, 15)
+	
+	# Configure the floating damage
+	floating_damage.setup(damage_value, is_critical, damage_color)
