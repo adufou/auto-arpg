@@ -289,7 +289,19 @@ func handle_flee_behavior() -> void:
 	if target == null:
 		return
 	
+	# Calculate flee point (opposite direction from the target)
 	var flee_direction = AIBehaviors.calculate_flee_direction(global_position, target.global_position)
+	# Calculate a point to flee towards (distant point in the flee direction)
+	var flee_target_point = global_position + flee_direction * 200.0
 	
-	# Apply force to flee
-	apply_movement_force(flee_direction)
+	# Set the navigation target to the flee point
+	navigation_agent_2d.target_position = flee_target_point
+	
+	# Now use the navigation system to move towards that point
+	if not navigation_agent_2d.is_navigation_finished():
+		var next_position = navigation_agent_2d.get_next_path_position()
+		var nav_direction = calculate_direction_to(next_position)
+		apply_movement_force(nav_direction)
+	else:
+		# If we've reached the flee point or can't get there, just move in the flee direction
+		apply_movement_force(flee_direction)
