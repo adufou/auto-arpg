@@ -7,6 +7,7 @@ extends RigidBody2D
 @export var target_detection_range: float = 500.0
 @export var attack_range: float = 50.0  # Distance when we're "close enough"
 @export var force_multiplier: float = 20.0  # For movement responsiveness
+@export var mob_detection_interval: float = 0.5  # How often to search for mobs (in seconds)
 
 # Stats for the character
 @export_group("Base Stats")
@@ -18,6 +19,12 @@ extends RigidBody2D
 
 # Reference to the current target mob
 var target_mob: Node2D = null
+# Store a list of mobs in attack range
+var mobs_in_attack_range: Array[Node2D] = []
+# Store a list of detected mobs
+var detected_mobs: Array[Node2D] = []
+# Timer for mob detection optimization
+var mob_detection_timer: float = 0.0
 
 # References to gameplay systems
 var attribute_map: GameplayAttributeMap
@@ -31,28 +38,38 @@ func _ready() -> void:
 	update_health_bar()
 
 # Main physics process - manages the core gameplay loop
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	# Ne rien faire si nous sommes morts
 	if ability_container and ability_container.has_tag("dead"):
 		return
 	
-	# Vérifier si nous avons une cible valide
-	ensure_target_exists()
+	# Update mob detection timer
+	mob_detection_timer -= delta
 	
-	# Si aucune cible n'est trouvée, rester immobile
-	if target_mob == null:
-		# On pourrait ajouter ici un comportement d'exploration ou d'attente
-		return
-		
-	# Définir la position cible pour la navigation
-	set_navigation_target()
+	# Update our knowledge of mobs in the scene (only every mob_detection_interval seconds)
+	if mob_detection_timer <= 0:
+		find_all_mobs()
+		mob_detection_timer = mob_detection_interval
 	
-	# Si nous sommes assez près pour attaquer
-	if is_within_attack_range():
+	# Find mobs within attack range first (this is cheap, so we do it every frame)
+	find_mobs_in_attack_range()
+	
+	# If we have mobs in attack range, target the closest one
+	if not mobs_in_attack_range.is_empty():
+		target_closest_mob_in_range()
 		handle_attack_range_behavior()
 		return
 	
-	# Sinon, se déplacer vers la cible
+	# If no mobs in attack range, ensure we have a target to navigate to
+	if target_mob == null or !is_instance_valid(target_mob):
+		find_closest_mob()
+	
+	# If still no target, there are no mobs at all
+	if target_mob == null:
+		return
+		
+	# Set navigation target and move toward it
+	set_navigation_target()
 	move_toward_target()
 
 # Setup the gameplay systems with initial values
@@ -92,18 +109,25 @@ func initialize_navigation_agent() -> void:
 	navigation_agent_2d.path_desired_distance = 5.0
 	navigation_agent_2d.target_desired_distance = 5.0
 
-# Make sure we have a valid target
-func ensure_target_exists() -> void:
-	# Vérifier si la cible n'existe plus ou est morte
-	if target_mob == null or !is_instance_valid(target_mob) or (target_mob.has_node("AbilityContainer") and target_mob.get_node("AbilityContainer").has_tag("dead")):
-		# Réinitialiser la référence
-		target_mob = null
-		# Chercher une nouvelle cible
-		find_closest_mob()
-		
-		# Si aucune cible n'est trouvée, arrêter le mouvement
-		if target_mob == null:
-			stop_movement()
+# Find all mobs in the scene and store them in detected_mobs
+func find_all_mobs() -> void:
+	detected_mobs.clear()
+	
+	# Get all nodes in the "mob" group directly
+	var mob_nodes = get_tree().get_nodes_in_group("mob")
+	
+	# Filter out invalid targets (e.g., dead mobs)
+	for mob in mob_nodes:
+		if mob != self and is_valid_mob_target(mob):
+			detected_mobs.append(mob)
+
+# Find mobs within attack range and store them in mobs_in_attack_range
+func find_mobs_in_attack_range() -> void:
+	mobs_in_attack_range.clear()
+	
+	for mob in detected_mobs:
+		if global_position.distance_to(mob.global_position) <= attack_range:
+			mobs_in_attack_range.append(mob)
 
 # Update navigation agent with target position
 func set_navigation_target() -> void:
@@ -146,10 +170,46 @@ func stop_movement() -> void:
 func move_toward_target() -> void:
 	if navigation_agent_2d.is_navigation_finished():
 		return
-		
+	
+	# Check if we've been stuck at the same position for too long
+	check_navigation_stuck()
+	
 	var next_position = navigation_agent_2d.get_next_path_position()
 	var direction = calculate_direction_to(next_position)
 	apply_movement_force(direction)
+
+# Variables to detect when player gets stuck
+var last_position: Vector2 = Vector2.ZERO
+var stuck_time: float = 0.0
+var recalculation_timeout: float = 0.0
+
+# Check if player is stuck and handle it
+func check_navigation_stuck() -> void:
+	if recalculation_timeout > 0:
+		recalculation_timeout -= get_process_delta_time()
+		return
+	
+	if last_position.distance_to(global_position) < 1.0:
+		# We haven't moved much
+		stuck_time += get_process_delta_time()
+		if stuck_time > 1.0: # Stuck for more than 1 second
+			# Try to recalculate path
+			if target_mob and is_instance_valid(target_mob):
+				navigation_agent_2d.target_position = target_mob.global_position
+				
+			# Apply a small random movement to try to get unstuck
+			var random_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+			apply_central_force(random_direction * movement_speed * 2)
+			
+			# Reset stuck timer and set timeout before next check
+			stuck_time = 0.0
+			recalculation_timeout = 0.5
+	else:
+		# We're moving, reset stuck timer
+		stuck_time = 0.0
+	
+	# Update last position
+	last_position = global_position
 
 # Calculate direction vector to a target position
 func calculate_direction_to(target_position: Vector2) -> Vector2:
@@ -160,39 +220,48 @@ func apply_movement_force(direction: Vector2) -> void:
 	var desired_velocity = direction * movement_speed
 	apply_central_force((desired_velocity - linear_velocity) * force_multiplier)
 
-# Find the closest mob as a target
+# Find the closest mob as a target from all detected mobs
 func find_closest_mob() -> void:
-	target_mob = null
-	var main_node = get_parent()
+	if detected_mobs.is_empty():
+		target_mob = null
+		return
+	
 	var closest_distance = target_detection_range
+	target_mob = null
 	
-	print_debug("Recherche d'une cible mob...")
-	var found_nodes = 0
-	
-	for node in main_node.get_children():
-		if is_valid_mob_target(node):
-			found_nodes += 1
-			print_debug("Mob valide trouvé: %s" % node.name)
-			var distance = global_position.distance_to(node.global_position)
-			print_debug("Distance au mob: %.1f (max: %.1f)" % [distance, closest_distance])
-			if distance < closest_distance:
-				closest_distance = distance
-				target_mob = node
+	for mob in detected_mobs:
+		var distance = global_position.distance_to(mob.global_position)
+		if distance < closest_distance:
+			closest_distance = distance
+			target_mob = mob
 	
 	if target_mob:
-		print_debug("Cible trouvée: %s à distance %.1f" % [target_mob.name, closest_distance])
+		# Set the navigation target immediately
 		navigation_agent_2d.target_position = target_mob.global_position
-	else:
-		print_debug("Aucune cible mob trouvée après avoir vérifié %d nœuds" % found_nodes)
 
-# Check if a node is a valid mob target
-func is_valid_mob_target(node: Node) -> bool:
-	# Vérifier si c'est un mob (appartenant au groupe "mob") et pas nous-même
-	if node.is_in_group("mob") and node != self:
-		# Vérifier si le mob n'est pas mort
-		if node.has_node("AbilityContainer"):
-			var mob_ability_container = node.get_node("AbilityContainer")
-			return not mob_ability_container.has_tag("dead")
+# Target the closest mob in attack range
+func target_closest_mob_in_range() -> void:
+	if mobs_in_attack_range.is_empty():
+		return
+	
+	var closest_distance = attack_range
+	var closest_mob = null
+	
+	for mob in mobs_in_attack_range:
+		var distance = global_position.distance_to(mob.global_position)
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_mob = mob
+	
+	if closest_mob:
+		target_mob = closest_mob
+
+# Check if a mob is a valid target (not dead)
+func is_valid_mob_target(mob: Node) -> bool:
+	# Check if the mob is alive
+	if mob.has_node("AbilityContainer"):
+		var mob_ability_container = mob.get_node("AbilityContainer")
+		return not mob_ability_container.has_tag("dead")
 	return false
 
 # Helper function to update an attribute value
