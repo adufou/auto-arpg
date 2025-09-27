@@ -1,0 +1,12 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dd5ycdeimb7y8"]
+
+[ext_resource type="Texture2D" uid="uid://c0gaphp537t3f" path="res://modules/terrain_generation/tileset_atlas_texture.tres" id="1_kfwk1"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nq4aq"]
+texture = ExtResource("1_kfwk1")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_nq4aq")
