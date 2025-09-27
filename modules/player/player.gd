@@ -26,6 +26,8 @@ var attribute_map: GameplayAttributeMap
 var ability_container: AbilityContainer
 
 func _ready() -> void:
+	add_to_group("player")
+	
 	setup_gameplay_systems()
 	initialize_navigation_agent()
 	

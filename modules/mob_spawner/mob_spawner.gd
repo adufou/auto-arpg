@@ -18,12 +18,10 @@ var world_size: Vector2
 var mob_packs: Array[Vector2] = []
 var mobs_spawned: Array[Node] = []
 
+var player_node: Node2D = null
+var min_player_distance: float = 0.0
+
 func _ready() -> void:
-	
-	# Attendre un frame pour s'assurer que la scène est complètement chargée
-	# et que les systèmes de navigation ont eu le temps de traiter les données
-	# Note: Dans des scènes complexes avec beaucoup de navigation, on pourrait 
-	# ajouter un second await pour donner plus de temps au NavigationServer2D
 	await get_tree().process_frame
 
 func spawn_mobs() -> void:
@@ -83,7 +81,6 @@ func find_valid_pack_position(mobs_count: int = 5) -> Vector2:
 			randf_range(border_margin, world_size.x - border_margin),
 			randf_range(border_margin, world_size.y - border_margin)
 		)
-		
 		if not is_position_navigable(test_position):
 			attempts += 1
 			continue
@@ -92,15 +89,25 @@ func find_valid_pack_position(mobs_count: int = 5) -> Vector2:
 			attempts += 1
 			continue
 		
-		var too_close = false
+		var too_close_to_pack = false
 		for pack_pos in mob_packs:
 			if test_position.distance_to(pack_pos) < min_pack_distance + min_radius_needed:
-				too_close = true
+				too_close_to_pack = true
 				break
 		
-		if too_close:
+		if too_close_to_pack:
 			attempts += 1
 			continue
+			
+		if player_node and is_instance_valid(player_node):
+			var tile_size = 16.0
+			if world_node and world_node.has_method("get_tile_size"):
+				tile_size = world_node.get_tile_size()
+			
+			var player_map_pos = player_node.global_position / tile_size
+			if test_position.distance_to(player_map_pos) < min_player_distance / tile_size:
+				attempts += 1
+				continue
 		
 		return test_position
 	
@@ -254,6 +261,10 @@ func spawn_single_mob(spawn_position: Vector2) -> Node:
 func setup(world: Node2D, nav_region: NavigationRegion2D) -> void:
 	world_node = world
 	navigation_region = nav_region
+
+func set_player_data(player: Node2D, distance: float) -> void:
+	player_node = player
+	min_player_distance = distance
 
 func wait_for_navigation_map_ready() -> void:
 	if not navigation_region:
