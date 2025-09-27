@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1inawncqy7uf"]
+[gd_scene load_steps=6 format=3 uid="uid://c1inawncqy7uf"]
 
 [ext_resource type="PackedScene" uid="uid://dus10kgkxxw5h" path="res://modules/world/world.tscn" id="1_pyidc"]
+[ext_resource type="Script" uid="uid://twjt3jnhxitr" path="res://modules/mob/mob.gd" id="3_vvh5c"]
 [ext_resource type="Script" uid="uid://cacixg2e6fl6u" path="res://modules/player/player.gd" id="5_jnlp7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_28aoi"]
@@ -36,6 +37,7 @@ metadata/_edit_lock_ = true
 
 [node name="MobRigidBody2D" type="RigidBody2D" parent="MainNode2D"]
 position = Vector2(948, 282)
+script = ExtResource("3_vvh5c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MainNode2D/MobRigidBody2D"]
 shape = SubResource("CircleShape2D_jnlp7")
