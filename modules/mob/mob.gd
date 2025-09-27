@@ -226,8 +226,25 @@ func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: 
 		
 		if attribute_effect.minimum_value < 0:
 			# Mob took damage
-			print_debug("Mob took %.1f damage!" % -attribute_effect.minimum_value)
-			# Here you could play damage animation, sound, etc.
+			var damage_value = -attribute_effect.minimum_value
+			print_debug("Mob took %.1f damage!" % damage_value)
+			
+			# Create floating damage
+			var is_critical = false
+			# Check if this is a critical hit
+			if attribute_effect.has_meta("critical") and attribute_effect.get_meta("critical") == true:
+				is_critical = true
+				
+			# Determine color based on critical status (requested colors)
+			# Blanc pour les dégâts normaux du joueur
+			# Jaune pour les dégâts critiques du joueur
+			var damage_color = Color.WHITE  # Default: normal player damage is white
+			if is_critical:
+				damage_color = Color(1.0, 1.0, 0.0)  # Yellow for player critical damage
+			
+			# Display floating damage
+			show_floating_damage(damage_value, is_critical, damage_color)
+			
 		elif attribute_effect.minimum_value > 0:
 			# Mob healed
 			print_debug("Mob healed for %.1f health!" % attribute_effect.minimum_value)
@@ -333,3 +350,21 @@ func update_health_bar() -> void:
 				health_bar.modulate = Color(1, 1, 0) # Yellow
 			else:
 				health_bar.modulate = Color(1, 0, 0) # Red
+
+# Shows floating damage numbers above the character
+func show_floating_damage(damage_value: float, is_critical: bool = false, damage_color: Color = Color.WHITE) -> void:
+	# Load the floating damage scene
+	var FloatingDamageScene = load("res://modules/shared/floating_damage.tscn")
+	if FloatingDamageScene:
+		# Instance the scene
+		var floating_damage = FloatingDamageScene.instantiate()
+		
+		# Add it to the scene tree at a position above the character
+		get_tree().current_scene.add_child(floating_damage)
+		floating_damage.global_position = global_position + Vector2(0, -30)
+		
+		# Apply random horizontal offset for better visibility with multiple hits
+		floating_damage.global_position.x += randf_range(-15, 15)
+		
+		# Configure the floating damage
+		floating_damage.setup(damage_value, is_critical, damage_color)

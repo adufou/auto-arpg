@@ -116,10 +116,10 @@ func perform_attack(attacker: Node, defender: Node) -> void:
 		print_debug("CRITICAL HIT! Damage: %s" % damage)
 	
 	# Apply damage to the defender using GameplayEffect
-	apply_damage_effect(defender_attr, damage)
+	apply_damage_effect(defender_attr, damage, is_critical)
 
 # Apply damage to a target using GameplayEffect as recommended by the documentation
-func apply_damage_effect(defender_attr: GameplayAttributeMap, damage: float) -> void:
+func apply_damage_effect(defender_attr: GameplayAttributeMap, damage: float, is_critical: bool = false) -> void:
 	# Create a new GameplayEffect for damage
 	var effect = GameplayEffect.new()
 	
@@ -130,6 +130,9 @@ func apply_damage_effect(defender_attr: GameplayAttributeMap, damage: float) -> 
 	health_effect.attribute_name = "health"
 	health_effect.minimum_value = -damage
 	health_effect.maximum_value = -damage
+	
+	# Store critical hit info in effect metadata for floating damage display
+	health_effect.set_meta("critical", is_critical)
 	
 	# Make it a one-shot effect
 	health_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
