@@ -13,8 +13,12 @@ config_version=5
 config/name="Auto ARPG"
 run/main_scene="uid://c1inawncqy7uf"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gaea/plugin.cfg")
+
+[physics]
+
+2d/default_gravity=0.0
+2d/default_gravity_vector=Vector2(0, 0)

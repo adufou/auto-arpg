@@ -1,19 +1,19 @@
 [gd_resource type="Resource" script_class="GaeaGraph" load_steps=7 format=3 uid="uid://bl13txgdfm6gh"]
 
-[ext_resource type="Script" uid="uid://3qsmwhn2sk47" path="res://addons/gaea/resources/gaea_layer.gd" id="1_out8s"]
-[ext_resource type="Resource" uid="uid://bk1413d5iwh0d" path="res://modules/terrain_generation/grass_tilemap_gaea_material.tres" id="2_juhuo"]
-[ext_resource type="Script" uid="uid://dae6umbqb872e" path="res://addons/gaea/resources/gaea_graph.gd" id="2_pprl4"]
-[ext_resource type="Resource" uid="uid://c7yolvtwrfqvw" path="res://modules/terrain_generation/sand_tilemap_gaea_material.tres" id="3_6a2gd"]
-[ext_resource type="Resource" uid="uid://1cniipg1jpmw" path="res://modules/terrain_generation/water_tilemap_gaea_material.tres" id="4_gf4j1"]
+[ext_resource type="Script" uid="uid://3qsmwhn2sk47" path="res://addons/gaea/resources/gaea_layer.gd" id="1_vnvtp"]
+[ext_resource type="Resource" uid="uid://bk1413d5iwh0d" path="res://modules/terrain_generation/grass_tilemap_gaea_material.tres" id="2_ucnsw"]
+[ext_resource type="Resource" uid="uid://c7yolvtwrfqvw" path="res://modules/terrain_generation/sand_tilemap_gaea_material.tres" id="3_owfl2"]
+[ext_resource type="Resource" uid="uid://1cniipg1jpmw" path="res://modules/terrain_generation/water_tilemap_gaea_material.tres" id="4_8leb4"]
+[ext_resource type="Script" uid="uid://dae6umbqb872e" path="res://addons/gaea/resources/gaea_graph.gd" id="5_ln84x"]
 
 [sub_resource type="Resource" id="Resource_0xd4w"]
-script = ExtResource("1_out8s")
+script = ExtResource("1_vnvtp")
 enabled = true
 
 [resource]
 resource_local_to_scene = true
-script = ExtResource("2_pprl4")
-layers = Array[ExtResource("1_out8s")]([SubResource("Resource_0xd4w")])
+script = ExtResource("5_ln84x")
+layers = Array[ExtResource("1_vnvtp")]([SubResource("Resource_0xd4w")])
 logging = 0
 connections = Array[Dictionary]([{
 "from_node": 1,
@@ -160,7 +160,7 @@ parameters = Dictionary[StringName, Variant]({
 "name": "Grass",
 "type": 24,
 "usage": 4,
-"value": ExtResource("2_juhuo")
+"value": ExtResource("2_ucnsw")
 },
 &"Sand": {
 "hint": 17,
@@ -168,7 +168,7 @@ parameters = Dictionary[StringName, Variant]({
 "name": "Sand",
 "type": 24,
 "usage": 4,
-"value": ExtResource("3_6a2gd")
+"value": ExtResource("3_owfl2")
 },
 &"Water": {
 "hint": 17,
@@ -176,7 +176,7 @@ parameters = Dictionary[StringName, Variant]({
 "name": "Water",
 "type": 24,
 "usage": 4,
-"value": ExtResource("4_gf4j1")
+"value": ExtResource("4_8leb4")
 }
 })
 other = {
