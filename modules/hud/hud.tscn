@@ -74,6 +74,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CharacterPanel" parent="Control/VBoxContainer/Control/PanelsControl" instance=ExtResource("2_0vtu1")]
+visible = false
 layout_mode = 1
 offset_right = -640.0
 

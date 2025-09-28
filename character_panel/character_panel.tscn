@@ -102,6 +102,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="UpgradeDexterityButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/DexterityHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "+"
 
@@ -126,6 +127,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="UpgradeForceButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/ForceHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "+"
 
@@ -150,6 +152,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="UpgradeIntelligenceButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/IntelligenceHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "+"
 

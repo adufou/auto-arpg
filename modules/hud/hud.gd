@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var level_label := %LevelLabel
 @onready var exp_bar := %ExperienceProgressBar
+@onready var character_panel := $Control/VBoxContainer/Control/PanelsControl/CharacterPanel
 
 func _ready() -> void:
 	call_deferred("connect_to_player_signals")
@@ -12,6 +13,9 @@ func connect_to_player_signals() -> void:
 		var attribute_map = player.get_attribute_map()
 		if attribute_map:
 			attribute_map.attribute_changed.connect(_on_player_attribute_changed)
+			
+		if character_panel:
+			character_panel.set_player(player)
 			
 			update_level_display(attribute_map.get_attribute_by_name("level"))
 			update_exp_bar(attribute_map.get_attribute_by_name("experience"), 
@@ -52,4 +56,5 @@ func update_exp_bar(exp_attribute: AttributeSpec = null, exp_required_attribute:
 
 
 func _on_chararcter_button_pressed() -> void:
-	pass # Replace with function body.
+	if character_panel:
+		character_panel.visible = not character_panel.visible

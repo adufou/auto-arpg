@@ -1,5 +1,6 @@
 extends CharacterBase
 
+
 @export var player_attack: Ability
 @export var mob_detection_interval: float = 0.5  # How often to search for mobs (in seconds)
 
@@ -8,6 +9,7 @@ extends CharacterBase
 @export var base_experience: float = 0.0
 @export var experience_to_next_level: float = 100.0
 @export var experience_multiplier: float = 1.2
+@export var base_characteristic_points: int = 0
 
 var target_mob: Node2D = null
 var mobs_in_attack_range: Array[Node2D] = []
@@ -66,6 +68,7 @@ func setup_gameplay_systems() -> void:
 		update_attribute("level", base_level)
 		update_attribute("experience", base_experience)
 		update_attribute("experience_required", experience_to_next_level)
+		update_attribute("characteristic_points", base_characteristic_points)
 	
 	# Charger les capacités du joueur
 	if ability_container:
@@ -232,10 +235,10 @@ func check_level_up() -> void:
 		show_floating_damage(current_level, true, Color(1.0, 0.8, 0.0))
 
 func apply_level_up_bonuses() -> void:
-	# Augmenter les stats primaires
-	update_attribute("strength", get_attribute_value("strength") + 1)
-	update_attribute("dexterity", get_attribute_value("dexterity") + 1)
-	update_attribute("intelligence", get_attribute_value("intelligence") + 1)
+	# Grant characteristic points
+	var current_points = get_attribute_value("characteristic_points")
+	update_attribute("characteristic_points", current_points + 5)
+
 	
 	# Augmenter la santé et mana maximales
 	var health_attr = attribute_map.get_attribute_by_name("health")
@@ -253,6 +256,19 @@ func apply_level_up_bonuses() -> void:
 	apply_derived_attributes()
 	update_health_bar()
 
+
+func spend_characteristic_point(stat_name: String) -> void:
+	if not attribute_map:
+		return
+
+	var points = get_attribute_value("characteristic_points")
+	if points > 0:
+		update_attribute("characteristic_points", points - 1)
+		
+		var current_stat_value = get_attribute_value(stat_name)
+		update_attribute(stat_name, current_stat_value + 1)
+		
+		recalculate_derived_attributes()
 
 func load_player_abilities() -> void:
 	ability_container.grant(player_attack)
