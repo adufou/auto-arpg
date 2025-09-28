@@ -1,0 +1,173 @@
+Godot Engine v4.4.1.stable.official.49a5bc7b6 - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU
+
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#55817799169>, ability_container: AbilityContainer:<Node#55834576386>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+WARNING: Function make_polygons_from_outlines() is deprecated.
+Use NavigationServer2D.parse_source_geometry_data() and NavigationServer2D.bake_from_source_geometry_data() instead.
+     at: make_polygons_from_outlines (scene/resources/2d/navigation_polygon.cpp:315)
+WARNING: La carte de navigation n'est peut-être pas complètement synchronisée après 20 frames
+     at: push_warning (core/variant/variant_utility.cpp:1118)
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#61874374335>, ability_container: AbilityContainer:<Node#61891151405>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#62428022486>, ability_container: AbilityContainer:<Node#62444799703>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#62981670638>, ability_container: AbilityContainer:<Node#62998447855>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#63518541572>, ability_container: AbilityContainer:<Node#63535318789>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#64072189723>, ability_container: AbilityContainer:<Node#64088966940>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#65162708786>, ability_container: AbilityContainer:<Node#65179486003>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#65666025172>, ability_container: AbilityContainer:<Node#65682802389>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#66135787357>, ability_container: AbilityContainer:<Node#66152564574>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#66605549426>, ability_container: AbilityContainer:<Node#66622326643>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#67243083655>, ability_container: AbilityContainer:<Node#67259860872>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#67779954503>, ability_container: AbilityContainer:<Node#67796731720>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#68283271091>, ability_container: AbilityContainer:<Node#68300048308>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#68786587593>, ability_container: AbilityContainer:<Node#68803364810>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed
+[CharacterBase] setup_gameplay_systems started
+[CharacterBase] attribute_map: GameplayAttributeMap:<Node#69407344608>, ability_container: AbilityContainer:<Node#69424121825>
+[CharacterBase] Setting up initial attributes
+[CharacterBase] Initial attributes set
+[CharacterBase] Calculating initial derived stats
+[CharacterBase] safe_update_derived_stats called
+[CharacterBase] Initial derived stats calculated
+[CharacterBase] Connecting signals
+[CharacterBase] Signals connected
+[CharacterBase] ABILITY CONTAINER SETUP DISABLED FOR DEBUGGING
+[CharacterBase] setup_gameplay_systems completed

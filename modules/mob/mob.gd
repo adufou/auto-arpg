@@ -2,12 +2,18 @@ extends CharacterBase
 
 @export var mob_attack: Ability
 @export var flee_health_threshold: float = 0.3  # Flee when health below this percentage
+@export var experience_value: float = 10.0  # Valeur d'XP donnée quand le mob est tué
 
 var target: Node2D = null
 
 func _ready() -> void:
+	base_health = 50.0
+	
 	super._ready()
 	add_to_group("mob")
+	
+	if attribute_map:
+		attribute_map.attribute_changed.connect(_on_attribute_changed)
 
 func _physics_process(_delta: float) -> void:
 	if ability_container and ability_container.has_tag("dead"):
@@ -41,15 +47,6 @@ func _physics_process(_delta: float) -> void:
 func setup_gameplay_systems() -> void:
 	super.setup_gameplay_systems()
 	
-	# Set mob-specific stats
-	if attribute_map:
-		update_attribute("strength", 8.0)
-		update_attribute("dexterity", 6.0)
-		update_attribute("intelligence", 4.0)
-		update_attribute("health", 50.0)
-		update_attribute("mana", 20.0)
-		update_derived_stats()
-	
 	if ability_container:
 		load_mob_abilities()
 
@@ -64,9 +61,6 @@ func is_within_attack_range() -> bool:
 	var distance_to_target = global_position.distance_to(target.global_position)
 	return distance_to_target <= attack_range
 
-
-
-
 func find_player() -> void:
 	target = null
 	var main_node = get_parent()
@@ -79,47 +73,54 @@ func find_player() -> void:
 func is_valid_player_target(node: Node) -> bool:
 	return node.name.contains("Player") and node != self
 
-# Override to customize mob stats scaling
+# Mise à jour pour utiliser la nouvelle architecture GameplayEffect
 func update_derived_stats() -> void:
-	var str_value = get_attribute_value("strength")
-	var dex_value = get_attribute_value("dexterity")
-	var _int_value = get_attribute_value("intelligence")
-	
-	update_attribute("attack", str_value * 1.2) # Mobs have less attack scaling than player
-	update_attribute("crit_chance", dex_value * 0.3)
-	update_attribute("defense", str_value * 0.7)
-	update_attribute("movement_speed", movement_speed * (1.0 + dex_value * 0.005))
+	# Appeler la méthode de la classe parent qui utilise GameplayEffect
+	super.update_derived_stats()
 
-# Override to customize mob death behavior 
+# Détection de la mort du mob quand sa santé tombe à 0
 func _on_attribute_changed(attribute: AttributeSpec) -> void:
-	if attribute.attribute_name in ["strength", "dexterity", "intelligence"]:
-		update_derived_stats()
-	
 	if attribute.attribute_name == "health":
+		print("[Mob] Health changed to: " + str(attribute.current_buffed_value))
 		update_health_bar()
 		
-		if attribute.current_buffed_value <= 0 and not ability_container.has_tag("dead"):
+		# Vérifier si le mob est mort (santé <= 0) et s'il n'est pas déjà marqué comme mort
+		if attribute.current_buffed_value <= 0 and ability_container and not ability_container.has_tag("dead"):
+			print("[Mob] Mob died!")
+			# Marquer comme mort pour éviter les appels multiples
 			ability_container.add_tag("dead")
 			
-			# Mob-specific death effect - blue color
-			modulate = Color(0.0, 0.0, 0.5, 0.5)
-			freeze = true
+			# Effet visuel
+			modulate = Color(0.2, 0.0, 0.0, 0.7) # Rouge foncé transparent
 			
-			# Disable collision so player can pass through
+			# Désactiver les collisions
 			set_collision_layer(0)
 			set_collision_mask(0)
 			
-			var death_timer = Timer.new()
-			death_timer.wait_time = 1.5
-			death_timer.one_shot = true
-			death_timer.timeout.connect(func(): queue_free())
-			add_child(death_timer)
-			death_timer.start()
+			# Donner l'expérience au joueur avant de supprimer le mob
+			give_experience_to_player()
+			
+			# Utiliser un CallDeferred pour éviter les problèmes de timing
+			_handle_death()
+
+# Méthode séparée pour gérer la mort
+func _handle_death() -> void:
+	print("[Mob] _handle_death called")
+	# Arrêter le mouvement mais ne pas utiliser freeze pour éviter des bugs potentiels
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+	
+	# Créer un timer pour la disparition du mob
+	var death_timer = Timer.new()
+	death_timer.wait_time = 1.5
+	death_timer.one_shot = true
+	death_timer.timeout.connect(func(): queue_free())
+	add_child(death_timer)
+	death_timer.start()
 
 func load_mob_abilities() -> void:
 	ability_container.grant(mob_attack)
 
-# Override with mob-specific damage color
 func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: AttributeSpec) -> void:
 	if attribute.attribute_name == "health":
 		update_health_bar()
@@ -142,6 +143,7 @@ func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: 
 
 func _on_attribute_effect_removed(_attribute_effect: AttributeEffect, _attribute: AttributeSpec) -> void:
 	pass
+
 func _on_effect_applied(_effect: GameplayEffect) -> void:
 	pass
 
@@ -205,3 +207,15 @@ func handle_flee_behavior() -> void:
 		apply_movement_force(nav_direction)
 	else:
 		apply_movement_force(flee_direction)
+
+func give_experience_to_player() -> void:
+	var players = get_tree().get_nodes_in_group("player")
+	if players.is_empty():
+		return
+		
+	var player = players[0]
+	
+	var base_exp = experience_value
+	
+	if player.has_method("add_experience"):
+		player.add_experience(base_exp)
