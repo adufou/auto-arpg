@@ -49,3 +49,7 @@ func update_exp_bar(exp_attribute: AttributeSpec = null, exp_required_attribute:
 		exp_bar.max_value = exp_required_attribute.current_value
 		
 	exp_bar.modulate = Color(0.5, 0.5, 1.0)  # Bleu clair
+
+
+func _on_chararcter_button_pressed() -> void:
+	pass # Replace with function body.

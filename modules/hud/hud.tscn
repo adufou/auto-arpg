@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b82gujhbqtyx3"]
+[gd_scene load_steps=3 format=3 uid="uid://b82gujhbqtyx3"]
 
 [ext_resource type="Script" uid="uid://dwnhbs4g55pdk" path="res://modules/hud/hud.gd" id="1_ak31n"]
+[ext_resource type="PackedScene" uid="uid://cfjwldnucqhgg" path="res://character_panel/character_panel.tscn" id="2_0vtu1"]
 
 [node name="Hud" type="CanvasLayer" groups=["hud"]]
 layer = 10
@@ -8,6 +9,14 @@ script = ExtResource("1_ak31n")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HudInterfaceRootControl" type="Control" parent="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,23 +31,76 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="EmptyControl" type="Control" parent="Control/VBoxContainer"]
+[node name="Control" type="Control" parent="Control/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
+[node name="InGameHudVBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="EmptyControl" type="Control" parent="Control/VBoxContainer/Control/InGameHudVBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/Control/InGameHudVBoxContainer"]
 layout_mode = 2
 
-[node name="LevelLabel" type="Label" parent="Control/VBoxContainer/HBoxContainer"]
+[node name="LevelLabel" type="Label" parent="Control/VBoxContainer/Control/InGameHudVBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Level"
 
-[node name="EmptyControl" type="Control" parent="Control/VBoxContainer/HBoxContainer"]
+[node name="EmptyControl" type="Control" parent="Control/VBoxContainer/Control/InGameHudVBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ExperienceProgressBar" type="ProgressBar" parent="Control/VBoxContainer"]
+[node name="ExperienceProgressBar" type="ProgressBar" parent="Control/VBoxContainer/Control/InGameHudVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="PanelsControl" type="Control" parent="Control/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterPanel" parent="Control/VBoxContainer/Control/PanelsControl" instance=ExtResource("2_0vtu1")]
+layout_mode = 1
+offset_right = -640.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="ChararcterButton" type="Button" parent="Control/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Character"
+
+[node name="TBDButton2" type="Button" parent="Control/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "TBD"
+
+[node name="TBDButton3" type="Button" parent="Control/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "TBD"
+
+[node name="TBDButton4" type="Button" parent="Control/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "TBD"
+
+[connection signal="pressed" from="Control/VBoxContainer/HBoxContainer2/ChararcterButton" to="." method="_on_chararcter_button_pressed"]

@@ -1,0 +1,282 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfjwldnucqhgg"]
+
+[ext_resource type="Script" uid="uid://cdy7updw4epa" path="res://character_panel/character_panel.gd" id="1_v6kdr"]
+
+[node name="CharacterPanel" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v6kdr")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Character"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="LevelHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/LevelHBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/LevelHBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Level"
+
+[node name="LevelLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/LevelHBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="EmptyControl" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/LevelHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/LevelHBoxContainer"]
+layout_mode = 2
+
+[node name="CharacteristicsPointsLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/LevelHBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/LevelHBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Characteristics Points"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CharacteristicsHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="DexterityHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/DexterityHBoxContainer"]
+layout_mode = 2
+text = "Dexterity"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DexterityValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/DexterityHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UpgradeDexterityButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/DexterityHBoxContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="EmptyControl" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ForceHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/ForceHBoxContainer"]
+layout_mode = 2
+text = "Force"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ForceValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/ForceHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UpgradeForceButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/ForceHBoxContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="EmptyControl2" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IntelligenceHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/IntelligenceHBoxContainer"]
+layout_mode = 2
+text = "Intelligence"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IntelligenceValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/IntelligenceHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UpgradeIntelligenceButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/IntelligenceHBoxContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+
+[node name="DefenseVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/DefenseVBoxContainer"]
+layout_mode = 2
+text = "Defense"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/DefenseVBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/DefenseVBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HealthHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/DefenseVBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/DefenseVBoxContainer/MarginContainer/VBoxContainer/HealthHBoxContainer"]
+layout_mode = 2
+text = "Health"
+
+[node name="HealthValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/DefenseVBoxContainer/MarginContainer/VBoxContainer/HealthHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/DefenseVBoxContainer"]
+layout_mode = 2
+
+[node name="AttackVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer"]
+layout_mode = 2
+text = "Attack"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="AttackHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer/MarginContainer/VBoxContainer/AttackHBoxContainer"]
+layout_mode = 2
+text = "Attack"
+
+[node name="AttackValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer/MarginContainer/VBoxContainer/AttackHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="CriticalChanceHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer/MarginContainer/VBoxContainer/CriticalChanceHBoxContainer"]
+layout_mode = 2
+text = "Critical Chance"
+
+[node name="CriticalChanceValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer/MarginContainer/VBoxContainer/CriticalChanceHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/AttackVBoxContainer"]
+layout_mode = 2
+
+[node name="UtilityVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/UtilityVBoxContainer"]
+layout_mode = 2
+text = "Utility"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/UtilityVBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/UtilityVBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MovementSpeedHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/UtilityVBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/UtilityVBoxContainer/MarginContainer/VBoxContainer/MovementSpeedHBoxContainer"]
+layout_mode = 2
+text = "Movement Speed"
+
+[node name="MovementSpeedValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/UtilityVBoxContainer/MarginContainer/VBoxContainer/MovementSpeedHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MarginContainer3/GridContainer/UtilityVBoxContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/DexterityHBoxContainer/UpgradeDexterityButton" to="." method="_on_upgrade_dexterity_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/ForceHBoxContainer/UpgradeForceButton" to="." method="_on_upgrade_force_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer2/CharacteristicsHBoxContainer/IntelligenceHBoxContainer/UpgradeIntelligenceButton" to="." method="_on_upgrade_intelligence_button_pressed"]
