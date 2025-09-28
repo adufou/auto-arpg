@@ -108,9 +108,20 @@ func initialize_navigation_agent() -> void:
 	navigation_agent_2d.target_desired_distance = 5.0
 # Méthode pour mettre à jour n'importe quel attribut
 func update_attribute(attribute_name: String, value: float) -> void:
-	var attr = attribute_map.get_attribute_by_name(attribute_name)
-	if attr:
-		attr.current_value = value
+	# The recommended way: use a GameplayEffect to ensure signals are emitted.
+	var effect = GameplayEffect.new()
+	var attribute_effect = AttributeEffect.new()
+
+	# For a SET operation, both min and max value must be the same.
+	attribute_effect.attribute_name = attribute_name
+	attribute_effect.minimum_value = value
+	attribute_effect.maximum_value = value
+	attribute_effect.life_time = 0 # LIFETIME_ONE_SHOT
+
+	# Correctly add the AttributeEffect to the GameplayEffect's array
+	effect.attributes_affected.append(attribute_effect)
+
+	attribute_map.apply_effect(effect)
 
 # Méthode simplifiée pour appliquer les attributs dérivés
 func apply_derived_attributes() -> void:
