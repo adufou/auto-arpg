@@ -126,9 +126,13 @@ func update_attribute(attribute_name: String, value: float) -> void:
 	if attr:
 		attr.current_value = value
 		
+		# SUPPRIMÉ : Recalcul automatique qui peut causer des boucles infinies
 		# Si c'est un attribut primaire, on met à jour automatiquement les attributs dérivés
-		if attribute_name in ["strength", "dexterity", "intelligence"]:
-			call_deferred("apply_derived_attributes")
+		# if attribute_name in ["strength", "dexterity", "intelligence"]:
+		#	call_deferred("apply_derived_attributes")
+		# 
+		# Les attributs dérivés sont maintenant calculés uniquement via GameplayEffect
+		# lors de l'initialisation ou d'événements explicites (level up, équipement)
 
 # Méthode pour appliquer des GameplayEffect qui calculent les attributs dérivés
 func apply_derived_attributes() -> void:
@@ -192,6 +196,12 @@ func apply_derived_attributes() -> void:
 	
 	print("[CharacterBase] Derived attributes applied successfully")
 
+# Méthode publique pour recalculer les attributs dérivés explicitement
+# À utiliser lors de level up, changement d'équipement, etc.
+func recalculate_derived_attributes() -> void:
+	print("[CharacterBase] Explicit recalculation of derived attributes")
+	apply_derived_attributes()
+
 # Note: Les anciennes méthodes sont gardées pour compatibilité, mais ne sont plus utilisées
 # A public method for safely updating derived stats (déprécié)
 func safe_update_derived_stats() -> void:
@@ -213,10 +223,13 @@ func get_attribute_value(attribute_name: String) -> float:
 func _on_attribute_changed(attribute: AttributeSpec) -> void:
 	print("[CharacterBase] _on_attribute_changed: " + attribute.attribute_name)
 	
+	# SUPPRIMÉ : Recalcul automatique qui peut causer des boucles infinies
 	# Si c'est un attribut primaire, on met à jour les attributs dérivés
-	if attribute.attribute_name in ["strength", "dexterity", "intelligence"]:
-		print("[CharacterBase] triggering derived stats update for " + attribute.attribute_name)
-		apply_derived_attributes()
+	# if attribute.attribute_name in ["strength", "dexterity", "intelligence"]:
+	#	print("[CharacterBase] triggering derived stats update for " + attribute.attribute_name)
+	#	apply_derived_attributes()
+	# 
+	# Les attributs dérivés sont calculés uniquement lors de l'initialisation
 
 	if attribute.attribute_name == "health":
 		update_health_bar()

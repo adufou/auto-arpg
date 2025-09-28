@@ -73,9 +73,39 @@ func setup_gameplay_systems() -> void:
 	
 	# Then add player-specific attributes
 	if attribute_map:
+		print("[Player] Initializing level attributes")
+		print("[Player] Setting level to: " + str(base_level))
 		update_attribute("level", base_level)
+		print("[Player] Setting experience to: " + str(base_experience))
 		update_attribute("experience", base_experience)
+		print("[Player] Setting experience_required to: " + str(experience_to_next_level))
 		update_attribute("experience_required", experience_to_next_level)
+		
+		# Vérifier que les valeurs ont été correctement définies
+		print("[Player] === DIAGNOSTIC INITIALISATION ===")
+		var level_attr = attribute_map.get_attribute_by_name("level")
+		var exp_attr = attribute_map.get_attribute_by_name("experience")
+		var exp_req_attr = attribute_map.get_attribute_by_name("experience_required")
+		
+		if level_attr:
+			print("[Player] Level attribute exists after init - current: " + str(level_attr.current_value) + ", max: " + str(level_attr.maximum_value))
+		else:
+			print("[Player] Level attribute NOT FOUND after init!")
+		
+		if exp_attr:
+			print("[Player] Experience attribute exists after init - current: " + str(exp_attr.current_value) + ", max: " + str(exp_attr.maximum_value))
+		else:
+			print("[Player] Experience attribute NOT FOUND after init!")
+		
+		if exp_req_attr:
+			print("[Player] Experience_required attribute exists after init - current: " + str(exp_req_attr.current_value) + ", max: " + str(exp_req_attr.maximum_value))
+		else:
+			print("[Player] Experience_required attribute NOT FOUND after init!")
+		
+		print("[Player] Verification via get_attribute_value() - Level: " + str(get_attribute_value("level")))
+		print("[Player] Verification via get_attribute_value() - Experience: " + str(get_attribute_value("experience")))
+		print("[Player] Verification via get_attribute_value() - Experience required: " + str(get_attribute_value("experience_required")))
+		print("[Player] === FIN DIAGNOSTIC INITIALISATION ===")
 	
 	# Finally, load player abilities
 	if ability_container:
@@ -261,54 +291,114 @@ func apply_player_derived_attributes() -> void:
 	print("[Player] Player-specific derived attributes applied successfully")
 
 func add_experience(exp_amount: float) -> void:
+	print("[Player] add_experience called with: " + str(exp_amount))
+	
 	if attribute_map == null:
+		print("[Player] attribute_map is null, returning")
 		return
-		
+	
+	# DIAGNOSTIC : Vérifier l'état de tous les attributs de level AVANT de faire quoi que ce soit
+	print("[Player] === DIAGNOSTIC AVANT AJOUT XP ===")
+	var level_attr = attribute_map.get_attribute_by_name("level")
+	var exp_attr = attribute_map.get_attribute_by_name("experience")
+	var exp_req_attr = attribute_map.get_attribute_by_name("experience_required")
+	
+	if level_attr:
+		print("[Player] Level attribute exists - current: " + str(level_attr.current_value) + ", max: " + str(level_attr.maximum_value))
+	else:
+		print("[Player] Level attribute NOT FOUND!")
+	
+	if exp_attr:
+		print("[Player] Experience attribute exists - current: " + str(exp_attr.current_value) + ", max: " + str(exp_attr.maximum_value))
+	else:
+		print("[Player] Experience attribute NOT FOUND!")
+	
+	if exp_req_attr:
+		print("[Player] Experience_required attribute exists - current: " + str(exp_req_attr.current_value) + ", max: " + str(exp_req_attr.maximum_value))
+	else:
+		print("[Player] Experience_required attribute NOT FOUND!")
+	
+	print("[Player] Via get_attribute_value() - Level: " + str(get_attribute_value("level")))
+	print("[Player] Via get_attribute_value() - Experience: " + str(get_attribute_value("experience")))
+	print("[Player] Via get_attribute_value() - Experience_required: " + str(get_attribute_value("experience_required")))
+	print("[Player] === FIN DIAGNOSTIC ===")
+	
+	print("[Player] Getting current experience")
 	var current_exp = get_attribute_value("experience")
 	var new_exp = current_exp + exp_amount
+	print("[Player] Current exp: " + str(current_exp) + ", New exp: " + str(new_exp))
 	
+	print("[Player] Showing floating damage")
 	var exp_color = Color(0.5, 0.5, 1.0)  # Couleur bleu clair pour l'XP
 	show_floating_damage(exp_amount, false, exp_color)
+	print("[Player] Floating damage shown")
 	
+	print("[Player] Updating experience attribute")
 	update_attribute("experience", new_exp)
+	print("[Player] Experience attribute updated")
 	
+	print("[Player] Checking level up")
 	check_level_up()
+	print("[Player] Level up check completed")
 
 # Drapeau pour éviter la récursion lors des level-ups
 var _processing_level_up: bool = false
 
 func check_level_up() -> void:
+	print("[Player] check_level_up called")
+	
 	# Protéger contre la récursion infinie
 	if _processing_level_up:
+		print("[Player] Already processing level up, returning")
 		return
 	
 	_processing_level_up = true
+	print("[Player] Starting level up processing")
 	
 	# Traiter tous les level-ups dans une boucle au lieu de récursivement
 	var leveled_up = true
-	while leveled_up:
+	var safety_counter = 0  # Protection contre boucle infinie
+	
+	while leveled_up and safety_counter < 10:  # Max 10 niveaux d'un coup
+		safety_counter += 1
+		print("[Player] Level up iteration: " + str(safety_counter))
+		
 		var current_exp = get_attribute_value("experience")
 		var exp_required = get_attribute_value("experience_required")
 		var current_level = get_attribute_value("level")
 		
+		print("[Player] Current exp: " + str(current_exp) + ", Required: " + str(exp_required) + ", Level: " + str(current_level))
+		
 		if current_exp >= exp_required:
+			print("[Player] Level up! New level: " + str(current_level + 1))
 			current_level += 1
 			update_attribute("level", current_level)
+			print("[Player] Level attribute updated")
 			
 			current_exp -= exp_required
 			update_attribute("experience", current_exp)
+			print("[Player] Experience attribute updated")
 			
 			var new_exp_required = get_attribute_value("experience_required") * 1.2
 			update_attribute("experience_required", new_exp_required)
+			print("[Player] Experience required updated")
 			
+			print("[Player] Applying level up bonuses")
 			apply_level_up_bonuses()
+			print("[Player] Level up bonuses applied")
 				
 			var level_color = Color(1.0, 0.8, 0.0)  # Couleur dorée
 			show_floating_damage(current_level, true, level_color)
+			print("[Player] Level up visual shown")
 		else:
+			print("[Player] No more level ups needed")
 			leveled_up = false
 	
+	if safety_counter >= 10:
+		print("[Player] WARNING: Level up safety counter reached!")
+	
 	_processing_level_up = false
+	print("[Player] Level up processing completed")
 
 # Drapeau pour éviter la récursion lors de l'application des bonus de level-up
 var _updating_level_up_bonuses: bool = false
@@ -338,13 +428,16 @@ func apply_level_up_bonuses() -> void:
 		mana_attr.maximum_value += 5
 		mana_attr.current_value = mana_attr.maximum_value
 	
-	# Les attributs dérivés sont automatiquement mis à jour par l'appel à update_attribute
-	# pour strength, dexterity et intelligence
+	# Recalculer explicitement les attributs dérivés après le level up
+	# (car nous avons désactivé les recalculs automatiques pour éviter les boucles infinies)
+	print("[Player] Recalculating derived attributes after level up")
+	recalculate_derived_attributes()
 	
 	# Mettre à jour la barre de santé
 	update_health_bar()
 	
 	_updating_level_up_bonuses = false
+	print("[Player] Level up bonuses completed")
 
 
 func load_player_abilities() -> void:

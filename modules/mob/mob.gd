@@ -12,11 +12,17 @@ func _ready() -> void:
 	super._ready()
 	add_to_group("mob")
 	
-	if attribute_map:
-		attribute_map.attribute_changed.connect(_on_attribute_changed)
+	# SUPPRIMÉ : Connexion redondante qui peut causer des cascades
+	# if attribute_map:
+	#	attribute_map.attribute_changed.connect(_on_attribute_changed)
+	# 
+	# La classe parent CharacterBase gère déjà les connexions nécessaires
+	# via attribute_effect_applied et attribute_effect_removed
 
 func _physics_process(_delta: float) -> void:
+	# Protection supplémentaire : arrêter le processing si le mob est mort
 	if ability_container and ability_container.has_tag("dead"):
+		set_physics_process(false)  # Désactiver définitivement le physics_process
 		return
 	
 	ensure_target_exists()
@@ -78,8 +84,47 @@ func update_derived_stats() -> void:
 	# Appeler la méthode de la classe parent qui utilise GameplayEffect
 	super.update_derived_stats()
 
-# Détection de la mort du mob quand sa santé tombe à 0
-func _on_attribute_changed(attribute: AttributeSpec) -> void:
+# SUPPRIMÉ : Cette méthode n'est plus connectée
+# La gestion de la mort se fait maintenant via _on_attribute_effect_applied
+# qui est connecté dans la classe parent CharacterBase
+
+# Méthode séparée pour gérer la mort
+func _handle_death() -> void:
+	print("[Mob] _handle_death called")
+	
+	# Vérifier si l'objet est encore valide
+	if not is_inside_tree():
+		print("[Mob] Already removed from tree, skipping death handling")
+		return
+	
+	# Arrêter le mouvement mais ne pas utiliser freeze pour éviter des bugs potentiels
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+	
+	# Désactiver le processing pour éviter les interactions
+	set_physics_process(false)
+	set_process(false)
+	
+	# Créer un timer pour la disparition du mob
+	var death_timer = Timer.new()
+	death_timer.wait_time = 1.5
+	death_timer.one_shot = true
+	death_timer.timeout.connect(_safe_queue_free)
+	add_child(death_timer)
+	death_timer.start()
+
+# Méthode sécurisée pour supprimer le mob
+func _safe_queue_free() -> void:
+	print("[Mob] _safe_queue_free called")
+	if is_inside_tree():
+		queue_free()
+	else:
+		print("[Mob] Already removed from tree")
+
+func load_mob_abilities() -> void:
+	ability_container.grant(mob_attack)
+
+func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: AttributeSpec) -> void:
 	if attribute.attribute_name == "health":
 		print("[Mob] Health changed to: " + str(attribute.current_buffed_value))
 		update_health_bar()
@@ -97,33 +142,11 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 			set_collision_layer(0)
 			set_collision_mask(0)
 			
-			# Donner l'expérience au joueur avant de supprimer le mob
-			give_experience_to_player()
+			# Différer l'attribution d'XP pour éviter les interférences
+			call_deferred("give_experience_to_player")
 			
 			# Utiliser un CallDeferred pour éviter les problèmes de timing
-			_handle_death()
-
-# Méthode séparée pour gérer la mort
-func _handle_death() -> void:
-	print("[Mob] _handle_death called")
-	# Arrêter le mouvement mais ne pas utiliser freeze pour éviter des bugs potentiels
-	linear_velocity = Vector2.ZERO
-	angular_velocity = 0
-	
-	# Créer un timer pour la disparition du mob
-	var death_timer = Timer.new()
-	death_timer.wait_time = 1.5
-	death_timer.one_shot = true
-	death_timer.timeout.connect(func(): queue_free())
-	add_child(death_timer)
-	death_timer.start()
-
-func load_mob_abilities() -> void:
-	ability_container.grant(mob_attack)
-
-func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: AttributeSpec) -> void:
-	if attribute.attribute_name == "health":
-		update_health_bar()
+			call_deferred("_handle_death")
 		
 		if attribute_effect.minimum_value < 0:
 			var damage_value = -attribute_effect.minimum_value
@@ -209,13 +232,24 @@ func handle_flee_behavior() -> void:
 		apply_movement_force(flee_direction)
 
 func give_experience_to_player() -> void:
+	print("[Mob] give_experience_to_player called")
+	
+	# Vérifier si le mob est encore dans l'arbre
+	if not is_inside_tree():
+		print("[Mob] Not in tree, skipping XP attribution")
+		return
+	
 	var players = get_tree().get_nodes_in_group("player")
 	if players.is_empty():
+		print("[Mob] No players found")
 		return
 		
 	var player = players[0]
-	
 	var base_exp = experience_value
+	
+	print("[Mob] Giving " + str(base_exp) + " XP to player")
 	
 	if player.has_method("add_experience"):
 		player.add_experience(base_exp)
+	
+	print("[Mob] XP attribution completed")

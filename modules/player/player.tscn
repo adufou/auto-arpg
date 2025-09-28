@@ -1,9 +1,94 @@
-[gd_scene load_steps=5 format=3 uid="uid://bftqx2ftpjdiy"]
+[gd_scene load_steps=18 format=3 uid="uid://bftqx2ftpjdiy"]
 
 [ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/character_base/character_base.tscn" id="1_rhktx"]
 [ext_resource type="Script" uid="uid://cacixg2e6fl6u" path="res://modules/player/player.gd" id="2_pnc3n"]
 [ext_resource type="Resource" path="res://modules/abilities/instances/player_attack.tres" id="5_hd5yx"]
+[ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="5_ue0ku"]
 [ext_resource type="Texture2D" uid="uid://dynqn7swernt0" path="res://assets/player.png" id="6_hd5yx"]
+
+[sub_resource type="Resource" id="Resource_kxsje"]
+script = ExtResource("5_ue0ku")
+attribute_name = "strength"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_8k6m2"]
+script = ExtResource("5_ue0ku")
+attribute_name = "dexterity"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_rydr8"]
+script = ExtResource("5_ue0ku")
+attribute_name = "intelligence"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_pb6tw"]
+script = ExtResource("5_ue0ku")
+attribute_name = "health"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_pdxlr"]
+script = ExtResource("5_ue0ku")
+attribute_name = "mana"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_1ofww"]
+script = ExtResource("5_ue0ku")
+attribute_name = "movement_speed"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_cabvr"]
+script = ExtResource("5_ue0ku")
+attribute_name = "attack"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_7bvkv"]
+script = ExtResource("5_ue0ku")
+attribute_name = "crit_chance"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_1pi0t"]
+script = ExtResource("5_ue0ku")
+attribute_name = "defense"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_hd5yx"]
+script = ExtResource("5_ue0ku")
+attribute_name = "level"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_5rkg0"]
+script = ExtResource("5_ue0ku")
+attribute_name = "experience"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+
+[sub_resource type="Resource" id="Resource_ej5i3"]
+script = ExtResource("5_ue0ku")
+attribute_name = "experience_required"
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
 
 [node name="Player" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_rhktx")]
 script = ExtResource("2_pnc3n")
@@ -41,3 +126,6 @@ offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 show_percentage = false
+
+[node name="GameplayAttributeMap" parent="." index="5"]
+attributes = Array[ExtResource("5_ue0ku")]([SubResource("Resource_kxsje"), SubResource("Resource_8k6m2"), SubResource("Resource_rydr8"), SubResource("Resource_pb6tw"), SubResource("Resource_pdxlr"), SubResource("Resource_1ofww"), SubResource("Resource_cabvr"), SubResource("Resource_7bvkv"), SubResource("Resource_1pi0t"), SubResource("Resource_hd5yx"), SubResource("Resource_5rkg0"), SubResource("Resource_ej5i3")])

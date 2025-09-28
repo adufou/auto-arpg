@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ckqe4q0hrebnr" path="res://modules/floating_damages/floating_damage.tscn" id="2_cskhr"]
 [ext_resource type="Script" uid="uid://vbhqxfae40xq" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/gameplay_attribute_map.gd" id="2_g6arn"]
 [ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_cskhr"]
-[ext_resource type="Resource" path="res://modules/attributes/character_attributes.tres" id="4_3l4xq"]
+[ext_resource type="Resource" uid="uid://x8phjojpxn0c" path="res://modules/attributes/character_attributes.tres" id="4_3l4xq"]
 [ext_resource type="Script" uid="uid://b4ffyyla852rm" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/ability_container.gd" id="5_3hqd5"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3lixb"]
