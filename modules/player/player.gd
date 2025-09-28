@@ -238,19 +238,6 @@ func apply_level_up_bonuses() -> void:
 	# Grant characteristic points
 	var current_points = get_attribute_value("characteristic_points")
 	update_attribute("characteristic_points", current_points + 5)
-
-	
-	# Augmenter la santé et mana maximales
-	var health_attr = attribute_map.get_attribute_by_name("health")
-	var mana_attr = attribute_map.get_attribute_by_name("mana")
-	
-	if health_attr:
-		health_attr.maximum_value += 10
-		health_attr.current_value = health_attr.maximum_value
-		
-	if mana_attr:
-		mana_attr.maximum_value += 5
-		mana_attr.current_value = mana_attr.maximum_value
 	
 	# Recalculer les attributs dérivés
 	apply_derived_attributes()
