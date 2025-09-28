@@ -11,13 +11,6 @@ func _ready() -> void:
 	
 	super._ready()
 	add_to_group("mob")
-	
-	# SUPPRIMÉ : Connexion redondante qui peut causer des cascades
-	# if attribute_map:
-	#	attribute_map.attribute_changed.connect(_on_attribute_changed)
-	# 
-	# La classe parent CharacterBase gère déjà les connexions nécessaires
-	# via attribute_effect_applied et attribute_effect_removed
 
 func _physics_process(_delta: float) -> void:
 	# Protection supplémentaire : arrêter le processing si le mob est mort
@@ -79,12 +72,7 @@ func find_player() -> void:
 func is_valid_player_target(node: Node) -> bool:
 	return node.name.contains("Player") and node != self
 
-# Les attributs dérivés sont maintenant gérés automatiquement par CharacterBase
-# Cette méthode n'est plus nécessaire car apply_derived_attributes() est appelée lors de l'initialisation
-
-# SUPPRIMÉ : Cette méthode n'est plus connectée
-# La gestion de la mort se fait maintenant via _on_attribute_effect_applied
-# qui est connecté dans la classe parent CharacterBase
+# Les attributs dérivés sont gérés automatiquement par CharacterBase
 
 # Méthode unique et simple pour gérer la mort
 func handle_death() -> void:

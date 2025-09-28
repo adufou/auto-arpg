@@ -74,19 +74,21 @@ Suite à l'analyse du code, nous avons identifié une **complexité excessive** 
 - ✅ Suppression des race conditions
 - ✅ Plus de vérifications redondantes
 
-### 🟢 **TÂCHE 3 : Simplifier le système de level-up**
-**Fichiers concernés** : `player.gd`
+### ✅ **TÂCHE 3 : Simplifier le système de level-up** - TERMINÉE
+**Fichiers concernés** : `player.gd`, `character_base.gd`, `mob.gd`
 
-**Actions** :
-1. Supprimer les flags `_processing_level_up`, `_updating_level_up_bonuses`
-2. Simplifier `check_level_up()` sans boucle while complexe
-3. Supprimer les logs de diagnostic excessifs
-4. Utiliser les GameplayEffect pour les bonus de level-up
+**Actions réalisées** :
+1. ✅ Supprimé les flags `_processing_level_up`, `_updating_level_up_bonuses` (TÂCHE 1)
+2. ✅ Simplifié `check_level_up()` sans boucle while complexe (TÂCHE 1)
+3. ✅ Supprimé les logs de diagnostic excessifs (50+ print statements)
+4. ✅ Nettoyé tous les commentaires "SUPPRIMÉ" et "déprécié"
+5. ✅ Simplifié `setup_gameplay_systems()` (50+ lignes → 25 lignes)
 
-**Bénéfices** :
-- Code de level-up plus lisible
-- Suppression des protections de récursion inutiles
-- Conformité avec l'architecture de l'addon
+**Résultats** :
+- ✅ Code de level-up plus lisible (déjà fait en TÂCHE 1)
+- ✅ Suppression des protections de récursion inutiles
+- ✅ Code plus propre sans logs de debug
+- ✅ Conformité avec l'architecture de l'addon
 
 ### 🔵 **TÂCHE 4 : Nettoyage général**
 **Fichiers concernés** : Tous

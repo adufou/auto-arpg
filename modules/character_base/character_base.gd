@@ -54,15 +54,12 @@ func _ready() -> void:
 	initialize_navigation_agent()
 
 func setup_gameplay_systems() -> void:
-	print("[CharacterBase] setup_gameplay_systems started")
 	# Get references to nodes
 	attribute_map = %GameplayAttributeMap
 	ability_container = %AbilityContainer
 	
-	# PHASE 1: Set up attributes and attribute map first
+	# Set up attributes and attribute map
 	if attribute_map:
-		print("[CharacterBase] Setting up primary attributes")
-		
 		# Configure les attributs primaires
 		update_attribute("strength", base_strength)
 		update_attribute("dexterity", base_dexterity)
@@ -83,42 +80,28 @@ func setup_gameplay_systems() -> void:
 		
 		# Appliquer les effets pour calculer les attributs dérivés
 		apply_derived_attributes()
-		print("[CharacterBase] Initial derived stats calculated")
-		
-		# Mettre à jour explicitement la barre de vie
 		update_health_bar()
 
-		# Connecter UNIQUEMENT les signaux pour les effets (plus de attribute_changed)
-		print("[CharacterBase] Connecting signals")
+		# Connecter les signaux pour les effets
 		attribute_map.attribute_effect_applied.connect(_on_attribute_effect_applied)
 		attribute_map.attribute_effect_removed.connect(_on_attribute_effect_removed)
 		attribute_map.effect_applied.connect(_on_effect_applied)
-		print("[CharacterBase] Signals connected")
 	
-	# PHASE 2: Setup ability container after attribute map is ready
+	# Setup ability container
 	if ability_container and attribute_map:
-		print("[CharacterBase] Setting up ability container")
 		# Configure the AbilityContainer to use our GameplayAttributeMap
 		if ability_container.gameplay_attribute_map_path.is_empty():
 			ability_container.gameplay_attribute_map_path = attribute_map.get_path()
 			ability_container.gameplay_attribute_map = attribute_map
-			print("[CharacterBase] Ability container path set")
 			
-		# We'll add tags at the end of _ready using a callback
-		# This ensures attribute updates have completed
-		print("[CharacterBase] Deferring tag addition")
+		# Add tags after initialization is complete
 		call_deferred("_add_ability_tags")
 
-	print("[CharacterBase] setup_gameplay_systems completed")
-
-# Separated tag adding to happen after initialization is complete
+# Add ability tags after initialization is complete
 func _add_ability_tags() -> void:
-	print("[CharacterBase] _add_ability_tags called")
 	if ability_container:
-		print("[CharacterBase] Adding tags to ability container")
 		ability_container.add_tag("can_attack")
 		ability_container.add_tag("attack_ready")
-		print("[CharacterBase] Tags added")
 
 func initialize_navigation_agent() -> void:
 	navigation_agent_2d.path_desired_distance = 5.0
@@ -128,14 +111,6 @@ func update_attribute(attribute_name: String, value: float) -> void:
 	var attr = attribute_map.get_attribute_by_name(attribute_name)
 	if attr:
 		attr.current_value = value
-		
-		# SUPPRIMÉ : Recalcul automatique qui peut causer des boucles infinies
-		# Si c'est un attribut primaire, on met à jour automatiquement les attributs dérivés
-		# if attribute_name in ["strength", "dexterity", "intelligence"]:
-		#	call_deferred("apply_derived_attributes")
-		# 
-		# Les attributs dérivés sont maintenant calculés uniquement via GameplayEffect
-		# lors de l'initialisation ou d'événements explicites (level up, équipement)
 
 # Méthode simplifiée pour appliquer les attributs dérivés
 func apply_derived_attributes() -> void:
@@ -159,30 +134,15 @@ func get_attribute_value(attribute_name: String) -> float:
 		return attr.current_buffed_value
 	return 0.0
 
-# Cette méthode est appelée lorsqu'un attribut est modifié
-# Note: Nous n'y sommes plus connectés pour éviter les cascades,
-# mais la fonction reste disponible pour compatibilité
+# Méthode appelée lorsqu'un attribut est modifié (pour compatibilité)
 func _on_attribute_changed(attribute: AttributeSpec) -> void:
-	print("[CharacterBase] _on_attribute_changed: " + attribute.attribute_name)
-	
-	# SUPPRIMÉ : Recalcul automatique qui peut causer des boucles infinies
-	# Si c'est un attribut primaire, on met à jour les attributs dérivés
-	# if attribute.attribute_name in ["strength", "dexterity", "intelligence"]:
-	#	print("[CharacterBase] triggering derived stats update for " + attribute.attribute_name)
-	#	apply_derived_attributes()
-	# 
-	# Les attributs dérivés sont calculés uniquement lors de l'initialisation
-
 	if attribute.attribute_name == "health":
 		update_health_bar()
 
 	if attribute.current_buffed_value <= 0 and ability_container and not ability_container.has_tag("dead"):
 		ability_container.add_tag("dead")
-
 		modulate = Color(0.5, 0.0, 0.0, 0.5)
 		freeze = true
-
-		# Disable collision so other characters can pass through
 		set_collision_layer(0)
 		set_collision_mask(0)
 
