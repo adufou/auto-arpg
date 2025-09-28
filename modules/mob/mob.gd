@@ -86,81 +86,45 @@ func is_valid_player_target(node: Node) -> bool:
 # La gestion de la mort se fait maintenant via _on_attribute_effect_applied
 # qui est connecté dans la classe parent CharacterBase
 
-# Méthode séparée pour gérer la mort
-func _handle_death() -> void:
-	print("[Mob] _handle_death called")
+# Méthode unique et simple pour gérer la mort
+func handle_death() -> void:
+	# Marquer comme mort
+	ability_container.add_tag("dead")
 	
-	# Vérifier si l'objet est encore valide
-	if not is_inside_tree():
-		print("[Mob] Already removed from tree, skipping death handling")
-		return
-	
-	# Arrêter le mouvement mais ne pas utiliser freeze pour éviter des bugs potentiels
-	linear_velocity = Vector2.ZERO
-	angular_velocity = 0
-	
-	# Désactiver le processing pour éviter les interactions
+	# Effets visuels et physiques
+	modulate = Color(0.2, 0.0, 0.0, 0.7)
+	set_collision_layer(0)
+	set_collision_mask(0)
 	set_physics_process(false)
-	set_process(false)
 	
-	# Créer un timer pour la disparition du mob
-	var death_timer = Timer.new()
-	death_timer.wait_time = 1.5
-	death_timer.one_shot = true
-	death_timer.timeout.connect(_safe_queue_free)
-	add_child(death_timer)
-	death_timer.start()
-
-# Méthode sécurisée pour supprimer le mob
-func _safe_queue_free() -> void:
-	print("[Mob] _safe_queue_free called")
-	if is_inside_tree():
-		queue_free()
-	else:
-		print("[Mob] Already removed from tree")
+	# Donner l'XP au joueur
+	give_experience_to_player()
+	
+	# Supprimer après délai
+	var timer = Timer.new()
+	timer.wait_time = 1.5
+	timer.one_shot = true
+	timer.timeout.connect(queue_free)
+	add_child(timer)
+	timer.start()
 
 func load_mob_abilities() -> void:
 	ability_container.grant(mob_attack)
 
 func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: AttributeSpec) -> void:
 	if attribute.attribute_name == "health":
-		print("[Mob] Health changed to: " + str(attribute.current_buffed_value))
 		update_health_bar()
 		
-		# Vérifier si le mob est mort (santé <= 0) et s'il n'est pas déjà marqué comme mort
-		if attribute.current_buffed_value <= 0 and ability_container and not ability_container.has_tag("dead"):
-			print("[Mob] Mob died!")
-			# Marquer comme mort pour éviter les appels multiples
-			ability_container.add_tag("dead")
-			
-			# Effet visuel
-			modulate = Color(0.2, 0.0, 0.0, 0.7) # Rouge foncé transparent
-			
-			# Désactiver les collisions
-			set_collision_layer(0)
-			set_collision_mask(0)
-			
-			# Différer l'attribution d'XP pour éviter les interférences
-			call_deferred("give_experience_to_player")
-			
-			# Utiliser un CallDeferred pour éviter les problèmes de timing
-			call_deferred("_handle_death")
+		# Gestion simple de la mort
+		if attribute.current_buffed_value <= 0 and not ability_container.has_tag("dead"):
+			handle_death()
 		
+		# Affichage des dégâts
 		if attribute_effect.minimum_value < 0:
 			var damage_value = -attribute_effect.minimum_value
-			
-			var is_critical = false
-			if attribute_effect.has_meta("critical") and attribute_effect.get_meta("critical") == true:
-				is_critical = true
-				
-			var damage_color = Color.WHITE
-			if is_critical:
-				damage_color = Color(1.0, 1.0, 0.0)  # Yellow for player critical damage
-			
+			var is_critical = attribute_effect.has_meta("critical") and attribute_effect.get_meta("critical")
+			var damage_color = Color.YELLOW if is_critical else Color.WHITE
 			show_floating_damage(damage_value, is_critical, damage_color)
-			
-		elif attribute_effect.minimum_value > 0:
-			pass
 
 func _on_attribute_effect_removed(_attribute_effect: AttributeEffect, _attribute: AttributeSpec) -> void:
 	pass
@@ -229,25 +193,8 @@ func handle_flee_behavior() -> void:
 	else:
 		apply_movement_force(flee_direction)
 
+# Méthode simplifiée pour donner l'XP
 func give_experience_to_player() -> void:
-	print("[Mob] give_experience_to_player called")
-	
-	# Vérifier si le mob est encore dans l'arbre
-	if not is_inside_tree():
-		print("[Mob] Not in tree, skipping XP attribution")
-		return
-	
 	var players = get_tree().get_nodes_in_group("player")
-	if players.is_empty():
-		print("[Mob] No players found")
-		return
-		
-	var player = players[0]
-	var base_exp = experience_value
-	
-	print("[Mob] Giving " + str(base_exp) + " XP to player")
-	
-	if player.has_method("add_experience"):
-		player.add_experience(base_exp)
-	
-	print("[Mob] XP attribution completed")
+	if not players.is_empty() and players[0].has_method("add_experience"):
+		players[0].add_experience(experience_value)

@@ -58,19 +58,21 @@ Suite à l'analyse du code, nous avons identifié une **complexité excessive** 
 - ✅ Maintenance simplifiée (170+ lignes → 50 lignes)
 - ✅ Plus d'erreurs de compilation
 
-### 🟡 **TÂCHE 2 : Simplifier la gestion de mort des mobs**
+### ✅ **TÂCHE 2 : Simplifier la gestion de mort des mobs** - TERMINÉE
 **Fichiers concernés** : `mob.gd`
 
-**Actions** :
-1. Fusionner `_handle_death()`, `_safe_queue_free()`, `give_experience_to_player()` en une seule méthode `handle_death()`
-2. Supprimer les vérifications redondantes (`is_inside_tree()`)
-3. Simplifier la logique de mort en utilisant les signaux de l'addon
-4. Nettoyer les logs de debug
+**Actions réalisées** :
+1. ✅ Fusionné 4 méthodes fragmentées en une seule `handle_death()` (20 lignes)
+2. ✅ Supprimé les vérifications redondantes (`is_inside_tree()`)
+3. ✅ Simplifié `_on_attribute_effect_applied()` (13 lignes au lieu de 35)
+4. ✅ Nettoyé tous les logs de debug (8 print statements supprimés)
+5. ✅ Supprimé les `call_deferred` multiples
 
-**Bénéfices** :
-- Logique de mort claire et centralisée
-- Moins de code à maintenir
-- Suppression des race conditions
+**Résultats** :
+- ✅ Logique de mort claire et centralisée (1 méthode au lieu de 4)
+- ✅ Code simplifié (80+ lignes → 30 lignes)
+- ✅ Suppression des race conditions
+- ✅ Plus de vérifications redondantes
 
 ### 🟢 **TÂCHE 3 : Simplifier le système de level-up**
 **Fichiers concernés** : `player.gd`
