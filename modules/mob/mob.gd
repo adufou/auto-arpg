@@ -2,7 +2,7 @@ extends CharacterBase
 
 @export var mob_attack: Ability
 @export var flee_health_threshold: float = 0.3  # Flee when health below this percentage
-@export var experience_value: float = 10.0  # Valeur d'XP donnée quand le mob est tué
+@export var experience_value: float = 100.0  # Valeur d'XP donnée quand le mob est tué
 
 var target: Node2D = null
 

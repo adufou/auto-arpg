@@ -18,9 +18,9 @@ var mob_detection_timer: float = 0.0
 
 func _ready() -> void:
 	base_health = 500.0
-	base_strength = 25.0
-	base_dexterity = 25.0
-	base_intelligence = 25.0
+	base_strength = 50.0
+	base_dexterity = 50.0
+	base_intelligence = 50.0
 	movement_speed = 200.0
 	
 	super._ready()
