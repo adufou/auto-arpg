@@ -1,0 +1,28 @@
+[gd_resource type="GameplayEffect" load_steps=5 format=3 uid="uid://c8m4xvn4qxqxr"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/gameplay_effect.gd" id="1_1"]
+
+[sub_resource type="AttributeEffect" id="AttributeEffect_1"]
+attribute_name = "attack"
+minimum_value = 0.0
+maximum_value = 0.0
+
+[sub_resource type="AttributeEffect" id="AttributeEffect_2"]
+attribute_name = "defense"
+minimum_value = 0.0
+maximum_value = 0.0
+
+[sub_resource type="AttributeEffect" id="AttributeEffect_3"]
+attribute_name = "crit_chance"
+minimum_value = 0.0
+maximum_value = 0.0
+
+[sub_resource type="AttributeEffect" id="AttributeEffect_4"]
+attribute_name = "movement_speed"
+minimum_value = 0.0
+maximum_value = 0.0
+
+[resource]
+script = ExtResource("1_1")
+name = "PlayerDerivedStats"
+attributes_affected = Array[AttributeEffect]([SubResource("AttributeEffect_1"), SubResource("AttributeEffect_2"), SubResource("AttributeEffect_3"), SubResource("AttributeEffect_4")])

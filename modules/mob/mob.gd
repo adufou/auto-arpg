@@ -79,10 +79,8 @@ func find_player() -> void:
 func is_valid_player_target(node: Node) -> bool:
 	return node.name.contains("Player") and node != self
 
-# Mise à jour pour utiliser la nouvelle architecture GameplayEffect
-func update_derived_stats() -> void:
-	# Appeler la méthode de la classe parent qui utilise GameplayEffect
-	super.update_derived_stats()
+# Les attributs dérivés sont maintenant gérés automatiquement par CharacterBase
+# Cette méthode n'est plus nécessaire car apply_derived_attributes() est appelée lors de l'initialisation
 
 # SUPPRIMÉ : Cette méthode n'est plus connectée
 # La gestion de la mort se fait maintenant via _on_attribute_effect_applied

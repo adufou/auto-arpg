@@ -1,6 +1,9 @@
 extends RigidBody2D
 class_name CharacterBase
 
+# Import du calculateur d'attributs dérivés
+const DerivedStatsCalculator = preload("res://modules/effects/derived_stats_calculator.gd")
+
 @export var movement_speed: float = 100
 @export var target_detection_range: float = 300
 @export var attack_range: float = 24
@@ -134,81 +137,20 @@ func update_attribute(attribute_name: String, value: float) -> void:
 		# Les attributs dérivés sont maintenant calculés uniquement via GameplayEffect
 		# lors de l'initialisation ou d'événements explicites (level up, équipement)
 
-# Méthode pour appliquer des GameplayEffect qui calculent les attributs dérivés
+# Méthode simplifiée pour appliquer les attributs dérivés
 func apply_derived_attributes() -> void:
-	print("[CharacterBase] Applying derived attributes using GameplayEffect")
-	
 	if not attribute_map:
-		print("[CharacterBase] Error: No attribute map available")
 		return
 	
-	# Créer un effet pour les dérivés de Force (attaque, défense)
-	var strength_effect = GameplayEffect.new()
-	strength_effect.name = "StrengthDerivedEffect"
+	# Utiliser le calculateur pour obtenir les valeurs dérivées
+	var derived_values = DerivedStatsCalculator.calculate_base_derived_stats(attribute_map)
 	
-	# Valeur actuelle de Force
-	var str_value = get_attribute_value("strength")
-	
-	# Effet sur l'attaque
-	var attack_effect = AttributeEffect.new()
-	attack_effect.attribute_name = "attack"
-	attack_effect.minimum_value = str_value * 1.2
-	attack_effect.applies_as = 0 # Value modification
-	attack_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	strength_effect.attributes_affected.append(attack_effect)
-	
-	# Effet sur la défense
-	var defense_effect = AttributeEffect.new()
-	defense_effect.attribute_name = "defense"
-	defense_effect.minimum_value = str_value * 0.7
-	defense_effect.applies_as = 0 # Value modification
-	defense_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	strength_effect.attributes_affected.append(defense_effect)
-	
-	# Appliquer l'effet Force
-	attribute_map.apply_effect(strength_effect)
-	
-	# Créer un effet pour les dérivés de Dextérité (crit_chance, mouvement)
-	var dex_effect = GameplayEffect.new()
-	dex_effect.name = "DexterityDerivedEffect"
-	
-	# Valeur actuelle de Dextérité
-	var dex_value = get_attribute_value("dexterity")
-	
-	# Effet sur les chances critiques
-	var crit_effect = AttributeEffect.new()
-	crit_effect.attribute_name = "crit_chance"
-	crit_effect.minimum_value = dex_value * 0.3
-	crit_effect.applies_as = 0 # Value modification
-	crit_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	dex_effect.attributes_affected.append(crit_effect)
-	
-	# Effet sur la vitesse de mouvement
-	var movement_effect = AttributeEffect.new()
-	movement_effect.attribute_name = "movement_speed"
-	movement_effect.minimum_value = movement_speed * (1.0 + dex_value * 0.005)
-	movement_effect.applies_as = 0 # Value modification
-	movement_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	dex_effect.attributes_affected.append(movement_effect)
-	
-	# Appliquer l'effet Dextérité
-	attribute_map.apply_effect(dex_effect)
-	
-	print("[CharacterBase] Derived attributes applied successfully")
+	# Appliquer via le calculateur
+	DerivedStatsCalculator.apply_derived_stats(attribute_map, derived_values, "BaseDerivedStats")
 
 # Méthode publique pour recalculer les attributs dérivés explicitement
 # À utiliser lors de level up, changement d'équipement, etc.
 func recalculate_derived_attributes() -> void:
-	print("[CharacterBase] Explicit recalculation of derived attributes")
-	apply_derived_attributes()
-
-# Note: Les anciennes méthodes sont gardées pour compatibilité, mais ne sont plus utilisées
-# A public method for safely updating derived stats (déprécié)
-func safe_update_derived_stats() -> void:
-	apply_derived_attributes()
-
-# The actual implementation with the recursion protection (déprécié)
-func update_derived_stats() -> void:
 	apply_derived_attributes()
 
 func get_attribute_value(attribute_name: String) -> float:

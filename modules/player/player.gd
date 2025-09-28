@@ -24,7 +24,7 @@ func _ready() -> void:
 	super._ready()
 	add_to_group("player")
 	
-	update_derived_stats()
+	# Les attributs dérivés seront calculés automatiquement par setup_gameplay_systems()
 
 func _physics_process(delta: float) -> void:
 	if ability_container and ability_container.has_tag("dead"):
@@ -57,61 +57,22 @@ func _physics_process(delta: float) -> void:
 	set_navigation_target()
 	move_toward_target()
 
-# Flag to prevent recursive updates during initialization
-var _initialization_in_progress: bool = false
-
-
 func setup_gameplay_systems() -> void:
-	# Prevent recursive calls during initialization
-	if _initialization_in_progress:
-		return
-	
-	_initialization_in_progress = true
-	
-	# First let the parent do its setup
+	# Laisser la classe parent faire son setup
 	super.setup_gameplay_systems()
 	
-	# Then add player-specific attributes
+	# Ajouter les attributs spécifiques au joueur
 	if attribute_map:
-		print("[Player] Initializing level attributes")
-		print("[Player] Setting level to: " + str(base_level))
 		update_attribute("level", base_level)
-		print("[Player] Setting experience to: " + str(base_experience))
 		update_attribute("experience", base_experience)
-		print("[Player] Setting experience_required to: " + str(experience_to_next_level))
 		update_attribute("experience_required", experience_to_next_level)
-		
-		# Vérifier que les valeurs ont été correctement définies
-		print("[Player] === DIAGNOSTIC INITIALISATION ===")
-		var level_attr = attribute_map.get_attribute_by_name("level")
-		var exp_attr = attribute_map.get_attribute_by_name("experience")
-		var exp_req_attr = attribute_map.get_attribute_by_name("experience_required")
-		
-		if level_attr:
-			print("[Player] Level attribute exists after init - current: " + str(level_attr.current_value) + ", max: " + str(level_attr.maximum_value))
-		else:
-			print("[Player] Level attribute NOT FOUND after init!")
-		
-		if exp_attr:
-			print("[Player] Experience attribute exists after init - current: " + str(exp_attr.current_value) + ", max: " + str(exp_attr.maximum_value))
-		else:
-			print("[Player] Experience attribute NOT FOUND after init!")
-		
-		if exp_req_attr:
-			print("[Player] Experience_required attribute exists after init - current: " + str(exp_req_attr.current_value) + ", max: " + str(exp_req_attr.maximum_value))
-		else:
-			print("[Player] Experience_required attribute NOT FOUND after init!")
-		
-		print("[Player] Verification via get_attribute_value() - Level: " + str(get_attribute_value("level")))
-		print("[Player] Verification via get_attribute_value() - Experience: " + str(get_attribute_value("experience")))
-		print("[Player] Verification via get_attribute_value() - Experience required: " + str(get_attribute_value("experience_required")))
-		print("[Player] === FIN DIAGNOSTIC INITIALISATION ===")
 	
-	# Finally, load player abilities
+	# Charger les capacités du joueur
 	if ability_container:
 		load_player_abilities()
 	
-	_initialization_in_progress = false
+	# Calculer les attributs dérivés spécifiques au joueur
+	apply_derived_attributes()
 
 func find_all_mobs() -> void:
 	detected_mobs.clear()
@@ -222,222 +183,75 @@ func is_valid_mob_target(mob: Node) -> bool:
 		return not mob_ability_container.has_tag("dead")
 	return false
 
-# Remplace la méthode précédente pour être compatible avec le nouveau système
-# basé sur GameplayEffect
-func update_derived_stats() -> void:
-	# Déléguer à la méthode apply_derived_attributes spécifique au joueur
-	apply_player_derived_attributes()
-
-# Méthode qui crée et applique des GameplayEffect spécifiques au joueur
-func apply_player_derived_attributes() -> void:
-	print("[Player] Applying player-specific derived attributes")
-	
+# Méthode override pour utiliser les attributs dérivés spécifiques au joueur
+func apply_derived_attributes() -> void:
 	if not attribute_map:
 		return
 	
-	# Créer un effet pour les dérivés de Force (attaque, défense) spécifiques au joueur
-	var strength_effect = GameplayEffect.new()
-	strength_effect.name = "PlayerStrengthDerivedEffect"
+	# Utiliser le calculateur pour les valeurs spécifiques au joueur
+	var derived_values = DerivedStatsCalculator.calculate_player_derived_stats(attribute_map, movement_speed)
 	
-	# Valeur actuelle de Force
-	var str_value = get_attribute_value("strength")
-	
-	# Effet sur l'attaque (réduire pour équilibrer le jeu)
-	var attack_effect = AttributeEffect.new()
-	attack_effect.attribute_name = "attack"
-	attack_effect.minimum_value = str_value * 0.5 # Multiplicateur réduit pour éviter de tuer les mobs en un coup
-	attack_effect.applies_as = 0 # Value modification
-	attack_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	strength_effect.attributes_affected.append(attack_effect)
-	
-	# Effet sur la défense (avec bonus de dextérité)
-	var dex_value = get_attribute_value("dexterity")
-	var defense_effect = AttributeEffect.new()
-	defense_effect.attribute_name = "defense"
-	defense_effect.minimum_value = str_value * 0.5 + dex_value * 0.3
-	defense_effect.applies_as = 0 # Value modification
-	defense_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	strength_effect.attributes_affected.append(defense_effect)
-	
-	# Appliquer l'effet Force
-	attribute_map.apply_effect(strength_effect)
-	
-	# Effet sur les chances critiques
-	var crit_effect = GameplayEffect.new()
-	crit_effect.name = "PlayerCritDerivedEffect"
-	var crit_attr_effect = AttributeEffect.new()
-	crit_attr_effect.attribute_name = "crit_chance"
-	crit_attr_effect.minimum_value = dex_value * 0.5 # Bonus spécifique au joueur
-	crit_attr_effect.applies_as = 0 # Value modification
-	crit_attr_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	crit_effect.attributes_affected.append(crit_attr_effect)
-	
-	# Appliquer l'effet Critique
-	attribute_map.apply_effect(crit_effect)
-	
-	# Effet sur la vitesse de mouvement
-	var movement_effect = GameplayEffect.new()
-	movement_effect.name = "PlayerMovementDerivedEffect"
-	var movement_attr_effect = AttributeEffect.new()
-	movement_attr_effect.attribute_name = "movement_speed"
-	movement_attr_effect.minimum_value = movement_speed * (1.0 + dex_value * 0.015) # Bonus légèrement plus grand pour le joueur
-	movement_attr_effect.applies_as = 0 # Value modification
-	movement_attr_effect.life_time = AttributeEffect.LIFETIME_ONE_SHOT
-	movement_effect.attributes_affected.append(movement_attr_effect)
-	
-	# Appliquer l'effet Mouvement
-	attribute_map.apply_effect(movement_effect)
-	
-	print("[Player] Player-specific derived attributes applied successfully")
+	# Appliquer via le calculateur
+	DerivedStatsCalculator.apply_derived_stats(attribute_map, derived_values, "PlayerDerivedStats")
 
 func add_experience(exp_amount: float) -> void:
-	print("[Player] add_experience called with: " + str(exp_amount))
-	
-	if attribute_map == null:
-		print("[Player] attribute_map is null, returning")
+	if not attribute_map:
 		return
 	
-	# DIAGNOSTIC : Vérifier l'état de tous les attributs de level AVANT de faire quoi que ce soit
-	print("[Player] === DIAGNOSTIC AVANT AJOUT XP ===")
-	var level_attr = attribute_map.get_attribute_by_name("level")
-	var exp_attr = attribute_map.get_attribute_by_name("experience")
-	var exp_req_attr = attribute_map.get_attribute_by_name("experience_required")
-	
-	if level_attr:
-		print("[Player] Level attribute exists - current: " + str(level_attr.current_value) + ", max: " + str(level_attr.maximum_value))
-	else:
-		print("[Player] Level attribute NOT FOUND!")
-	
-	if exp_attr:
-		print("[Player] Experience attribute exists - current: " + str(exp_attr.current_value) + ", max: " + str(exp_attr.maximum_value))
-	else:
-		print("[Player] Experience attribute NOT FOUND!")
-	
-	if exp_req_attr:
-		print("[Player] Experience_required attribute exists - current: " + str(exp_req_attr.current_value) + ", max: " + str(exp_req_attr.maximum_value))
-	else:
-		print("[Player] Experience_required attribute NOT FOUND!")
-	
-	print("[Player] Via get_attribute_value() - Level: " + str(get_attribute_value("level")))
-	print("[Player] Via get_attribute_value() - Experience: " + str(get_attribute_value("experience")))
-	print("[Player] Via get_attribute_value() - Experience_required: " + str(get_attribute_value("experience_required")))
-	print("[Player] === FIN DIAGNOSTIC ===")
-	
-	print("[Player] Getting current experience")
 	var current_exp = get_attribute_value("experience")
 	var new_exp = current_exp + exp_amount
-	print("[Player] Current exp: " + str(current_exp) + ", New exp: " + str(new_exp))
 	
-	print("[Player] Showing floating damage")
+	# Afficher l'XP gagnée
 	var exp_color = Color(0.5, 0.5, 1.0)  # Couleur bleu clair pour l'XP
 	show_floating_damage(exp_amount, false, exp_color)
-	print("[Player] Floating damage shown")
 	
-	print("[Player] Updating experience attribute")
 	update_attribute("experience", new_exp)
-	print("[Player] Experience attribute updated")
-	
-	print("[Player] Checking level up")
 	check_level_up()
-	print("[Player] Level up check completed")
-
-# Drapeau pour éviter la récursion lors des level-ups
-var _processing_level_up: bool = false
 
 func check_level_up() -> void:
-	print("[Player] check_level_up called")
+	var max_levels = 10  # Protection contre boucle infinie
 	
-	# Protéger contre la récursion infinie
-	if _processing_level_up:
-		print("[Player] Already processing level up, returning")
-		return
-	
-	_processing_level_up = true
-	print("[Player] Starting level up processing")
-	
-	# Traiter tous les level-ups dans une boucle au lieu de récursivement
-	var leveled_up = true
-	var safety_counter = 0  # Protection contre boucle infinie
-	
-	while leveled_up and safety_counter < 10:  # Max 10 niveaux d'un coup
-		safety_counter += 1
-		print("[Player] Level up iteration: " + str(safety_counter))
-		
+	for i in range(max_levels):
 		var current_exp = get_attribute_value("experience")
 		var exp_required = get_attribute_value("experience_required")
 		var current_level = get_attribute_value("level")
 		
-		print("[Player] Current exp: " + str(current_exp) + ", Required: " + str(exp_required) + ", Level: " + str(current_level))
+		if current_exp < exp_required:
+			break  # Plus de level up possible
 		
-		if current_exp >= exp_required:
-			print("[Player] Level up! New level: " + str(current_level + 1))
-			current_level += 1
-			update_attribute("level", current_level)
-			print("[Player] Level attribute updated")
-			
-			current_exp -= exp_required
-			update_attribute("experience", current_exp)
-			print("[Player] Experience attribute updated")
-			
-			var new_exp_required = get_attribute_value("experience_required") * 1.2
-			update_attribute("experience_required", new_exp_required)
-			print("[Player] Experience required updated")
-			
-			print("[Player] Applying level up bonuses")
-			apply_level_up_bonuses()
-			print("[Player] Level up bonuses applied")
-				
-			var level_color = Color(1.0, 0.8, 0.0)  # Couleur dorée
-			show_floating_damage(current_level, true, level_color)
-			print("[Player] Level up visual shown")
-		else:
-			print("[Player] No more level ups needed")
-			leveled_up = false
-	
-	if safety_counter >= 10:
-		print("[Player] WARNING: Level up safety counter reached!")
-	
-	_processing_level_up = false
-	print("[Player] Level up processing completed")
-
-# Drapeau pour éviter la récursion lors de l'application des bonus de level-up
-var _updating_level_up_bonuses: bool = false
+		# Level up !
+		current_level += 1
+		current_exp -= exp_required
+		var new_exp_required = exp_required * experience_multiplier
+		
+		update_attribute("level", current_level)
+		update_attribute("experience", current_exp)
+		update_attribute("experience_required", new_exp_required)
+		
+		apply_level_up_bonuses()
+		show_floating_damage(current_level, true, Color(1.0, 0.8, 0.0))
 
 func apply_level_up_bonuses() -> void:
-	# Protéger contre la récursion
-	if _updating_level_up_bonuses:
-		return
+	# Augmenter les stats primaires
+	update_attribute("strength", get_attribute_value("strength") + 1)
+	update_attribute("dexterity", get_attribute_value("dexterity") + 1)
+	update_attribute("intelligence", get_attribute_value("intelligence") + 1)
 	
-	_updating_level_up_bonuses = true
-	
-	var str_value = get_attribute_value("strength") + 1
-	var dex_value = get_attribute_value("dexterity") + 1
-	var int_value = get_attribute_value("intelligence") + 1
-	
-	update_attribute("strength", str_value)
-	update_attribute("dexterity", dex_value)
-	update_attribute("intelligence", int_value)
-	
+	# Augmenter la santé et mana maximales
 	var health_attr = attribute_map.get_attribute_by_name("health")
+	var mana_attr = attribute_map.get_attribute_by_name("mana")
+	
 	if health_attr:
 		health_attr.maximum_value += 10
 		health_attr.current_value = health_attr.maximum_value
 		
-	var mana_attr = attribute_map.get_attribute_by_name("mana")
 	if mana_attr:
 		mana_attr.maximum_value += 5
 		mana_attr.current_value = mana_attr.maximum_value
 	
-	# Recalculer explicitement les attributs dérivés après le level up
-	# (car nous avons désactivé les recalculs automatiques pour éviter les boucles infinies)
-	print("[Player] Recalculating derived attributes after level up")
-	recalculate_derived_attributes()
-	
-	# Mettre à jour la barre de santé
+	# Recalculer les attributs dérivés
+	apply_derived_attributes()
 	update_health_bar()
-	
-	_updating_level_up_bonuses = false
-	print("[Player] Level up bonuses completed")
 
 
 func load_player_abilities() -> void:

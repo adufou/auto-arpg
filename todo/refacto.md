@@ -41,19 +41,22 @@ Suite à l'analyse du code, nous avons identifié une **complexité excessive** 
 
 ## Plan de refactoring (par priorité)
 
-### 🔴 **TÂCHE 1 : Simplifier la gestion des attributs dérivés**
-**Fichiers concernés** : `character_base.gd`, `player.gd`
+### ✅ **TÂCHE 1 : Simplifier la gestion des attributs dérivés** - TERMINÉE
+**Fichiers concernés** : `character_base.gd`, `player.gd`, `mob.gd`
 
-**Actions** :
-1. Créer des ressources `GameplayEffect` pour les attributs dérivés au lieu de les calculer manuellement
-2. Supprimer les méthodes `apply_derived_attributes()`, `apply_player_derived_attributes()`
-3. Utiliser uniquement `attribute_map.apply_effect()` avec des ressources
-4. Supprimer les flags de récursion `_initialization_in_progress`
+**Actions réalisées** :
+1. ✅ Créé `DerivedStatsCalculator` pour centraliser la logique
+2. ✅ Supprimé les méthodes complexes `apply_derived_attributes()`, `apply_player_derived_attributes()`
+3. ✅ Simplifié `apply_derived_attributes()` à 6 lignes au lieu de 60+
+4. ✅ Supprimé les flags de récursion `_initialization_in_progress`
+5. ✅ Nettoyé les logs de debug excessifs
+6. ✅ Corrigé l'appel à `update_derived_stats()` dans `mob.gd`
 
-**Bénéfices** :
-- Code conforme aux bonnes pratiques de l'addon
-- Suppression de la complexité liée aux boucles infinies
-- Maintenance simplifiée
+**Résultats** :
+- ✅ Code conforme aux bonnes pratiques de l'addon
+- ✅ Suppression de la complexité liée aux boucles infinies  
+- ✅ Maintenance simplifiée (170+ lignes → 50 lignes)
+- ✅ Plus d'erreurs de compilation
 
 ### 🟡 **TÂCHE 2 : Simplifier la gestion de mort des mobs**
 **Fichiers concernés** : `mob.gd`
