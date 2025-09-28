@@ -12,6 +12,5 @@
 
 [node name="Player" parent="MainNode2D" instance=ExtResource("2_vdtx4")]
 position = Vector2(812, 191)
-base_characteristic_points = 0
 
 [node name="Hud" parent="." instance=ExtResource("3_vvh5c")]

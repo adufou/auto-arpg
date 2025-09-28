@@ -1,14 +1,15 @@
 extends CharacterBase
 
 @export var mob_attack: Ability
-@export var flee_health_threshold: float = 0.3  # Flee when health below this percentage
-@export var experience_value: float = 100.0  # Valeur d'XP donnée quand le mob est tué
+
+var flee_health_threshold: float = 0.3 # Flee when health below this ratio
+var experience_value: float = 100.0  # Valeur d'XP donnée quand le mob est tué
 
 var target: Node2D = null
 
 func _ready() -> void:
 	base_health = 50.0
-	
+
 	super._ready()
 	add_to_group("mob")
 

@@ -2,14 +2,14 @@ extends CharacterBase
 
 
 @export var player_attack: Ability
-@export var mob_detection_interval: float = 0.5  # How often to search for mobs (in seconds)
 
-@export_group("Experience")
-@export var base_level: int = 1
-@export var base_experience: float = 0.0
-@export var experience_to_next_level: float = 100.0
-@export var experience_multiplier: float = 1.2
-@export var base_characteristic_points: int = 0
+var mob_detection_interval: float = 0.5  # How often to search for mobs (in seconds)
+
+var base_level: int = 1
+var base_experience: float = 0.0
+var experience_to_next_level: float = 100.0
+var experience_multiplier: float = 1.2
+var base_characteristic_points: int = 0
 
 var target_mob: Node2D = null
 var mobs_in_attack_range: Array[Node2D] = []
@@ -22,7 +22,7 @@ func _ready() -> void:
 	base_dexterity = 50.0
 	base_intelligence = 50.0
 	movement_speed = 200.0
-	
+
 	super._ready()
 	add_to_group("player")
 	

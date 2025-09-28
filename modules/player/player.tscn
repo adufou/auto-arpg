@@ -93,11 +93,6 @@ current_value = 0.0
 [node name="Player" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_rhktx")]
 script = ExtResource("2_pnc3n")
 player_attack = ExtResource("5_hd5yx")
-mob_detection_interval = 0.5
-base_level = 1
-base_experience = 0.0
-experience_to_next_level = 100.0
-experience_multiplier = 1.2
 navigation_agent_2d = NodePath("NavigationAgent2D")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="1"]

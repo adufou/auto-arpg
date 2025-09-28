@@ -4,21 +4,21 @@ class_name CharacterBase
 # Import du calculateur d'attributs dérivés
 const DerivedStatsCalculator = preload("res://modules/effects/derived_stats_calculator.gd")
 
-@export var movement_speed: float = 100
-@export var target_detection_range: float = 300
-@export var attack_range: float = 24
-@export var force_multiplier: float = 10
+var movement_speed: float = 100
+var target_detection_range: float = 300
+var attack_range: float = 24
+var force_multiplier: float = 10
 
 @export_group("References")
 @export var navigation_agent_2d: NavigationAgent2D
 @export var floating_damage_scene: PackedScene
 
-@export_group("Base Stats")
-@export var base_strength: float = 0.0
-@export var base_dexterity: float = 0.0
-@export var base_intelligence: float = 0.0
-@export var base_health: float = 0.0
-@export var base_mana: float = 0.0
+# Base stats are meant to be overridden by subclasses (Player, Mob)
+var base_strength: float = 0.0
+var base_dexterity: float = 0.0
+var base_intelligence: float = 0.0
+var base_health: float = 0.0
+var base_mana: float = 0.0
 
 # System references
 var attribute_map: GameplayAttributeMap
