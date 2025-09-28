@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/character_base/character_base.tscn" id="1_rhktx"]
 [ext_resource type="Script" uid="uid://cacixg2e6fl6u" path="res://modules/player/player.gd" id="2_pnc3n"]
 [ext_resource type="PackedScene" uid="uid://ckqe4q0hrebnr" path="res://modules/floating_damages/floating_damage.tscn" id="4_5rkg0"]
-[ext_resource type="Resource" path="res://modules/shared/abilities/instances/player_attack.tres" id="5_hd5yx"]
+[ext_resource type="Resource" path="res://modules/abilities/instances/player_attack.tres" id="5_hd5yx"]
 [ext_resource type="Texture2D" uid="uid://dynqn7swernt0" path="res://assets/player.png" id="6_hd5yx"]
 
 [node name="Player" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_rhktx")]

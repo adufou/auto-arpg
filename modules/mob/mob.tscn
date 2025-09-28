@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_xtckm"]
 [ext_resource type="PackedScene" uid="uid://ckqe4q0hrebnr" path="res://modules/floating_damages/floating_damage.tscn" id="4_hcl3v"]
 [ext_resource type="Script" uid="uid://cl2udnbyvytci" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="4_six5j"]
-[ext_resource type="Resource" path="res://modules/shared/abilities/instances/mob_attack.tres" id="5_cb145"]
+[ext_resource type="Resource" path="res://modules/abilities/instances/mob_attack.tres" id="5_cb145"]
 [ext_resource type="Texture2D" uid="uid://dxm7h8o5jex0t" path="res://assets/mob.png" id="6_cb145"]
 
 [sub_resource type="Resource" id="Resource_3oqht"]
