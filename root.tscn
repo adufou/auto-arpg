@@ -11,3 +11,4 @@
 
 [node name="Player" parent="MainNode2D" instance=ExtResource("2_vdtx4")]
 position = Vector2(812, 191)
+mob_detection_interval = 0.5

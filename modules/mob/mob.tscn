@@ -1,6 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://dk01yiwrmwwjg"]
+[gd_scene load_steps=17 format=3 uid="uid://dk01yiwrmwwjg"]
 
-[ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/shared/character_base.tscn" id="1_3wbnx"]
+[ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/character_base/character_base.tscn" id="1_3wbnx"]
 [ext_resource type="Script" uid="uid://twjt3jnhxitr" path="res://modules/mob/mob.gd" id="2_js4yu"]
 [ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_xtckm"]
 [ext_resource type="PackedScene" uid="uid://ckqe4q0hrebnr" path="res://modules/floating_damages/floating_damage.tscn" id="4_hcl3v"]
@@ -71,25 +71,17 @@ minimum_value = 0.0
 maximum_value = 50.0
 current_value = 3.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_bc1ur"]
-
 [node name="Mob" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_3wbnx")]
 script = ExtResource("2_js4yu")
-navigation_agent_2d = NodePath("NavigationAgent2D")
 mob_attack = ExtResource("5_cb145")
+flee_health_threshold = 0.3
+navigation_agent_2d = NodePath("NavigationAgent2D")
 floating_damage_scene = ExtResource("4_hcl3v")
 
-[node name="GameplayAttributeMap" parent="." index="0"]
+[node name="GameplayAttributeMap" parent="." index="1"]
 attributes = Array[ExtResource("3_xtckm")]([SubResource("Resource_3oqht"), SubResource("Resource_six5j"), SubResource("Resource_cb145"), SubResource("Resource_hcl3v"), SubResource("Resource_axqf7"), SubResource("Resource_gqti3"), SubResource("Resource_586h4"), SubResource("Resource_sr2hc"), SubResource("Resource_npg76")])
 
-[node name="AbilityContainer" parent="." index="1"]
-gameplay_attribute_map_path = NodePath("../GameplayAttributeMap")
-abilities = Array[ExtResource("4_six5j")]([ExtResource("5_cb145")])
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
-shape = SubResource("CircleShape2D_bc1ur")
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="3"]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="2"]
 path_desired_distance = 5.0
 target_desired_distance = 5.0
 path_postprocessing = 1
@@ -97,6 +89,10 @@ avoidance_enabled = true
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.846, 0, 0.728, 1)
+
+[node name="AbilityContainer" parent="." index="3"]
+gameplay_attribute_map_path = NodePath("../GameplayAttributeMap")
+abilities = Array[ExtResource("4_six5j")]([ExtResource("5_cb145")])
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="4"]
 texture = ExtResource("6_cb145")

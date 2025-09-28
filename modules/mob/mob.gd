@@ -1,32 +1,13 @@
-extends RigidBody2D
+extends CharacterBase
 
-@export var navigation_agent_2d: NavigationAgent2D
 @export var mob_attack: Ability
-@export var floating_damage_scene: PackedScene
-@export var movement_speed: float = 80.0
-@export var target_detection_range: float = 300.0
-@export var attack_range: float = 30.0  # Distance when we're "close enough"
-@export var force_multiplier: float = 15.0  # For movement responsiveness
 @export var flee_health_threshold: float = 0.3  # Flee when health below this percentage
 
-@export_group("Base Stats")
-@export var base_strength: float = 8.0
-@export var base_dexterity: float = 6.0
-@export var base_intelligence: float = 4.0
-@export var base_health: float = 50.0
-@export var base_mana: float = 20.0
-
 var target: Node2D = null
-var attribute_map: GameplayAttributeMap
-var ability_container: AbilityContainer
 
 func _ready() -> void:
+	super._ready()
 	add_to_group("mob")
-	
-	setup_gameplay_systems()
-	initialize_navigation_agent()
-	
-	update_health_bar()
 
 func _physics_process(_delta: float) -> void:
 	if ability_container and ability_container.has_tag("dead"):
@@ -58,32 +39,20 @@ func _physics_process(_delta: float) -> void:
 			pass
 
 func setup_gameplay_systems() -> void:
-	attribute_map = $GameplayAttributeMap
-	ability_container = $AbilityContainer
+	super.setup_gameplay_systems()
 	
+	# Set mob-specific stats
 	if attribute_map:
-		update_attribute("strength", base_strength)
-		update_attribute("dexterity", base_dexterity)
-		update_attribute("intelligence", base_intelligence)
-		update_attribute("health", base_health)
-		update_attribute("mana", base_mana)
-		
+		update_attribute("strength", 8.0)
+		update_attribute("dexterity", 6.0)
+		update_attribute("intelligence", 4.0)
+		update_attribute("health", 50.0)
+		update_attribute("mana", 20.0)
 		update_derived_stats()
-		
-		attribute_map.attribute_changed.connect(_on_attribute_changed)
-		attribute_map.attribute_effect_applied.connect(_on_attribute_effect_applied)
-		attribute_map.attribute_effect_removed.connect(_on_attribute_effect_removed)
-		attribute_map.effect_applied.connect(_on_effect_applied)
 	
 	if ability_container:
 		load_mob_abilities()
-		
-		ability_container.add_tag("can_attack")
-		ability_container.add_tag("attack_ready")
 
-func initialize_navigation_agent() -> void:
-	navigation_agent_2d.path_desired_distance = 5.0
-	navigation_agent_2d.target_desired_distance = 5.0
 func ensure_target_exists() -> void:
 	if target == null:
 		find_player()
@@ -95,30 +64,8 @@ func is_within_attack_range() -> bool:
 	var distance_to_target = global_position.distance_to(target.global_position)
 	return distance_to_target <= attack_range
 
-func handle_attack_range_behavior() -> void:
-	stop_movement()
-	
-	if ability_container and not ability_container.has_tag("dead"):
-		if ability_container.has_tag("attack_ready") and ability_container.has_tag("can_attack"):
-			ability_container.activate_many()
 
-func stop_movement() -> void:
-	apply_central_force(Vector2.ZERO - linear_velocity * 10.0)
 
-func move_toward_target() -> void:
-	if navigation_agent_2d.is_navigation_finished():
-		return
-		
-	var next_position = navigation_agent_2d.get_next_path_position()
-	var direction = calculate_direction_to(next_position)
-	apply_movement_force(direction)
-
-func calculate_direction_to(target_position: Vector2) -> Vector2:
-	return (target_position - global_position).normalized()
-
-func apply_movement_force(direction: Vector2) -> void:
-	var desired_velocity = direction * movement_speed
-	apply_central_force((desired_velocity - linear_velocity) * force_multiplier)
 
 func find_player() -> void:
 	target = null
@@ -132,27 +79,18 @@ func find_player() -> void:
 func is_valid_player_target(node: Node) -> bool:
 	return node.name.contains("Player") and node != self
 
-func update_attribute(attribute_name: String, value: float) -> void:
-	var attr = attribute_map.get_attribute_by_name(attribute_name)
-	if attr:
-		attr.current_value = value
-
+# Override to customize mob stats scaling
 func update_derived_stats() -> void:
 	var str_value = get_attribute_value("strength")
 	var dex_value = get_attribute_value("dexterity")
 	var _int_value = get_attribute_value("intelligence")
 	
-	update_attribute("attack", str_value * 1.2)
+	update_attribute("attack", str_value * 1.2) # Mobs have less attack scaling than player
 	update_attribute("crit_chance", dex_value * 0.3)
 	update_attribute("defense", str_value * 0.7)
 	update_attribute("movement_speed", movement_speed * (1.0 + dex_value * 0.005))
 
-func get_attribute_value(attribute_name: String) -> float:
-	var attr = attribute_map.get_attribute_by_name(attribute_name)
-	if attr:
-		return attr.current_buffed_value
-	return 0.0
-
+# Override to customize mob death behavior 
 func _on_attribute_changed(attribute: AttributeSpec) -> void:
 	if attribute.attribute_name in ["strength", "dexterity", "intelligence"]:
 		update_derived_stats()
@@ -163,6 +101,7 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 		if attribute.current_buffed_value <= 0 and not ability_container.has_tag("dead"):
 			ability_container.add_tag("dead")
 			
+			# Mob-specific death effect - blue color
 			modulate = Color(0.0, 0.0, 0.5, 0.5)
 			freeze = true
 			
@@ -180,6 +119,7 @@ func _on_attribute_changed(attribute: AttributeSpec) -> void:
 func load_mob_abilities() -> void:
 	ability_container.grant(mob_attack)
 
+# Override with mob-specific damage color
 func _on_attribute_effect_applied(attribute_effect: AttributeEffect, attribute: AttributeSpec) -> void:
 	if attribute.attribute_name == "health":
 		update_health_bar()
@@ -265,28 +205,3 @@ func handle_flee_behavior() -> void:
 		apply_movement_force(nav_direction)
 	else:
 		apply_movement_force(flee_direction)
-
-func update_health_bar() -> void:
-	var health_bar = %ProgressBar
-	if health_bar and attribute_map:
-		var health_attribute = attribute_map.get_attribute_by_name("health")
-		if health_attribute:
-			health_bar.max_value = health_attribute.maximum_value
-			health_bar.value = health_attribute.current_buffed_value
-			var health_percent = health_attribute.current_buffed_value / health_attribute.maximum_value
-			if health_percent > 0.7:
-				health_bar.modulate = Color(0, 1, 0) # Green
-			elif health_percent > 0.3:
-				health_bar.modulate = Color(1, 1, 0) # Yellow
-			else:
-				health_bar.modulate = Color(1, 0, 0) # Red
-
-func show_floating_damage(damage_value: float, is_critical: bool = false, damage_color: Color = Color.WHITE) -> void:
-	var floating_damage: FloatingDamage = floating_damage_scene.instantiate()
-	
-	get_tree().current_scene.add_child(floating_damage)
-	floating_damage.global_position = global_position + Vector2(0, -30)
-	
-	floating_damage.global_position.x += randf_range(-15, 15)
-	
-	floating_damage.setup(damage_value, is_critical, damage_color)

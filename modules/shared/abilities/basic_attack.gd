@@ -51,8 +51,8 @@ func can_activate(event: ActivationEvent) -> bool:
 	
 	return super.can_activate(event)
 
-func find_attack_target(character: Node) -> Node:
-	if character.has_method("is_within_attack_range") and "target_mob" in character:
+func find_attack_target(character: CharacterBase) -> CharacterBase:
+	if "target_mob" in character:
 		var target = character.target_mob
 		if target != null and is_instance_valid(target):
 			if character.is_within_attack_range():
@@ -93,11 +93,13 @@ func find_attack_target(character: Node) -> Node:
 	
 	return null
 
-func perform_attack(attacker: Node, defender: Node) -> void:
-	var attacker_attr = attacker.get_node("GameplayAttributeMap")
-	var defender_attr = defender.get_node("GameplayAttributeMap")
+func perform_attack(attacker: CharacterBase, defender: CharacterBase) -> void:
+	# D'abord essayer d'obtenir les attributs via le script CharacterBase
+	var attacker_attr = attacker.get_attribute_map()
+	var defender_attr = defender.get_attribute_map()
 	
 	if not attacker_attr or not defender_attr:
+		push_error("ERROR: Couldn't find attribute maps for attack")
 		return
 	
 	var attack = get_attribute_value(attacker_attr, "attack")
