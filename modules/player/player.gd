@@ -1,1 +1,2 @@
 extends PhysicalBodyBase
+class_name Player

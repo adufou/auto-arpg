@@ -51,4 +51,3 @@ func _turn_started() -> void:
 func end_turn() -> void:
 	if TurnManager.get_turn_based_game() != null:
 		TurnManager.get_turn_based_game().next_turn()
-

@@ -3,6 +3,7 @@ extends Node2D
 @export var navigation_region_2d: NavigationRegion2D
 @export var gaea_generator: GaeaGenerator
 @export var mob_spawner_scene: PackedScene
+@export var player_scene: PackedScene
 @export var player_margin: float = 3.0
 @export var mob_player_min_distance: float = 16.0
 
@@ -49,7 +50,7 @@ func _ready() -> void:
 	spawn_mobs()
 
 func get_world_size() -> Vector2:
-	var size_3d = gaea_generator.world_size
+	var size_3d = gaea_generator.world_size * get_tile_size()
 	return Vector2(size_3d.x, size_3d.y)
 
 func get_tile_size() -> float:
@@ -59,7 +60,7 @@ func get_tile_size() -> float:
 	
 	push_error("Taille des tuiles non trouvée!")
 	return 16.0
-
+ 
 func create_map_boundaries(world_size: Vector2) -> void:
 	var border_thickness: float = 32.0
 	
@@ -81,10 +82,15 @@ func create_boundary(pos: Vector2, size: Vector2) -> void:
 	add_child(static_body)
 	
 func place_player_on_edge():
-	print_debug('Place player on edge')
+	print_debug('Place player on edge -- TODO')
+	var player: Player = player_scene.instantiate()
+	add_child(player)
 	
+	PlayerManager.player = player
+	PlayerManager.player.position = Vector2(get_world_size().x/2, get_world_size().y/2)
+
 func spawn_mobs():
-	print_debug('spawn mobs')
+	print_debug('spawn mobs -- TODO')
 
 func wait_for_navigation_map_ready() -> void:
 	if not navigation_region_2d:

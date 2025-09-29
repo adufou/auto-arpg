@@ -2,12 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bkp17hil00xqd" path="res://modules/world/world.gd" id="1_036b0"]
 [ext_resource type="Script" uid="uid://d4feanreabm81" path="res://addons/gaea/nodes/generator.gd" id="2_dwbse"]
+[ext_resource type="PackedScene" uid="uid://bftqx2ftpjdiy" path="res://modules/player/player.tscn" id="2_k621k"]
 [ext_resource type="Resource" uid="uid://bl13txgdfm6gh" path="res://modules/terrain_generation/gaea_graph.tres" id="3_pkg7o"]
 [ext_resource type="Script" uid="uid://b4x16tyyfihmb" path="res://addons/gaea/nodes/renderers/tilemap_renderer.gd" id="4_gbfbk"]
 [ext_resource type="TileSet" uid="uid://dd5ycdeimb7y8" path="res://modules/terrain_generation/tile_set.tres" id="5_ioo17"]
-
-[sub_resource type="Resource" id="Resource_j0eu5"]
-metadata/__load_path__ = "res://modules/mob_spawner/mob_spawner.tscn"
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_28aoi"]
 
@@ -15,7 +13,7 @@ metadata/__load_path__ = "res://modules/mob_spawner/mob_spawner.tscn"
 script = ExtResource("1_036b0")
 navigation_region_2d = NodePath("NavigationRegion2D")
 gaea_generator = NodePath("GaeaGenerator")
-mob_spawner_scene = SubResource("Resource_j0eu5")
+player_scene = ExtResource("2_k621k")
 metadata/_edit_lock_ = true
 
 [node name="GaeaGenerator" type="Node" parent="."]
