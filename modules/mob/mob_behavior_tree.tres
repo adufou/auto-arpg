@@ -1,0 +1,44 @@
+[gd_resource type="BehaviorTree" load_steps=10 format=3 uid="uid://xwi35msshpru"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_i4vvw"]
+var/can_go_to_player/name = &"can_go_to_player"
+var/can_go_to_player/type = 1
+var/can_go_to_player/value = false
+var/can_go_to_player/hint = 0
+var/can_go_to_player/hint_string = ""
+
+[sub_resource type="BBNode" id="BBNode_i4vvw"]
+saved_value = NodePath(".")
+resource_name = "."
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_erds1"]
+node = SubResource("BBNode_i4vvw")
+method = &"can_go_to_player"
+result_var = &"can_go_to_player"
+
+[sub_resource type="BBVariant" id="BBVariant_1rn8q"]
+type = 1
+saved_value = true
+resource_name = "true"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_nnvou"]
+variable = &"can_go_to_player"
+value = SubResource("BBVariant_1rn8q")
+
+[sub_resource type="BBNode" id="BBNode_erds1"]
+saved_value = NodePath(".")
+resource_name = "."
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_dnpqb"]
+node = SubResource("BBNode_erds1")
+method = &"move_to_player"
+
+[sub_resource type="BTSequence" id="BTSequence_i40uy"]
+children = [SubResource("BTCallMethod_erds1"), SubResource("BTCheckVar_nnvou"), SubResource("BTCallMethod_dnpqb")]
+
+[sub_resource type="BTSelector" id="BTSelector_i4vvw"]
+children = [SubResource("BTSequence_i40uy")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_i4vvw")
+root_task = SubResource("BTSelector_i4vvw")

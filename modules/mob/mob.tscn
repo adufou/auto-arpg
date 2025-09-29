@@ -1,13 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://dk01yiwrmwwjg"]
+[gd_scene load_steps=6 format=3 uid="uid://dk01yiwrmwwjg"]
 
 [ext_resource type="PackedScene" uid="uid://7pe6rmkiwoso" path="res://modules/physical_body_base/physical_body_base.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://twjt3jnhxitr" path="res://modules/mob/mob.gd" id="2_script"]
+[ext_resource type="BehaviorTree" uid="uid://xwi35msshpru" path="res://modules/mob/mob_behavior_tree.tres" id="4_3oqht"]
 [ext_resource type="Texture2D" uid="uid://dxm7h8o5jex0t" path="res://assets/mob.png" id="4_texture"]
 
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_six5j"]
+
 [node name="Mob" instance=ExtResource("1_base")]
-collision_layer = 4
+collision_layer = 6
 collision_mask = 3
 script = ExtResource("2_script")
 
+[node name="NavigationAgent2D" parent="." index="1"]
+debug_enabled = true
+
 [node name="Sprite2D" type="Sprite2D" parent="." index="2"]
 texture = ExtResource("4_texture")
+
+[node name="BTPlayer" type="BTPlayer" parent="." index="3"]
+behavior_tree = ExtResource("4_3oqht")
+blackboard_plan = SubResource("BlackboardPlan_six5j")

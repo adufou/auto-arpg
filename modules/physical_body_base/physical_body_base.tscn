@@ -22,3 +22,4 @@ script = ExtResource("1_physgd")
 shape = SubResource("CircleShape2D_base")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+unique_name_in_owner = true
