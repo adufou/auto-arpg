@@ -1,22 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://dus10kgkxxw5h"]
+[gd_scene load_steps=9 format=3 uid="uid://dus10kgkxxw5h"]
 
 [ext_resource type="Script" uid="uid://bkp17hil00xqd" path="res://modules/world/world.gd" id="1_036b0"]
 [ext_resource type="Script" uid="uid://d4feanreabm81" path="res://addons/gaea/nodes/generator.gd" id="2_dwbse"]
 [ext_resource type="PackedScene" uid="uid://bftqx2ftpjdiy" path="res://modules/player/player.tscn" id="2_k621k"]
+[ext_resource type="PackedScene" uid="uid://l7uln5sqhcdy" path="res://modules/mob_spawner/mob_spawner.tscn" id="2_vsd7t"]
 [ext_resource type="Resource" uid="uid://bl13txgdfm6gh" path="res://modules/terrain_generation/gaea_graph.tres" id="3_pkg7o"]
 [ext_resource type="Script" uid="uid://b4x16tyyfihmb" path="res://addons/gaea/nodes/renderers/tilemap_renderer.gd" id="4_gbfbk"]
 [ext_resource type="TileSet" uid="uid://dd5ycdeimb7y8" path="res://modules/terrain_generation/tile_set.tres" id="5_ioo17"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_28aoi"]
 
-[node name="WorldNode2D" type="Node2D" node_paths=PackedStringArray("navigation_region_2d", "gaea_generator")]
+[node name="WorldNode2D" type="Node2D"]
 script = ExtResource("1_036b0")
-navigation_region_2d = NodePath("NavigationRegion2D")
-gaea_generator = NodePath("GaeaGenerator")
 player_scene = ExtResource("2_k621k")
 metadata/_edit_lock_ = true
 
 [node name="GaeaGenerator" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("2_dwbse")
 data = ExtResource("3_pkg7o")
 seed = 345266797
@@ -33,4 +33,8 @@ tile_set = ExtResource("5_ioo17")
 metadata/_edit_lock_ = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+unique_name_in_owner = true
 navigation_polygon = SubResource("NavigationPolygon_28aoi")
+
+[node name="MobSpawner" parent="." instance=ExtResource("2_vsd7t")]
+unique_name_in_owner = true
