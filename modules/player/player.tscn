@@ -7,16 +7,7 @@
 [node name="Player" instance=ExtResource("1_physbase")]
 script = ExtResource("2_pnc3n")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="2"]
-path_desired_distance = 5.0
-target_desired_distance = 5.0
-path_postprocessing = 1
-avoidance_enabled = true
-debug_enabled = true
-debug_use_custom = true
-debug_path_custom_color = Color(0, 0.758, 0.882, 1)
+[node name="Camera2D" type="Camera2D" parent="." index="2"]
 
-[node name="Camera2D" type="Camera2D" parent="." index="3"]
-
-[node name="Sprite2D" type="Sprite2D" parent="." index="4"]
+[node name="Sprite2D" type="Sprite2D" parent="." index="3"]
 texture = ExtResource("6_hd5yx")

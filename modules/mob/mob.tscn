@@ -9,12 +9,3 @@ script = ExtResource("2_script")
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="2"]
 texture = ExtResource("4_texture")
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="3"]
-path_desired_distance = 5.0
-target_desired_distance = 5.0
-path_postprocessing = 1
-avoidance_enabled = true
-debug_enabled = true
-debug_use_custom = true
-debug_path_custom_color = Color(0.846, 0, 0.728, 1)

@@ -20,3 +20,5 @@ script = ExtResource("1_physgd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_base")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
