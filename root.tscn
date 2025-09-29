@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1inawncqy7uf"]
+[gd_scene load_steps=3 format=3 uid="uid://c1inawncqy7uf"]
 
 [ext_resource type="PackedScene" uid="uid://dus10kgkxxw5h" path="res://modules/world/world.tscn" id="1_pyidc"]
-[ext_resource type="PackedScene" uid="uid://bftqx2ftpjdiy" path="res://modules/player/player.tscn" id="2_vdtx4"]
 [ext_resource type="PackedScene" uid="uid://b82gujhbqtyx3" path="res://modules/hud/hud.tscn" id="3_vvh5c"]
 
 [node name="Root" type="Node"]
@@ -9,8 +8,5 @@
 [node name="MainNode2D" type="Node2D" parent="."]
 
 [node name="World" parent="MainNode2D" instance=ExtResource("1_pyidc")]
-
-[node name="Player" parent="MainNode2D" instance=ExtResource("2_vdtx4")]
-position = Vector2(812, 191)
 
 [node name="Hud" parent="." instance=ExtResource("3_vvh5c")]

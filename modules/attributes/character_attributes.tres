@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1_jyr1i")
-attributes = Array[String](["strength", "dexterity", "intelligence", "health", "mana", "movement_speed", "attack", "crit_chance", "defense", "level", "experience", "experience_required"])
+attributes = Array[String](["strength", "dexterity", "intelligence", "health", "mana", "movement_speed", "attack", "crit_chance", "defense", "level", "experience", "experience_required", "attack_range", "detection_range"])

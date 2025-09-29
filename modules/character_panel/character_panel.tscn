@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cfjwldnucqhgg"]
 
-[ext_resource type="Script" uid="uid://cdy7updw4epa" path="res://character_panel/character_panel.gd" id="1_v6kdr"]
+[ext_resource type="Script" uid="uid://cdy7updw4epa" path="res://modules/character_panel/character_panel.gd" id="1_v6kdr"]
 
 [node name="CharacterPanel" type="Panel"]
 anchors_preset = 15

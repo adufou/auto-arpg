@@ -1,105 +1,16 @@
-[gd_scene load_steps=19 format=3 uid="uid://dk01yiwrmwwjg"]
+[gd_scene load_steps=4 format=3 uid="uid://dk01yiwrmwwjg"]
 
-[ext_resource type="PackedScene" uid="uid://brpchscvx718h" path="res://modules/character_base/character_base.tscn" id="1_3wbnx"]
-[ext_resource type="Script" uid="uid://twjt3jnhxitr" path="res://modules/mob/mob.gd" id="2_js4yu"]
-[ext_resource type="Script" uid="uid://b5ll8ceneq87" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_xtckm"]
-[ext_resource type="Script" uid="uid://cl2udnbyvytci" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="4_six5j"]
-[ext_resource type="Resource" path="res://modules/abilities/instances/mob_attack.tres" id="5_cb145"]
-[ext_resource type="Texture2D" uid="uid://dxm7h8o5jex0t" path="res://assets/mob.png" id="6_cb145"]
+[ext_resource type="PackedScene" uid="uid://7pe6rmkiwoso" path="res://modules/physical_body_base/physical_body_base.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://twjt3jnhxitr" path="res://modules/mob/mob.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://dxm7h8o5jex0t" path="res://assets/mob.png" id="4_texture"]
 
-[sub_resource type="Resource" id="Resource_3oqht"]
-script = ExtResource("3_xtckm")
-attribute_name = "strength"
-minimum_value = 0.0
-maximum_value = 50.0
-current_value = 8.0
+[node name="Mob" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
 
-[sub_resource type="Resource" id="Resource_six5j"]
-script = ExtResource("3_xtckm")
-attribute_name = "dexterity"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
+[node name="Sprite2D" type="Sprite2D" parent="." index="2"]
+texture = ExtResource("4_texture")
 
-[sub_resource type="Resource" id="Resource_cb145"]
-script = ExtResource("3_xtckm")
-attribute_name = "intelligence"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-
-[sub_resource type="Resource" id="Resource_hcl3v"]
-script = ExtResource("3_xtckm")
-attribute_name = "health"
-minimum_value = 0.0
-maximum_value = 50.0
-current_value = 50.0
-
-[sub_resource type="Resource" id="Resource_axqf7"]
-script = ExtResource("3_xtckm")
-attribute_name = "mana"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-
-[sub_resource type="Resource" id="Resource_gqti3"]
-script = ExtResource("3_xtckm")
-attribute_name = "movement_speed"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-
-[sub_resource type="Resource" id="Resource_586h4"]
-script = ExtResource("3_xtckm")
-attribute_name = "attack"
-minimum_value = 0.0
-maximum_value = 50.0
-current_value = 10.0
-
-[sub_resource type="Resource" id="Resource_sr2hc"]
-script = ExtResource("3_xtckm")
-attribute_name = "crit_chance"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-
-[sub_resource type="Resource" id="Resource_npg76"]
-script = ExtResource("3_xtckm")
-attribute_name = "defense"
-minimum_value = 0.0
-maximum_value = 50.0
-current_value = 3.0
-
-[sub_resource type="Resource" id="Resource_3woa8"]
-script = ExtResource("3_xtckm")
-attribute_name = "level"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-
-[sub_resource type="Resource" id="Resource_bdo3s"]
-script = ExtResource("3_xtckm")
-attribute_name = "experience"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-
-[sub_resource type="Resource" id="Resource_5fkn7"]
-script = ExtResource("3_xtckm")
-attribute_name = "experience_required"
-minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-
-[node name="Mob" node_paths=PackedStringArray("navigation_agent_2d") instance=ExtResource("1_3wbnx")]
-script = ExtResource("2_js4yu")
-mob_attack = ExtResource("5_cb145")
-navigation_agent_2d = NodePath("NavigationAgent2D")
-
-[node name="GameplayAttributeMap" parent="." index="1"]
-attributes = Array[ExtResource("3_xtckm")]([SubResource("Resource_3oqht"), SubResource("Resource_six5j"), SubResource("Resource_cb145"), SubResource("Resource_hcl3v"), SubResource("Resource_axqf7"), SubResource("Resource_gqti3"), SubResource("Resource_586h4"), SubResource("Resource_sr2hc"), SubResource("Resource_npg76"), SubResource("Resource_3woa8"), SubResource("Resource_bdo3s"), SubResource("Resource_5fkn7")])
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="2"]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="3"]
 path_desired_distance = 5.0
 target_desired_distance = 5.0
 path_postprocessing = 1
@@ -107,22 +18,3 @@ avoidance_enabled = true
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.846, 0, 0.728, 1)
-
-[node name="AbilityContainer" parent="." index="3"]
-abilities = Array[ExtResource("4_six5j")]([ExtResource("5_cb145")])
-
-[node name="Sprite2D" type="Sprite2D" parent="." index="4"]
-texture = ExtResource("6_cb145")
-
-[node name="ProgressBar" type="ProgressBar" parent="." index="5"]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -16.0
-offset_top = -22.0
-offset_right = 16.0
-offset_bottom = -12.0
-grow_horizontal = 2
-grow_vertical = 2
-show_percentage = false
