@@ -62,13 +62,8 @@ func is_within_attack_range() -> bool:
 	return distance_to_target <= attack_range
 
 func find_player() -> void:
-	target = null
-	var main_node = get_parent()
-	
-	for node in main_node.get_children():
-		if is_valid_player_target(node):
-			target = node
-			break
+	if PlayerManager.player:
+		target = PlayerManager.player
 
 func is_valid_player_target(node: Node) -> bool:
 	return node.name.contains("Player") and node != self
@@ -184,6 +179,5 @@ func handle_flee_behavior() -> void:
 
 # Méthode simplifiée pour donner l'XP
 func give_experience_to_player() -> void:
-	var players = get_tree().get_nodes_in_group("player")
-	if not players.is_empty() and players[0].has_method("add_experience"):
-		players[0].add_experience(experience_value)
+	if PlayerManager.player and PlayerManager.player.has_method("add_experience"):
+		PlayerManager.player.add_experience(experience_value)

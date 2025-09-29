@@ -8,7 +8,7 @@ func _ready() -> void:
 	call_deferred("connect_to_player_signals")
 
 func connect_to_player_signals() -> void:
-	var player = get_tree().get_first_node_in_group("player")
+	var player = PlayerManager.player
 	if player:
 		var attribute_map = player.get_attribute_map()
 		if attribute_map:
@@ -38,7 +38,7 @@ func update_exp_bar(exp_attribute: AttributeSpec = null, exp_required_attribute:
 	if not exp_bar:
 		return
 		
-	var player = get_tree().get_first_node_in_group("player")
+	var player = PlayerManager.player
 	if not player:
 		return
 		
