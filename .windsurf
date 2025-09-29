@@ -1,0 +1,12 @@
+Windsurf configuration file for the auto-arpg project.
+This file specifies coding style preferences for Cascade to follow.
+
+# General coding style preferences.
+### Rules specific to GDScript.
+comments:
+  # Instructs Cascade to add comments only when the code's purpose is not immediately obvious.
+
+node_references:
+  # Specifies the preferred method for accessing scene nodes.
+  # Using '%' is the shorthand for unique scene nodes in Godot 4 and is preferred for its conciseness.
+  
