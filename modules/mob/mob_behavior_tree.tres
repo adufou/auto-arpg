@@ -1,4 +1,4 @@
-[gd_resource type="BehaviorTree" load_steps=10 format=3 uid="uid://xwi35msshpru"]
+[gd_resource type="BehaviorTree" load_steps=17 format=3 uid="uid://xwi35msshpru"]
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_i4vvw"]
 var/can_go_to_player/name = &"can_go_to_player"
@@ -6,6 +6,40 @@ var/can_go_to_player/type = 1
 var/can_go_to_player/value = false
 var/can_go_to_player/hint = 0
 var/can_go_to_player/hint_string = ""
+var/can_attack_player/name = &"can_attack_player"
+var/can_attack_player/type = 1
+var/can_attack_player/value = false
+var/can_attack_player/hint = 0
+var/can_attack_player/hint_string = ""
+
+[sub_resource type="BBNode" id="BBNode_gmyew"]
+saved_value = NodePath(".")
+resource_name = "."
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_axvux"]
+node = SubResource("BBNode_gmyew")
+method = &"can_attack_player"
+result_var = &"can_attack_player"
+
+[sub_resource type="BBVariant" id="BBVariant_gmyew"]
+type = 1
+saved_value = true
+resource_name = "true"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_axvux"]
+variable = &"can_attack_player"
+value = SubResource("BBVariant_gmyew")
+
+[sub_resource type="BBNode" id="BBNode_axvux"]
+saved_value = NodePath(".")
+resource_name = "."
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_mmpsq"]
+node = SubResource("BBNode_axvux")
+method = &"attack_player"
+
+[sub_resource type="BTSequence" id="BTSequence_mmpsq"]
+children = [SubResource("BTCallMethod_axvux"), SubResource("BTCheckVar_axvux"), SubResource("BTCallMethod_mmpsq")]
 
 [sub_resource type="BBNode" id="BBNode_i4vvw"]
 saved_value = NodePath(".")
@@ -37,7 +71,7 @@ method = &"move_to_player"
 children = [SubResource("BTCallMethod_erds1"), SubResource("BTCheckVar_nnvou"), SubResource("BTCallMethod_dnpqb")]
 
 [sub_resource type="BTSelector" id="BTSelector_i4vvw"]
-children = [SubResource("BTSequence_i40uy")]
+children = [SubResource("BTSequence_mmpsq"), SubResource("BTSequence_i40uy")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_i4vvw")
