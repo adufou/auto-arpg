@@ -80,7 +80,6 @@ func place_player_on_edge():
 	PlayerManager.player.position = Vector2(get_world_size().x/2, get_world_size().y/2)
 
 func spawn_mobs():
-	print_debug('spawn mobs -- TODO (spawn not far from player for now)')
 	%MobSpawner.spawn_mobs()
 
 func wait_for_navigation_map_ready() -> void:

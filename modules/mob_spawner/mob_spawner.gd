@@ -65,15 +65,12 @@ func find_valid_pack_position(mobs_count: int = 5) -> Vector2:
 	var border_margin = min_radius_needed * 1.5
 	if border_margin > min(world_size.x, world_size.y) * 0.2:
 		border_margin = min(world_size.x, world_size.y) * 0.2
-	
-	print_debug('world size', world_size.x, world_size.y)
-	
+		
 	while attempts < max_attempts:
 		var test_position = Vector2(
 			randf_range(border_margin, world_size.x - border_margin),
 			randf_range(border_margin, world_size.y - border_margin)
 		)
-		print_debug('test position = x:' + str(test_position.x) + ', y:' + str(test_position.x))
 		if not is_position_navigable(test_position):
 			attempts += 1
 			continue
@@ -207,7 +204,6 @@ func spawn_single_mob(spawn_position: Vector2) -> Node:
 	world_node.add_child(mob_instance)
 		
 	mob_instance.global_position = spawn_position
-	print_debug('spawn mob at x:' + str(mob_instance.global_position.x) + ', y:' + str(mob_instance.global_position.y))
 	
 	await get_tree().process_frame
 	
